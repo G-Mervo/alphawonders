@@ -28,3 +28,4 @@ class AlphaBlogModel extends Model
     }
 }
 
+

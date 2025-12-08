@@ -42,3 +42,4 @@ class View extends BaseViewConfig
     public array $plugins = [];
 }
 
+

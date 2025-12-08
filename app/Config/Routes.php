@@ -40,3 +40,4 @@ $routes->get('blog/data-science-building-a-career-in-data-analytics', 'Blog::dts
 $routes->get('blog/privacy-policies-more-data-regulations', 'Blog::privacy');
 $routes->get('blog/what-is-robotics', 'Blog::robotics');
 
+

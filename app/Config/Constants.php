@@ -28,3 +28,4 @@ if (!defined('ASSETSPATH')) {
     define('ASSETSPATH', realpath(__DIR__ . '/../../assets') . DIRECTORY_SEPARATOR);
 }
 
+

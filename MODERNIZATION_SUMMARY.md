@@ -138,3 +138,4 @@ If issues occur:
 - Installation Guide: `CI4_INSTALLATION.md`
 - CodeIgniter 4 Docs: https://codeigniter.com/user_guide/
 
+
