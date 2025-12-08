@@ -1,0 +1,6 @@
+.gradient-color { background: #959595; /* background: linear-gradient(top, #0E8CE4, #0E8CE4); background: -moz-linear-gradient(top, #0E8CE4, #0E8CE4); background : -ms-linear-gradient(top, #0E8CE4, #0E8CE4); background : -webkit-gradient(linear, left top, left bottom, from(#0E8CE4), to(#0E8CE4)); */ /* border : solid 1px #0011E0;box-shadow : 2px 2px 3px #190BD8; */}
+.mine-color, .btn-inner-search { background-color: #0E8CE4; }
+.button-more::before { border-color: transparent #0E8CE4;}
+.btn-go-search:active,.btn-go-search:focus, .btn-go-search:hover, .button-more:hover, .button-more:focus, .button-more:hover { background-color: #190BD8; }
+div.filter-sidebar .title, .title.alone {border-bottom: 3px solid #ffb000;}
+div.filter-sidebar .title span, .title.alone span {border-bottom : 3px solid #C8C8C9; }
