@@ -22,3 +22,25 @@ $routes->post('/hire-submit', 'Alphawonders::hires_details');
 $routes->get('/blog', 'Alphawonders::alphablog');
 $routes->get('/blog/post', 'Alphawonders::alphapost');
 $routes->post('/blog/comment', 'Alphawonders::post_comments');
+
+// Admin/Dashboard routes - using ambiguous paths for security
+$routes->get('/aw-cp', 'Dashboard::admin');
+$routes->get('/aw-cp/services', 'Dashboard::services');
+$routes->get('/aw-cp/messages', 'Dashboard::messages');
+$routes->get('/aw-cp/blog', 'Dashboard::blog');
+$routes->get('/aw-cp/users_analytics', 'Dashboard::users_analytics');
+$routes->get('/aw-cp/visits_analytics', 'Dashboard::visits_analytics');
+$routes->get('/aw-cp/interactions_analytics', 'Dashboard::interactions_analytics');
+$routes->get('/aw-cp/products', 'Dashboard::products');
+$routes->get('/aw-cp/settings', 'Dashboard::settings');
+
+// Legacy admin routes (redirect to new ambiguous routes for backward compatibility)
+$routes->get('/admin', function() {
+    return redirect()->to(base_url('aw-cp'));
+});
+$routes->get('/dashboard/admin', function() {
+    return redirect()->to(base_url('aw-cp'));
+});
+$routes->get('/dashboard/admin/(:any)', function($segment) {
+    return redirect()->to(base_url('aw-cp/' . $segment));
+});

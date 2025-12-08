@@ -95,8 +95,8 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="<?php echo base_url('/admin'); ?>"><img src="<?php echo base_url('/assets/icon/logo.png'); ?>" alt="Alphawonders" width = "40px" height = "40px"></a> 
-                <span class="brand-title"><a class="" href="<?php echo base_url('/admin'); ?>" >Alphawonders Dashboard</a></span>
+                <a class="navbar-brand" href="<?php echo base_url('/aw-cp'); ?>"><img src="<?php echo base_url('/assets/icon/logo.png'); ?>" alt="Alphawonders" width = "40px" height = "40px"></a>
+                <span class="brand-title"><a class="" href="<?php echo base_url('/aw-cp'); ?>" >Alphawonders Dashboard</a></span>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
@@ -203,38 +203,38 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="active">
-                        <a href="<?php echo base_url('dashboard/admin'); ?>"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                        <a href="<?php echo base_url('aw-cp'); ?>"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="<?php echo base_url('dashboard/admin/services'); ?>"><i class="fa fa-fw fa-wrench"></i> Services</a>
+                        <a href="<?php echo base_url('aw-cp/services'); ?>"><i class="fa fa-fw fa-wrench"></i> Services</a>
                     </li>
                     <li>
-                        <a href="<?php echo base_url('dashboard/admin/messages'); ?>"><i class="fa fa-fw fa-envelope"></i> Messages</a>
+                        <a href="<?php echo base_url('aw-cp/messages'); ?>"><i class="fa fa-fw fa-envelope"></i> Messages</a>
                     </li>
                     <li>
-                        <a href="<?php echo base_url('dashboard/admin/blog'); ?>"><i class="fa fa-fw fa-desktop"></i> Blog</a> 
+                        <a href="<?php echo base_url('aw-cp/blog'); ?>"><i class="fa fa-fw fa-desktop"></i> Blog</a> 
                     </li>
                     
                     <li>
                         <a href="javascript: void(0);" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Analytics<i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="demo" class="collapse">
                             <li>
-                                <a href="<?php echo base_url('dashboard/admin/users_analytics'); ?>">Users</a>
+                                <a href="<?php echo base_url('aw-cp/users_analytics'); ?>">Users</a>
                             </li>
                             <li>
-                                <a href="<?php echo base_url('dashboard/admin/visits_analytics'); ?>">Visits</a>
+                                <a href="<?php echo base_url('aw-cp/visits_analytics'); ?>">Visits</a>
                             </li>
                             <li>
-                                <a href="<?php echo base_url('dashboard/admin/interactions_analytics'); ?>">Interactions</a>
+                                <a href="<?php echo base_url('aw-cp/interactions_analytics'); ?>">Interactions</a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="<?php echo base_url('dashboard/admin/products'); ?>"><i class="fa fa-fw fa-file"></i> Products</a>
+                        <a href="<?php echo base_url('aw-cp/products'); ?>"><i class="fa fa-fw fa-file"></i> Products</a>
                     </li>
                     
                     <li>
-                        <a href="<?php echo base_url('dashboard/admin/settings'); ?>"><i class="fa fa-fw fa-wrench"></i> Settings</a>
+                        <a href="<?php echo base_url('aw-cp/settings'); ?>"><i class="fa fa-fw fa-wrench"></i> Settings</a>
                     </li>
                 </ul>
             </div>
