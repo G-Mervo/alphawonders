@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script allowed'); ?>
+<?php defined('FCPATH') OR exit('No direct script allowed'); ?>
 
 	<!-- <section class="contact" id="contacts"> -->
 <section class="alph-services contact text-center" id="contacts">

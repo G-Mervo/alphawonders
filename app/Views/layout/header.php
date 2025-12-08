@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script allowed'); ?>
+<?php defined('FCPATH') OR exit('No direct script allowed'); ?>
 
 <!DOCTYPE html>
 <html lang="en-us">

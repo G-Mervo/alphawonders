@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+<?php defined('FCPATH') OR exit('No direct script access allowed'); ?>
 
 	<!-- Hero Section -->
 	<section class="hero-section py-5" style="background: linear-gradient(135deg, #041640 0%, #0a2a5a 100%); margin-top: 76px; min-height: 600px; display: flex; align-items: center; position: relative; overflow: hidden;">

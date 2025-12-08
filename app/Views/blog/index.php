@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access is allowed'); ?>
+<?php defined('FCPATH') OR exit('No direct script access is allowed'); ?>
 
 <section class="alph-blog">
     <div class="row">

@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+<?php defined('FCPATH') OR exit('No direct script access allowed'); ?>
 
 	</div>
 	<footer class="alph-footer">

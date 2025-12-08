@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+<?php defined('FCPATH') OR exit('No direct script access allowed'); ?>
 
 <section class="alph-services text-center" id="consultancy">
 	<div class="container-fluid">
