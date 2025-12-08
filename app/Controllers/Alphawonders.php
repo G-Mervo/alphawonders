@@ -199,7 +199,11 @@ class Alphawonders extends BaseController
             'client' => 'required|trim',
             'work' => 'required|trim',
             'whts' => 'permit_empty|trim',
-            'proj_desc' => 'required|trim'
+            'proj_desc' => 'required|trim',
+            'company_name' => 'permit_empty|trim',
+            'industry' => 'permit_empty|trim',
+            'project_type' => 'permit_empty|trim',
+            'timeline' => 'permit_empty|trim'
         ]);
 
         if (!$validation->run($this->request->getPost())) {
@@ -218,9 +222,12 @@ class Alphawonders extends BaseController
             'skype' => $this->request->getPost('sky'),
             'client' => $this->request->getPost('client'),
             'work' => $this->request->getPost('work'),
-            'nature' => 'contract',
+            'nature' => $this->request->getPost('project_type') ?: 'contract',
             'whatsapp' => $this->request->getPost('whts'),
             'description' => $this->request->getPost('proj_desc'),
+            'company_name' => $this->request->getPost('company_name'),
+            'industry' => $this->request->getPost('industry'),
+            'timeline' => $this->request->getPost('timeline'),
             'activity_name' => 'Hire us',
             'browser_name' => $userAgent->getBrowser() . ' ' . $userAgent->getVersion(),
             'ip_address' => $this->request->getIPAddress(),
