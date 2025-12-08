@@ -1,0 +1,11 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
+ERROR - 2019-12-23 10:02:32 --> Severity: 8192 --> strpos(): Non-string needles will be interpreted as strings in the future. Use an explicit chr() call to preserve the current behavior C:\wamp64\www\alphawonders\application\third_party\MX\Router.php 239
+ERROR - 2019-12-23 10:12:36 --> Severity: 8192 --> strpos(): Non-string needles will be interpreted as strings in the future. Use an explicit chr() call to preserve the current behavior C:\wamp64\www\alphawonders\application\third_party\MX\Router.php 239
+ERROR - 2019-12-23 10:18:14 --> Severity: 8192 --> strpos(): Non-string needles will be interpreted as strings in the future. Use an explicit chr() call to preserve the current behavior C:\wamp64\www\alphawonders\application\third_party\MX\Router.php 239
+ERROR - 2019-12-23 10:28:59 --> Severity: 8192 --> strpos(): Non-string needles will be interpreted as strings in the future. Use an explicit chr() call to preserve the current behavior C:\wamp64\www\alphawonders\application\third_party\MX\Router.php 239
+ERROR - 2019-12-23 10:39:07 --> Severity: 8192 --> strpos(): Non-string needles will be interpreted as strings in the future. Use an explicit chr() call to preserve the current behavior C:\wamp64\www\alphawonders\application\third_party\MX\Router.php 239
+ERROR - 2019-12-23 10:49:19 --> Severity: 8192 --> strpos(): Non-string needles will be interpreted as strings in the future. Use an explicit chr() call to preserve the current behavior C:\wamp64\www\alphawonders\application\third_party\MX\Router.php 239
+ERROR - 2019-12-23 10:59:39 --> Severity: 8192 --> strpos(): Non-string needles will be interpreted as strings in the future. Use an explicit chr() call to preserve the current behavior C:\wamp64\www\alphawonders\application\third_party\MX\Router.php 239
+ERROR - 2019-12-23 11:09:51 --> Severity: 8192 --> strpos(): Non-string needles will be interpreted as strings in the future. Use an explicit chr() call to preserve the current behavior C:\wamp64\www\alphawonders\application\third_party\MX\Router.php 239
+ERROR - 2019-12-23 11:20:13 --> Severity: 8192 --> strpos(): Non-string needles will be interpreted as strings in the future. Use an explicit chr() call to preserve the current behavior C:\wamp64\www\alphawonders\application\third_party\MX\Router.php 239

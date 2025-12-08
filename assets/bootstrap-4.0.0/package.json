@@ -1,0 +1,323 @@
+Ignore);
+	            }
+	            displayList.length = this._displayListLen;
+
+	            for (var i = 0, len = displayList.length; i < len; i++) {
+	                displayList[i].__renderidx = i;
+	            }
+
+	            displayList.sort(shapeCompareFunc);
+	        },
+
+	        _updateAndAddDisplayable: function (el, clipPaths, includeIgnore) {
+
+	            if (el.ignore && !includeIgnore) {
+	                return;
+	            }
+
+	            el.beforeUpdate();
+
+	            el.update();
+
+	            el.afterUpdate();
+
+	            var clipPath = el.clipPath;
+	            if (clipPath) {
+	                // clipPath 的变换是基于 group 的变换
+	                clipPath.parent = el;
+	                clipPath.updateTransform();
+
+	                // FIXME 效率影响
+	                if (clipPaths) {
+	                    clipPaths = clipPaths.slice();
+	                    clipPaths.push(clipPath);
+	                }
+	                else {
+	                    clipPaths = [clipPath];
+	                }
+	            }
+
+	            if (el.type == 'group') {
+	                var children = el._children;
+
+	                for (var i = 0; i < children.length; i++) {
+	                    var child = children[i];
+
+	                    // Force to mark as dirty if group is dirty
+	                    // FIXME __dirtyPath ?
+	                    child.__dirty = el.__dirty || child.__dirty;
+
+	                    this._updateAndAddDisplayable(child, clipPaths, includeIgnore);
+	                }
+
+	                // Mark group clean here
+	                el.__dirty = false;
+
+	            }
+	            else {
+	                el.__clipPaths = clipPaths;
+
+	                this._displayList[this._displayListLen++] = el;
+	            }
+	        },
+
+	        /**
+	         * 添加图形(Shape)或者组(Group)到根节点
+	         * @param {module:zrender/Element} el
+	         */
+	        addRoot: function (el) {
+	            // Element has been added
+	            if (this._elements[el.id]) {
+	                return;
+	            }
+
+	            if (el instanceof Group) {
+	                el.addChildrenToStorage(this);
+	            }
+
+	            this.addToMap(el);
+	            this._roots.push(el);
+	        },
+
+	        /**
+	         * 删除指定的图形(Shape)或者组(Group)
+	         * @param {string|Array.<string>} [elId] 如果为空清空整个Storage
+	         */
+	        delRoot: function (elId) {
+	            if (elId == null) {
+	                // 不指定elId清空
+	                for (var i = 0; i < this._roots.length; i++) {
+	                    var root = this._roots[i];
+	                    if (root instanceof Group) {
+	                        root.delChildrenFromStorage(this);
+	                    }
+	                }
+
+	                this._elements = {};
+	                this._roots = [];
+	                this._displayList = [];
+	                this._displayListLen = 0;
+
+	                return;
+	            }
+
+	            if (elId instanceof Array) {
+	                for (var i = 0, l = elId.length; i < l; i++) {
+	                    this.delRoot(elId[i]);
+	                }
+	                return;
+	            }
+
+	            var el;
+	            if (typeof(elId) == 'string') {
+	                el = this._elements[elId];
+	            }
+	            else {
+	                el = elId;
+	            }
+
+	            var idx = util.indexOf(this._roots, el);
+	            if (idx >= 0) {
+	                this.delFromMap(el.id);
+	                this._roots.splice(idx, 1);
+	                if (el instanceof Group) {
+	                    el.delChildrenFromStorage(this);
+	                }
+	            }
+	        },
+
+	        addToMap: function (el) {
+	            if (el instanceof Group) {
+	                el.__storage = this;
+	            }
+	            el.dirty();
+
+	            this._elements[el.id] = el;
+
+	            return this;
+	        },
+
+	        get: function (elId) {
+	            return this._elements[elId];
+	        },
+
+	        delFromMap: function (elId) {
+	            var elements = this._elements;
+	            var el = elements[elId];
+	            if (el) {
+	                delete elements[elId];
+	                if (el instanceof Group) {
+	                    el.__storage = null;
+	                }
+	            }
+
+	            return this;
+	        },
+
+	        /**
+	         * 清空并且释放Storage
+	         */
+	        dispose: function () {
+	            this._elements =
+	            this._renderList =
+	            this._roots = null;
+	        }
+	    };
+
+	    module.exports = Storage;
+
+
+
+/***/ },
+/* 85 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	/**
+	 * 动画主类, 调度和管理所有动画控制器
+	 *
+	 * @module zrender/animation/Animation
+	 * @author pissang(https://github.com/pissang)
+	 */
+	// TODO Additive animation
+	// http://iosoteric.com/additive-animations-animatewithduration-in-ios-8/
+	// https://developer.apple.com/videos/wwdc2014/#236
+
+
+	    var util = __webpack_require__(3);
+	    var Dispatcher = __webpack_require__(81).Dispatcher;
+
+	    var requestAnimationFrame = (typeof window !== 'undefined' &&
+	                                    (window.requestAnimationFrame
+	                                    || window.msRequestAnimationFrame
+	                                    || window.mozRequestAnimationFrame
+	                                    || window.webkitRequestAnimationFrame))
+	                                || function (func) {
+	                                    setTimeout(func, 16);
+	                                };
+
+	    var Animator = __webpack_require__(35);
+	    /**
+	     * @typedef {Object} IZRenderStage
+	     * @property {Function} update
+	     */
+
+	    /**
+	     * @alias module:zrender/animation/Animation
+	     * @constructor
+	     * @param {Object} [options]
+	     * @param {Function} [options.onframe]
+	     * @param {IZRenderStage} [options.stage]
+	     * @example
+	     *     var animation = new Animation();
+	     *     var obj = {
+	     *         x: 100,
+	     *         y: 100
+	     *     };
+	     *     animation.animate(node.position)
+	     *         .when(1000, {
+	     *             x: 500,
+	     *             y: 500
+	     *         })
+	     *         .when(2000, {
+	     *             x: 100,
+	     *             y: 100
+	     *         })
+	     *         .start('spline');
+	     */
+	    var Animation = function (options) {
+
+	        options = options || {};
+
+	        this.stage = options.stage || {};
+
+	        this.onframe = options.onframe || function() {};
+
+	        // private properties
+	        this._clips = [];
+
+	        this._running = false;
+
+	        this._time = 0;
+
+	        Dispatcher.call(this);
+	    };
+
+	    Animation.prototype = {
+
+	        constructor: Animation,
+	        /**
+	         * 添加 clip
+	         * @param {module:zrender/animation/Clip} clip
+	         */
+	        addClip: function (clip) {
+	            this._clips.push(clip);
+	        },
+	        /**
+	         * 添加 animator
+	         * @param {module:zrender/animation/Animator} animator
+	         */
+	        addAnimator: function (animator) {
+	            animator.animation = this;
+	            var clips = animator.getClips();
+	            for (var i = 0; i < clips.length; i++) {
+	                this.addClip(clips[i]);
+	            }
+	        },
+	        /**
+	         * 删除动画片段
+	         * @param {module:zrender/animation/Clip} clip
+	         */
+	        removeClip: function(clip) {
+	            var idx = util.indexOf(this._clips, clip);
+	            if (idx >= 0) {
+	                this._clips.splice(idx, 1);
+	            }
+	        },
+
+	        /**
+	         * 删除动画片段
+	         * @param {module:zrender/animation/Animator} animator
+	         */
+	        removeAnimator: function (animator) {
+	            var clips = animator.getClips();
+	            for (var i = 0; i < clips.length; i++) {
+	                this.removeClip(clips[i]);
+	            }
+	            animator.animation = null;
+	        },
+
+	        _update: function() {
+
+	            var time = new Date().getTime();
+	            var delta = time - this._time;
+	            var clips = this._clips;
+	            var len = clips.length;
+
+	            var deferredEvents = [];
+	            var deferredClips = [];
+	            for (var i = 0; i < len; i++) {
+	                var clip = clips[i];
+	                var e = clip.step(time);
+	                // Throw out the events need to be called after
+	                // stage.update, like destroy
+	                if (e) {
+	                    deferredEvents.push(e);
+	                    deferredClips.push(clip);
+	                }
+	            }
+
+	            // Remove the finished clip
+	            for (var i = 0; i < len;) {
+	                if (clips[i]._needsRemove) {
+	                    clips[i] = clips[len - 1];
+	                    clips.pop();
+	                    len--;
+	                }
+	                else {
+	                    i++;
+	                }
+	            }
+
+	            len = deferredEvents.length;
+	            for (var i = 0; i < len; i+
