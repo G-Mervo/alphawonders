@@ -13,6 +13,7 @@ $routes->get('/design', 'Alphawonders::alphadesign');
 $routes->get('/digital-marketing', 'Alphawonders::alphamarketing');
 $routes->get('/ict-consultancy', 'Alphawonders::alphaconsultancy');
 $routes->get('/it-support', 'Alphawonders::alphasupport');
+$routes->get('/ai-services', 'Alphawonders::alphaiservices');
 $routes->get('/hire', 'Alphawonders::alphahires');
 $routes->get('/contact-us', 'Alphawonders::contact');
 $routes->post('/contact-us', 'Alphawonders::send_contact_data');

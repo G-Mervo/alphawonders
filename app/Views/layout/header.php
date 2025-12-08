@@ -193,7 +193,7 @@
 			<div class="container-fluid px-2 px-md-3 px-lg-4">
 				<!-- Logo -->
 				<a class="navbar-brand d-flex align-items-center" href="<?php echo base_url('/'); ?>" style="transition: transform 0.3s;">
-					<img src="<?php echo base_url('assets/icon/logo.png'); ?>" alt="Alphawonders" class="me-2" style="width: 40px; height: 40px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));" onerror="this.style.display='none'">
+					<img src="<?php echo base_url('assets/icon/logo.png'); ?>" alt="Alphawonders" class="me-2" style="width: 40px; height: 40px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));" onerror="this.onerror=null; this.src='<?php echo base_url('assets/icon/awlogo.png'); ?>';">
 					<span class="fw-bold text-white d-none d-md-inline" style="font-size: 1.1rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3); letter-spacing: 0.5px;">Alphawonders</span>
 				</a>
 				

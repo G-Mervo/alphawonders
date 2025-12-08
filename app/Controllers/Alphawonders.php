@@ -95,6 +95,15 @@ class Alphawonders extends BaseController
                view('layout/footer');
     }
 
+    public function alphaiservices()
+    {
+        $data['title'] = 'AI Services | Alphawonders';
+
+        return view('layout/header', $data) . 
+               view('services/alphaiservices', $data) . 
+               view('layout/footer');
+    }
+
     public function alphahires()
     {
         $data['title'] = 'Hire | Alphawonders';

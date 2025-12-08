@@ -31,7 +31,7 @@
 						<article class="card border-0 shadow-sm mb-4 hover-lift">
 							<div class="row g-0">
 								<div class="col-md-4">
-									<img src="<?php echo base_url($blogImage); ?>" class="img-fluid rounded-start h-100" alt="<?php echo htmlspecialchars($blogTitle); ?>" style="object-fit: cover; min-height: 200px;" onerror="this.src='<?php echo base_url('assets/img/qtmcomp.jpg'); ?>'">
+									<img src="<?php echo base_url($blogImage); ?>" class="img-fluid rounded-start h-100" alt="<?php echo htmlspecialchars($blogTitle); ?>" style="object-fit: cover; min-height: 200px; width: 100%; height: 100%;" loading="lazy" onerror="this.onerror=null; this.src='<?php echo base_url('assets/img/qtmcomp.jpg'); ?>';">
 								</div>
 								<div class="col-md-8">
 									<div class="card-body p-4">

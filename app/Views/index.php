@@ -195,6 +195,23 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="col-lg-4 col-md-6">
+				<div class="service-card card h-100 border-0 shadow-sm hover-lift">
+					<div class="card-body p-4">
+						<div class="service-icon mb-3">
+							<div class="icon-wrapper bg-purple bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 70px; height: 70px; background: rgba(138, 43, 226, 0.1);">
+								<i class="fas fa-robot fa-2x" style="color: #8a2be2;"></i>
+							</div>
+						</div>
+						<h5 class="card-title fw-bold mb-3">AI Services</h5>
+						<p class="card-text text-muted mb-3">AI integration, machine learning solutions, chatbots, automation, and intelligent systems to transform your business.</p>
+						<a href="<?php echo base_url('/ai-services'); ?>" class="btn btn-sm rounded-pill" style="border-color: #8a2be2; color: #8a2be2;">
+							Learn More <i class="fas fa-arrow-right ms-1"></i>
+						</a>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </section>
@@ -303,7 +320,7 @@
 								<div class="card h-100 border-0 shadow-sm hover-lift">
 									<div class="row g-0">
 										<div class="col-4">
-											<img src="<?php echo base_url($blogImage); ?>" class="img-fluid rounded-start h-100" alt="<?php echo htmlspecialchars($blogTitle); ?>" style="object-fit: cover;" onerror="this.src='<?php echo base_url('assets/img/qtmcomp.jpg'); ?>'">
+											<img src="<?php echo base_url($blogImage); ?>" class="img-fluid rounded-start h-100" alt="<?php echo htmlspecialchars($blogTitle); ?>" style="object-fit: cover; width: 100%; height: 100%; min-height: 120px;" loading="lazy" onerror="this.onerror=null; this.src='<?php echo base_url('assets/img/qtmcomp.jpg'); ?>';">
 										</div>
 										<div class="col-8">
 											<div class="card-body d-flex flex-column">
@@ -330,7 +347,7 @@
 							<div class="card h-100 border-0 shadow-sm hover-lift">
 								<div class="row g-0">
 									<div class="col-4">
-										<img src="<?php echo base_url('assets/img/qtmcomp.jpg'); ?>" class="img-fluid rounded-start h-100" alt="Quantum Computing" style="object-fit: cover;">
+										<img src="<?php echo base_url('assets/img/qtmcomp.jpg'); ?>" class="img-fluid rounded-start h-100" alt="Quantum Computing" style="object-fit: cover; width: 100%; height: 100%; min-height: 120px;" loading="lazy">
 									</div>
 									<div class="col-8">
 										<div class="card-body d-flex flex-column">
@@ -350,7 +367,7 @@
 							<div class="card h-100 border-0 shadow-sm hover-lift">
 								<div class="row g-0">
 									<div class="col-4">
-										<img src="<?php echo base_url('assets/img/datasci.jpg'); ?>" class="img-fluid rounded-start h-100" alt="Data Science" style="object-fit: cover;">
+										<img src="<?php echo base_url('assets/img/datasci.jpg'); ?>" class="img-fluid rounded-start h-100" alt="Data Science" style="object-fit: cover; width: 100%; height: 100%; min-height: 120px;" loading="lazy">
 									</div>
 									<div class="col-8">
 										<div class="card-body d-flex flex-column">
@@ -494,6 +511,65 @@
 	
 	.min-vh-75 {
 		min-height: auto;
+	}
+}
+
+/* Wide devices (1400px and up) */
+@media (min-width: 1400px) {
+	.hero-section {
+		padding: 6rem 0;
+	}
+	
+	.hero-content h1 {
+		font-size: clamp(2.5rem, 6vw, 4rem) !important;
+	}
+	
+	.service-card .card-body {
+		padding: 2rem !important;
+	}
+	
+	/* Ensure all images load properly */
+	img {
+		max-width: 100%;
+		height: auto;
+		display: block;
+	}
+	
+	.card img,
+	.blog-section img {
+		width: 100%;
+		height: auto;
+		object-fit: cover;
+	}
+}
+
+/* Extra wide devices (1920px and up) */
+@media (min-width: 1920px) {
+	.container {
+		max-width: 1600px;
+	}
+	
+	.hero-section {
+		padding: 8rem 0;
+	}
+	
+	/* Prevent content from stretching too wide */
+	.row {
+		max-width: 100%;
+	}
+	
+	/* Blog images responsive on ultra-wide */
+	.blog-section .card img {
+		width: 100%;
+		height: auto;
+		max-width: 100%;
+		object-fit: cover;
+		min-height: 150px;
+	}
+	
+	/* Service cards spacing */
+	.service-card {
+		margin-bottom: 2rem;
 	}
 }
 </style>

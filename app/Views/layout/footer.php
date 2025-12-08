@@ -91,11 +91,12 @@
 	<!-- Custom Scripts -->
 	<script src="<?php echo base_url("assets/js/custom.js") ?>"></script>
 	<script src="<?php echo base_url("assets/js/owl.carousel.min.js") ?>"></script>
-	<script src="<?php echo base_url("vendor/twitter-api/tweetie.js") ?>"></script>
 	<script src="<?php echo base_url("assets/js/main.js") ?>"></script>
 	<script src="<?php echo base_url("assets/js/wow.min.js") ?>"></script>
 	<script>
-		new WOW().init();
+		if (typeof WOW !== 'undefined') {
+			new WOW().init();
+		}
 	</script>
 	<script>
 		$(document).ready(function(){
