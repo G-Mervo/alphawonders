@@ -41,6 +41,19 @@ $app->setContext($context);
 
 /*
  *---------------------------------------------------------------
+ * DEVELOPMENT: Disable Caching
+ *---------------------------------------------------------------
+ * Uncomment the following lines during development to prevent
+ * browser and server caching from hiding your changes.
+ */
+if (defined('ENVIRONMENT') && ENVIRONMENT === 'development') {
+    header('Cache-Control: no-cache, no-store, must-revalidate, max-age=0');
+    header('Pragma: no-cache');
+    header('Expires: 0');
+}
+
+/*
+ *---------------------------------------------------------------
  * LAUNCH THE APPLICATION
  *---------------------------------------------------------------
  * Now that everything is setup, it's time to actually fire
