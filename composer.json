@@ -2,15 +2,17 @@
     "name": "alphawonders/website",
     "description": "Alphawonders Solutions Website",
     "type": "project",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
     "require": {
         "php": ">=7.4",
         "codeigniter4/framework": "^4.4",
-        "monolog/monolog": "^2.8",
-        "mpdf/mpdf": "^8.2",
-        "facebook/graph-sdk": "^6.0"
+        "monolog/monolog": "^1.27|^2.0|^3.0",
+        "mpdf/mpdf": "^8.0",
+        "facebook/graph-sdk": "^5.7|^6.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^8.5|^9.5",
         "fakerphp/faker": "^1.9"
     },
     "autoload": {
