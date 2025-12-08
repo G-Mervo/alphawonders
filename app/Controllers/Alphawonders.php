@@ -195,10 +195,10 @@ class Alphawonders extends BaseController
             'telno' => 'required|trim',
             'budget' => 'required|trim',
             'loc' => 'required|trim',
-            'sky' => 'required|trim',
+            'sky' => 'permit_empty|trim',
             'client' => 'required|trim',
             'work' => 'required|trim',
-            'whts' => 'required|trim',
+            'whts' => 'permit_empty|trim',
             'proj_desc' => 'required|trim'
         ]);
 
@@ -240,6 +240,12 @@ class Alphawonders extends BaseController
     public function alphablog()
     {
         $data['title'] = 'Blog | Alphawonders';
+        
+        try {
+            $data['blogs'] = $this->alphaBlogModel->retrieveBlog();
+        } catch (\Exception $e) {
+            $data['blogs'] = [];
+        }
 
         return view('layout/header', $data) . 
                view('blog/index', $data) . 
