@@ -291,25 +291,31 @@
 		<div class="row g-4">
 			<div class="col-lg-9">
 				<div class="row g-4">
-					<?php if(isset($blogs) && !empty($blogs)): ?>
+					<?php if(isset($blogs) && !empty($blogs) && is_array($blogs)): ?>
 						<?php foreach(array_slice($blogs, 0, 4) as $blog): ?>
+							<?php 
+								$blogTitle = isset($blog['title']) ? $blog['title'] : (is_object($blog) && isset($blog->title) ? $blog->title : 'Blog Post');
+								$blogDesc = isset($blog['description']) ? $blog['description'] : (is_object($blog) && isset($blog->description) ? $blog->description : 'Read more about this topic...');
+								$blogImage = isset($blog['image']) ? $blog['image'] : (is_object($blog) && isset($blog->image) ? $blog->image : 'assets/img/qtmcomp.jpg');
+								$blogUrl = isset($blog['url']) ? $blog['url'] : (is_object($blog) && isset($blog->url) ? $blog->url : 'blog/post');
+							?>
 							<div class="col-md-6">
 								<div class="card h-100 border-0 shadow-sm hover-lift">
 									<div class="row g-0">
 										<div class="col-4">
-											<img src="<?php echo base_url('assets/img/qtmcomp.jpg'); ?>" class="img-fluid rounded-start h-100" alt="<?php echo htmlspecialchars($blog['title'] ?? 'Blog Post'); ?>" style="object-fit: cover;">
+											<img src="<?php echo base_url($blogImage); ?>" class="img-fluid rounded-start h-100" alt="<?php echo htmlspecialchars($blogTitle); ?>" style="object-fit: cover;" onerror="this.src='<?php echo base_url('assets/img/qtmcomp.jpg'); ?>'">
 										</div>
 										<div class="col-8">
 											<div class="card-body d-flex flex-column">
 												<h6 class="card-title mb-2">
-													<a href="<?php echo base_url('blog/post'); ?>" class="text-decoration-none text-dark fw-bold">
-														<?php echo htmlspecialchars($blog['title'] ?? 'Blog Post'); ?>
+													<a href="<?php echo base_url($blogUrl); ?>" class="text-decoration-none text-dark fw-bold">
+														<?php echo htmlspecialchars($blogTitle); ?>
 													</a>
 												</h6>
 												<p class="card-text small text-muted mb-2 flex-grow-1">
-													<?php echo htmlspecialchars(substr($blog['content'] ?? 'Read more about this topic...', 0, 80)) . '...'; ?>
+													<?php echo htmlspecialchars(substr($blogDesc, 0, 80)) . '...'; ?>
 												</p>
-												<a href="<?php echo base_url('blog/post'); ?>" class="btn btn-sm btn-outline-primary align-self-start">
+												<a href="<?php echo base_url($blogUrl); ?>" class="btn btn-sm btn-outline-primary align-self-start">
 													Read More <i class="fas fa-arrow-right ms-1"></i>
 												</a>
 											</div>

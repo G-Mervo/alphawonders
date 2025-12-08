@@ -20,7 +20,12 @@ class Alphawonders extends BaseController
     public function index()
     {
         $data['title'] = 'Alphawonders';
-        $data['blogs'] = $this->alphaBlogModel->retrieveBlog();
+        
+        try {
+            $data['blogs'] = $this->alphaBlogModel->retrieveBlog();
+        } catch (\Exception $e) {
+            $data['blogs'] = [];
+        }
 
         return view('layout/header', $data) . 
                view('index', $data) . 

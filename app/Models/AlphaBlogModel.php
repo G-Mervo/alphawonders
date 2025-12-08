@@ -12,14 +12,19 @@ class AlphaBlogModel extends Model
 
     public function retrieveBlog()
     {
-        $query = $this->db->table('blog')->get();
-        $blogs = [];
-        
-        foreach ($query->getResult() as $row) {
-            $blogs[] = $row;
+        try {
+            $query = $this->db->table('blog')->orderBy('time', 'DESC')->limit(4)->get();
+            $blogs = [];
+            
+            foreach ($query->getResultArray() as $row) {
+                $blogs[] = $row;
+            }
+            
+            return $blogs;
+        } catch (\Exception $e) {
+            // Return empty array if database error
+            return [];
         }
-        
-        return $blogs;
     }
 
     public function insertComments($data)
