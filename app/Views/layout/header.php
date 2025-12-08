@@ -73,81 +73,145 @@ if (!defined('BASEPATH')) {
 	<div id="fb-root"></div>
 	<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v4.0&appId=688908964868655&autoLogAppEvents=1"></script>
 	
-	<!-- Top Contact Bar - Professional Design -->
-	<div class="top-contact-bar">
-		<div class="top-contact-wrapper">
-			<div class="contact-info-container">
-				<a href="tel:+254736099643" class="contact-info-item">
-					<span class="contact-icon"><i class="fas fa-phone-alt"></i></span>
-					<span class="contact-text">+254 736 099 643</span>
+	<!-- Top Info Bar -->
+	<div class="top-bar">
+		<div class="top-bar-content">
+			<div class="welcome-tag">
+				<i class="fas fa-sparkles"></i>
+				<span>Welcome to Alphawonders Solutions</span>
+			</div>
+			<div class="top-contacts">
+				<a href="tel:+254736099643" class="contact-item">
+					<i class="fas fa-phone"></i>
+					<span>+254 736 099 643</span>
 				</a>
-				<span class="contact-separator"></span>
-				<a href="mailto:info@alphawonders.com" class="contact-info-item">
-					<span class="contact-icon"><i class="fas fa-envelope"></i></span>
-					<span class="contact-text">info@alphawonders.com</span>
+				<a href="mailto:info@alphawonders.com" class="contact-item">
+					<i class="fas fa-envelope"></i>
+					<span>info@alphawonders.com</span>
 				</a>
 			</div>
 		</div>
 	</div>
 
-	<!-- Main Navigation Bar - Professional Corporate Design -->
-	<header class="main-nav-header">
-		<nav class="navbar navbar-expand-xl">
-			<div class="navbar-container">
-				<!-- Logo Section -->
-				<a class="navbar-brand" href="<?= base_url('/') ?>">
-					<div class="logo-container">
-						<img src="<?= base_url('assets/icon/logo.png') ?>" alt="Alphawonders Logo" class="logo-img">
-					</div>
-					<span class="brand-name">Alphawonders</span>
-				</a>
-
-				<!-- Mobile Toggle -->
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-
-				<!-- Navigation Menu -->
-				<div class="collapse navbar-collapse" id="navbarNav">
-					<ul class="navbar-nav nav-menu-list">
-						<li class="nav-item">
-							<a class="nav-link" href="<?= base_url('softwares') ?>">Software Development</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="<?= base_url('system-administration') ?>">System Administration</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="<?= base_url('digital-marketing') ?>">Digital Marketing</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="<?= base_url('design') ?>">Design</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="<?= base_url('ict-consultancy') ?>">IT Consultancy</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="<?= base_url('it-support') ?>">IT Support</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="<?= base_url('blog') ?>">Blog</a>
-						</li>
-					</ul>
-					
-					<!-- CTA Buttons -->
-					<div class="header-cta-group">
-						<a class="btn-cta btn-cta-secondary" href="<?= base_url('contact-us') ?>">
-							<span class="btn-icon"><i class="fas fa-envelope"></i></span>
-							<span class="btn-text">Contact Us</span>
-						</a>
-						<a class="btn-cta btn-cta-primary" href="<?= base_url('hire') ?>">
-							<span class="btn-icon"><i class="fas fa-briefcase"></i></span>
-							<span class="btn-text">Hire Us</span>
-						</a>
-					</div>
+	<!-- Main Header -->
+	<header class="main-header">
+		<div class="header-container">
+			<!-- Logo -->
+			<a href="<?= base_url('/') ?>" class="brand-logo">
+				<div class="logo-icon">
+					<img src="<?= base_url('assets/icon/logo.png') ?>" alt="Alphawonders Logo" style="width: 100%; height: 100%; object-fit: contain;">
 				</div>
+				<div class="brand-name">
+					<span class="brand-title">Alphawonders</span>
+					<span class="brand-tagline">ICT EXPERTISE & SERVICES</span>
+				</div>
+			</a>
+
+			<!-- Mobile Toggle -->
+			<button class="mobile-toggle" type="button" onclick="toggleMobileMenu()">
+				<span class="toggle-icon"></span>
+			</button>
+
+			<!-- Navigation -->
+			<nav>
+				<ul class="nav-menu" id="navMenu">
+					<li class="nav-item">
+						<a href="<?= base_url('softwares') ?>" class="nav-link">
+							<i class="fas fa-code"></i>
+							<span>Software Development</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="<?= base_url('system-administration') ?>" class="nav-link">
+							<i class="fas fa-server"></i>
+							<span>System Admin</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="<?= base_url('digital-marketing') ?>" class="nav-link">
+							<i class="fas fa-bullhorn"></i>
+							<span>Digital Marketing</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="<?= base_url('design') ?>" class="nav-link">
+							<i class="fas fa-palette"></i>
+							<span>Design</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="<?= base_url('ict-consultancy') ?>" class="nav-link">
+							<i class="fas fa-user-tie"></i>
+							<span>IT Consultancy</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="<?= base_url('it-support') ?>" class="nav-link">
+							<i class="fas fa-headset"></i>
+							<span>IT Support</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="<?= base_url('blog') ?>" class="nav-link">
+							<i class="fas fa-blog"></i>
+							<span>Blog</span>
+						</a>
+					</li>
+				</ul>
+			</nav>
+
+			<!-- Action Buttons -->
+			<div class="header-actions" id="headerActions">
+				<a href="<?= base_url('contact-us') ?>" class="btn-header btn-contact">
+					<i class="fas fa-envelope"></i>
+					<span>Contact Us</span>
+				</a>
+				<a href="<?= base_url('hire') ?>" class="btn-header btn-hire">
+					<i class="fas fa-briefcase"></i>
+					<span>Hire Us</span>
+				</a>
 			</div>
-		</nav>
+		</div>
 	</header>
+
+	<script>
+		function toggleMobileMenu() {
+			const navMenu = document.getElementById('navMenu');
+			const headerActions = document.getElementById('headerActions');
+			if (navMenu && headerActions) {
+				navMenu.classList.toggle('active');
+				headerActions.classList.toggle('active');
+			}
+		}
+
+		// Add scroll effect
+		window.addEventListener('scroll', function() {
+			const header = document.querySelector('.main-header');
+			if (header) {
+				if (window.scrollY > 50) {
+					header.classList.add('scrolled');
+				} else {
+					header.classList.remove('scrolled');
+				}
+			}
+		});
+
+		// Close mobile menu when clicking outside
+		document.addEventListener('click', function(event) {
+			const navMenu = document.getElementById('navMenu');
+			const headerActions = document.getElementById('headerActions');
+			const mobileToggle = document.querySelector('.mobile-toggle');
+			
+			if (navMenu && headerActions && mobileToggle) {
+				if (!navMenu.contains(event.target) && 
+					!headerActions.contains(event.target) && 
+					!mobileToggle.contains(event.target)) {
+					navMenu.classList.remove('active');
+					headerActions.classList.remove('active');
+				}
+			}
+		});
+	</script>
 
 	<div class="alph-wrapper">
 
