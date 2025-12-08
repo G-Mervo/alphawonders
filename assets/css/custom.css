@@ -55,22 +55,91 @@ body {
 	background-color: var(--primary-color) !important;
 }
 
+.navbar {
+	margin-bottom: 0 !important;
+    border-radius: 0 !important;
+	width: 100%;
+	max-width: 100%;
+}
+
+.navbar .container-fluid {
+	width: 100%;
+	max-width: 100%;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
 .navbar-brand {
 	font-weight: 700;
+	flex-shrink: 0;
 }
 
 .nav-link {
 	font-weight: 500;
 	transition: color 0.3s ease;
+	white-space: nowrap;
 }
 
 .nav-link:hover {
 	color: var(--secondary-color) !important;
 }
 
-.navbar {
-	margin-bottom: 0 !important;
-    border-radius: 0 !important;
+/* Prevent menu wrapping on large screens */
+@media (min-width: 1200px) {
+	.navbar-nav {
+		flex-wrap: nowrap !important;
+		gap: 0 !important;
+		display: flex !important;
+	}
+	
+	.navbar-nav .nav-item {
+		flex-shrink: 0;
+		white-space: nowrap;
+	}
+	
+	.navbar-nav .nav-link {
+		white-space: nowrap;
+		overflow: visible;
+		text-overflow: clip;
+	}
+}
+
+/* Ensure navbar uses full width */
+.navbar .container-fluid {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+}
+
+@media (min-width: 1400px) {
+	.navbar .container-fluid {
+		padding-left: 2rem;
+		padding-right: 2rem;
+	}
+}
+
+/* Optimize spacing for medium screens */
+@media (min-width: 992px) and (max-width: 1199px) {
+	.nav-link {
+		padding-left: 0.75rem !important;
+		padding-right: 0.75rem !important;
+		font-size: 0.9rem !important;
+	}
+	
+	.navbar-brand {
+		min-width: 160px;
+	}
+}
+
+/* Full width navbar */
+.navbar-expand-xl .navbar-nav {
+	flex-direction: row;
+}
+
+.navbar-expand-xl .navbar-collapse {
+	display: flex !important;
+	flex-basis: auto;
 }
 
 .navbar-default {

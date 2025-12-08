@@ -1,11 +1,15 @@
-<?php defined('BASEPATH') OR exit('No direct script allowed'); ?>
-
+<?php 
+// CI4 View File - Header
+if (!defined('BASEPATH')) {
+    define('BASEPATH', realpath(__DIR__ . '/../../') . DIRECTORY_SEPARATOR);
+}
+?>
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
 	<meta charset = "utf-8" >
 	<meta http-equiv = "X-UA-Compatible" content = "IE-Edge">
-	<title><?= $title ?> - Providing ICT Expertise & Services </title>
+	<title><?= esc($title ?? 'Alphawonders') ?> - Providing ICT Expertise & Services </title>
 	<meta name = "description" content = "Alphawonders Solutions provides ICT expertise and services such as software development, system administration, design(web & graphic), marketing, IT consultancy, IT support, cyber security to help businesses and individuals in different industries and sectors to leverage ICT in their day-to-day activities.">
 	<meta name = "keywords" content= "software development, system administration, digital marketing, IT consultancy, IT support, alphawonders, alpha, wonders, technology, web design, website development, web applications, mobile applications, data analytics, cyber security">
 	<meta name = "viewport" content = "width=device-width, initial-scale=1.0">
@@ -69,57 +73,76 @@
 	<div id="fb-root"></div>
 	<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v4.0&appId=688908964868655&autoLogAppEvents=1"></script>
 	<header>
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-lg">
-			<div class="container">
-				<a class="navbar-brand d-flex align-items-center" href="<?php echo base_url('/'); ?>">
-					<img src="<?php echo base_url('assets/icon/logo.png'); ?>" alt="Alphawonders" class="me-2" style="width: 50px; height: 50px;">
-					<span class="fw-bold fs-5">Alphawonders</span>
+		<nav class="navbar navbar-expand-xl navbar-dark bg-dark fixed-top shadow-lg" style="padding: 0.5rem 0;">
+			<div class="container-fluid px-3 px-lg-4">
+				<!-- Logo and Brand -->
+				<a class="navbar-brand d-flex align-items-center me-4" href="<?= base_url('/') ?>" style="min-width: 180px;">
+					<img src="<?= base_url('assets/icon/logo.png') ?>" alt="Alphawonders Logo" class="me-2" style="width: 45px; height: 45px; object-fit: contain;">
+					<span class="fw-bold fs-5 text-white d-none d-sm-inline">Alphawonders</span>
 				</a>
 				
-				<!-- Contact info for desktop -->
-				<div class="d-none d-lg-flex align-items-center me-4 text-white">
+				<!-- Contact info for large desktop -->
+				<div class="d-none d-xxl-flex align-items-center me-4 text-white" style="white-space: nowrap;">
 					<div class="me-4">
 						<i class="fas fa-phone me-2"></i>
-						<a href="tel:+254736099643" class="text-white text-decoration-none">+254 736 099 643</a>
+						<a href="tel:+254736099643" class="text-white text-decoration-none" style="font-size: 0.9rem;">+254 736 099 643</a>
 					</div>
 					<div>
 						<i class="fas fa-envelope me-2"></i>
-						<a href="mailto:info@alphawonders.com" class="text-white text-decoration-none">info@alphawonders.com</a>
+						<a href="mailto:info@alphawonders.com" class="text-white text-decoration-none" style="font-size: 0.9rem;">info@alphawonders.com</a>
 					</div>
 				</div>
 
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<!-- Mobile Toggle Button -->
+				<button class="navbar-toggler border-0 ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 
+				<!-- Navigation Menu -->
 				<div class="collapse navbar-collapse" id="navbarNav">
-					<ul class="navbar-nav ms-auto align-items-center">
+					<ul class="navbar-nav ms-auto align-items-center" style="gap: 0; flex-wrap: nowrap;">
 						<li class="nav-item">
-							<a class="nav-link" href="<?php echo base_url('/softwares'); ?>">Software Development</a>
+							<a class="nav-link px-2 px-lg-3 py-2" href="<?= base_url('softwares') ?>" style="white-space: nowrap; font-size: 0.95rem;">
+								<span class="d-lg-none"><i class="fas fa-code me-2"></i></span>Software Development
+							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="<?php echo base_url('/system-administration'); ?>">System Administration</a>
+							<a class="nav-link px-2 px-lg-3 py-2" href="<?= base_url('system-administration') ?>" style="white-space: nowrap; font-size: 0.95rem;">
+								<span class="d-lg-none"><i class="fas fa-server me-2"></i></span>System Administration
+							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="<?php echo base_url('/digital-marketing'); ?>">Digital Marketing</a>
+							<a class="nav-link px-2 px-lg-3 py-2" href="<?= base_url('digital-marketing') ?>" style="white-space: nowrap; font-size: 0.95rem;">
+								<span class="d-lg-none"><i class="fas fa-bullhorn me-2"></i></span>Digital Marketing
+							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="<?php echo base_url('/design'); ?>">Design</a>
+							<a class="nav-link px-2 px-lg-3 py-2" href="<?= base_url('design') ?>" style="white-space: nowrap; font-size: 0.95rem;">
+								<span class="d-lg-none"><i class="fas fa-palette me-2"></i></span>Design
+							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="<?php echo base_url('/ict-consultancy'); ?>">IT Consultancy</a>
+							<a class="nav-link px-2 px-lg-3 py-2" href="<?= base_url('ict-consultancy') ?>" style="white-space: nowrap; font-size: 0.95rem;">
+								<span class="d-lg-none"><i class="fas fa-user-tie me-2"></i></span>IT Consultancy
+							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="<?php echo base_url('/it-support'); ?>">IT Support</a>
+							<a class="nav-link px-2 px-lg-3 py-2" href="<?= base_url('it-support') ?>" style="white-space: nowrap; font-size: 0.95rem;">
+								<span class="d-lg-none"><i class="fas fa-headset me-2"></i></span>IT Support
+							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="<?php echo base_url('/blog'); ?>">Blog</a>
+							<a class="nav-link px-2 px-lg-3 py-2" href="<?= base_url('blog') ?>" style="white-space: nowrap; font-size: 0.95rem;">
+								<span class="d-lg-none"><i class="fas fa-blog me-2"></i></span>Blog
+							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="<?php echo base_url('/contact-us'); ?>">Contact Us</a>
+							<a class="nav-link px-2 px-lg-3 py-2" href="<?= base_url('contact-us') ?>" style="white-space: nowrap; font-size: 0.95rem;">
+								<span class="d-lg-none"><i class="fas fa-envelope me-2"></i></span>Contact Us
+							</a>
 						</li>
-						<li class="nav-item ms-2">
-							<a class="btn btn-primary rounded-pill px-4" href="<?php echo base_url('/hire'); ?>">
+						<li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+							<a class="btn btn-primary rounded-pill px-3 px-lg-4 py-2" href="<?= base_url('hire') ?>" style="white-space: nowrap; font-size: 0.9rem;">
 								<i class="fas fa-briefcase me-2"></i>Hire Us
 							</a>
 						</li>
