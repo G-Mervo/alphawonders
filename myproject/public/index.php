@@ -9,7 +9,7 @@ use Config\Paths;
  *---------------------------------------------------------------
  */
 
-$minPhpVersion = '7.4';
+$minPhpVersion = '8.1'; // If you update this, don't forget to update `spark`.
 if (version_compare(PHP_VERSION, $minPhpVersion, '<')) {
     $message = sprintf(
         'Your PHP version must be %s or higher to run CodeIgniter. Current version: %s',
@@ -41,6 +41,9 @@ if (getcwd() . DIRECTORY_SEPARATOR !== FCPATH) {
  *---------------------------------------------------------------
  * BOOTSTRAP THE APPLICATION
  *---------------------------------------------------------------
+ * This process sets up the path constants, loads and registers
+ * our autoloader, along with Composer's, loads our constants
+ * and fires up an environment-specific bootstrapping.
  */
 
 // LOAD OUR PATHS CONFIG FILE
