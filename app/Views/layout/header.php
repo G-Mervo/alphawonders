@@ -73,85 +73,77 @@ if (!defined('BASEPATH')) {
 	<div id="fb-root"></div>
 	<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v4.0&appId=688908964868655&autoLogAppEvents=1"></script>
 	
-	<!-- Top Contact Bar - Separate Header -->
+	<!-- Top Contact Bar - Professional Design -->
 	<div class="top-contact-bar">
-		<div class="top-contact-content">
-			<div class="contact-info-group">
-				<div class="contact-item">
-					<i class="fas fa-phone-alt"></i>
-					<a href="tel:+254736099643" class="contact-value">+254 736 099 643</a>
-				</div>
-				<div class="contact-divider"></div>
-				<div class="contact-item">
-					<i class="fas fa-envelope"></i>
-					<a href="mailto:info@alphawonders.com" class="contact-value">info@alphawonders.com</a>
-				</div>
+		<div class="top-contact-wrapper">
+			<div class="contact-info-container">
+				<a href="tel:+254736099643" class="contact-info-item">
+					<span class="contact-icon"><i class="fas fa-phone-alt"></i></span>
+					<span class="contact-text">+254 736 099 643</span>
+				</a>
+				<span class="contact-separator"></span>
+				<a href="mailto:info@alphawonders.com" class="contact-info-item">
+					<span class="contact-icon"><i class="fas fa-envelope"></i></span>
+					<span class="contact-text">info@alphawonders.com</span>
+				</a>
 			</div>
 		</div>
 	</div>
 
-	<!-- Main Navigation Bar - Full Width -->
+	<!-- Main Navigation Bar - Professional Corporate Design -->
 	<header class="main-nav-header">
-		<nav class="navbar navbar-expand-xl navbar-dark">
-			<!-- Logo - Far Left -->
-			<a class="navbar-brand" href="<?= base_url('/') ?>">
-				<img src="<?= base_url('assets/icon/logo.png') ?>" alt="Alphawonders Logo" class="logo-img">
-				<span class="brand-text">Alphawonders</span>
-			</a>
+		<nav class="navbar navbar-expand-xl">
+			<div class="navbar-container">
+				<!-- Logo Section -->
+				<a class="navbar-brand" href="<?= base_url('/') ?>">
+					<div class="logo-container">
+						<img src="<?= base_url('assets/icon/logo.png') ?>" alt="Alphawonders Logo" class="logo-img">
+					</div>
+					<span class="brand-name">Alphawonders</span>
+				</a>
 
-			<!-- Mobile Toggle Button -->
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
+				<!-- Mobile Toggle -->
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
 
-			<!-- Navigation Menu - Far Right -->
-			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav nav-menu">
-					<li class="nav-item">
-						<a class="nav-link" href="<?= base_url('softwares') ?>">
-							<span class="d-xl-none"><i class="fas fa-code me-2"></i></span>Software Development
+				<!-- Navigation Menu -->
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<ul class="navbar-nav nav-menu-list">
+						<li class="nav-item">
+							<a class="nav-link" href="<?= base_url('softwares') ?>">Software Development</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?= base_url('system-administration') ?>">System Administration</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?= base_url('digital-marketing') ?>">Digital Marketing</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?= base_url('design') ?>">Design</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?= base_url('ict-consultancy') ?>">IT Consultancy</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?= base_url('it-support') ?>">IT Support</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?= base_url('blog') ?>">Blog</a>
+						</li>
+					</ul>
+					
+					<!-- CTA Buttons -->
+					<div class="header-cta-group">
+						<a class="btn-cta btn-cta-secondary" href="<?= base_url('contact-us') ?>">
+							<span class="btn-icon"><i class="fas fa-envelope"></i></span>
+							<span class="btn-text">Contact Us</span>
 						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="<?= base_url('system-administration') ?>">
-							<span class="d-xl-none"><i class="fas fa-server me-2"></i></span>System Administration
+						<a class="btn-cta btn-cta-primary" href="<?= base_url('hire') ?>">
+							<span class="btn-icon"><i class="fas fa-briefcase"></i></span>
+							<span class="btn-text">Hire Us</span>
 						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="<?= base_url('digital-marketing') ?>">
-							<span class="d-xl-none"><i class="fas fa-bullhorn me-2"></i></span>Digital Marketing
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="<?= base_url('design') ?>">
-							<span class="d-xl-none"><i class="fas fa-palette me-2"></i></span>Design
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="<?= base_url('ict-consultancy') ?>">
-							<span class="d-xl-none"><i class="fas fa-user-tie me-2"></i></span>IT Consultancy
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="<?= base_url('it-support') ?>">
-							<span class="d-xl-none"><i class="fas fa-headset me-2"></i></span>IT Support
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="<?= base_url('blog') ?>">
-							<span class="d-xl-none"><i class="fas fa-blog me-2"></i></span>Blog
-						</a>
-					</li>
-				</ul>
-				
-				<!-- CTA Buttons -->
-				<div class="nav-cta-buttons">
-					<a class="btn btn-outline-light btn-contact" href="<?= base_url('contact-us') ?>">
-						<i class="fas fa-envelope me-2"></i>Contact Us
-					</a>
-					<a class="btn btn-primary btn-hire" href="<?= base_url('hire') ?>">
-						<i class="fas fa-briefcase me-2"></i>Hire Us
-					</a>
+					</div>
 				</div>
 			</div>
 		</nav>
