@@ -1,109 +1,214 @@
 <?php defined('FCPATH') OR exit('No direct script access allowed'); ?>
 
-<section class="alph-services text-center">
-	<div class="container-fluid">
-		<h2>System Administration</h2>
-		<p>Managing your systems, software, hardware, servers, workstations, network and CCTV's.</p>
-		<div class="row">
-			<div class="col-lg-7 col-lg-offset-3">
-				<img class="img-responsive" src="assets/img/systemadmin/system_a.jpg" alt="software Development" width="580px" height="340px">
+<!-- Service Hero Section -->
+<section class="py-5 bg-primary text-white" style="background: linear-gradient(135deg, #041640 0%, #0a2a5a 100%); margin-top: 0; padding: 5rem 0;">
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-lg-8">
+				<span class="badge bg-warning text-dark px-3 py-2 mb-3 d-inline-block rounded-pill fw-bold">Our Services</span>
+				<h1 class="display-4 fw-bold mb-3">System Administration</h1>
+				<p class="lead mb-0">Expert Linux, Unix, and Windows administration including setup, monitoring, and system security for your infrastructure.</p>
 			</div>
-		</div>
-	</div>
-
-	<div class="container-fluid">
-		<h3 class="text-center">System Admin duties</h3>
-		<div class="row">
-			<div class="col-lg-12">
-				<p>System admins are responsible for the overall managing of the companies IT infrastructure and services. They are critical for the optimal performance of systems and supporting users.</p>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-12">
-				<img class="img-responsive" src="assets/img/systemadmin/systemsdt.png" alt="software Development" width="580px" height="340px">
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="row">
-					<div class="col-lg-10 col-lg-offset-2">
-						<p></p>
-						<h4 style="text-align: left">Large organizations may require a dedicated specialist in one of the following areas: </h4>
-					</div>
-				</div>				
-				<div class="row">
-					<div class="col-lg-6 col-lg-offset-4">
-						<ol style="text-align: left">
-							<li> Database Administrator (DBA)</li>
-							<li> Network Administrator</li>
-							<li> Security Administrator</li>
-							<li> Technical Support staff</li>
-							<li> Computer Operator </li>
-							<li> Systems Analyst</li>
-						</ol>	
-					</div>
-				</div>				
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="row">
-					<div class="col-lg-10 col-lg-offset-2">
-						<h4 style="text-align: left">While in small organizations, a single system administrator may perform the above duties or there may be fewer specialists performing the following: </h4>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-lg-6 col-lg-offset-4">
-						<ol style="text-align: left">
-							<li> Technical support</li>
-							<li> Database administration (DBA)</li>
-							<li> Network administration/analyst and specialist</li>
-							<li> Application analyst</li>
-							<li> Security administration </li>
-							<li> Programming</li>
-						</ol>
+			<div class="col-lg-4 text-center">
+				<div class="service-icon-large">
+					<div class="bg-success bg-opacity-20 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 150px; height: 150px;">
+						<i class="fas fa-server fa-4x text-success"></i>
 					</div>
 				</div>
 			</div>
 		</div>
-
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="row">
-					<div class="col-lg-10 col-lg-offset-2">
-						<h4 style="text-align: left">Everyday System administrator tasks </h4>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-lg-9 col-lg-offset-3">
-						<ol style="text-align: left">
-							<li> Ensuring the systems are running efficiently and effectively. </li>
-							<li> Installing, supporting, and maintaining servers or other computer systems, and planning for and responding to service outages and other problems</li>
-							<li> Scripting or light programming, project management for systems-related projects, supervising or training computer operators, and being the equivalent of a handyman for computer problems beyond the knowledge of technical support staff. </li>
-							<li> Charged with developing and maintaining computer processes to identify operational and developmental systems</li>
-							<li> Morning checks of systems/software. </li>
-							<li> Performing backups of data. </li>
-							<li> Applying operating system updates, and configuration changes. </li>
-							<li> Installing and configuring new hardware/software.</li>
-							<li> Adding/deleting/creating/modifying user account information, resetting passwords, etc.</li>
-							<li> Answering technical queries.</li>
-							<li> Responsibility for security.</li>
-							<li> Responsibility for documenting the configuration of the system.</li>
-							<li> Troubleshooting any reported problem or reported problems.</li>
-							<li> System performance tuning.</li>
-							<li>Keeping the network up and running.</li>
-						</ol>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="row" style="margin: 40px 0; padding: 23px;">
-			<div class="col-lg-6 col-lg-offset-3">
-				<a href="<?php echo base_url('hire'); ?>" class="btn btn-success">Get in touch</a>
-			</div>
-		</div>
-
 	</div>
 </section>
 
+<!-- Service Overview -->
+<section class="py-5">
+	<div class="container">
+		<div class="row justify-content-center mb-5">
+			<div class="col-lg-10 text-center">
+				<h2 class="display-6 fw-bold mb-4">Comprehensive System Administration Services</h2>
+				<p class="lead text-muted">We provide expert system administration services to ensure your infrastructure runs smoothly, securely, and efficiently.</p>
+			</div>
+		</div>
+
+		<div class="row g-4 mb-5">
+			<div class="col-lg-4 col-md-6">
+				<div class="card border-0 shadow-sm h-100 hover-lift">
+					<div class="card-body p-4">
+						<div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+							<i class="fas fa-linux fa-2x text-primary"></i>
+						</div>
+						<h4 class="fw-bold mb-2">Linux Administration</h4>
+						<p class="text-muted mb-0">Complete Linux server setup, configuration, maintenance, and optimization for maximum performance.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-6">
+				<div class="card border-0 shadow-sm h-100 hover-lift">
+					<div class="card-body p-4">
+						<div class="bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+							<i class="fas fa-windows fa-2x text-info"></i>
+						</div>
+						<h4 class="fw-bold mb-2">Windows Administration</h4>
+						<p class="text-muted mb-0">Windows Server management, Active Directory, Group Policy, and enterprise-level Windows infrastructure.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-6">
+				<div class="card border-0 shadow-sm h-100 hover-lift">
+					<div class="card-body p-4">
+						<div class="bg-warning bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+							<i class="fas fa-shield-alt fa-2x text-warning"></i>
+						</div>
+						<h4 class="fw-bold mb-2">System Security</h4>
+						<p class="text-muted mb-0">Security hardening, firewall configuration, intrusion detection, and vulnerability assessments.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-6">
+				<div class="card border-0 shadow-sm h-100 hover-lift">
+					<div class="card-body p-4">
+						<div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+							<i class="fas fa-chart-line fa-2x text-success"></i>
+						</div>
+						<h4 class="fw-bold mb-2">Monitoring & Maintenance</h4>
+						<p class="text-muted mb-0">24/7 system monitoring, performance optimization, backup management, and proactive maintenance.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-6">
+				<div class="card border-0 shadow-sm h-100 hover-lift">
+					<div class="card-body p-4">
+						<div class="bg-danger bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+							<i class="fas fa-cloud fa-2x text-danger"></i>
+						</div>
+						<h4 class="fw-bold mb-2">Cloud Infrastructure</h4>
+						<p class="text-muted mb-0">Cloud server setup, migration, scaling, and management on AWS, Azure, and other platforms.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-6">
+				<div class="card border-0 shadow-sm h-100 hover-lift">
+					<div class="card-body p-4">
+						<div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+							<i class="fas fa-tools fa-2x text-primary"></i>
+						</div>
+						<h4 class="fw-bold mb-2">Troubleshooting</h4>
+						<p class="text-muted mb-0">Rapid response to system issues, performance problems, and emergency system recovery.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Services List -->
+<section class="py-5 bg-light">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-10 mx-auto">
+				<div class="card border-0 shadow-lg rounded-4 p-4 p-md-5">
+					<h3 class="fw-bold mb-4 text-center">Our System Administration Services</h3>
+					<div class="row g-4">
+						<div class="col-md-6">
+							<ul class="list-unstyled">
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-success me-3 mt-1"></i>
+									<div>
+										<strong>Linux/Unix Administration</strong>
+										<p class="text-muted small mb-0">Complete server management and optimization</p>
+									</div>
+								</li>
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-success me-3 mt-1"></i>
+									<div>
+										<strong>Windows Server Management</strong>
+										<p class="text-muted small mb-0">Active Directory, Group Policy, and more</p>
+									</div>
+								</li>
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-success me-3 mt-1"></i>
+									<div>
+										<strong>System Setup & Configuration</strong>
+										<p class="text-muted small mb-0">Initial setup and ongoing configuration</p>
+									</div>
+								</li>
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-success me-3 mt-1"></i>
+									<div>
+										<strong>System Monitoring</strong>
+										<p class="text-muted small mb-0">24/7 monitoring and alerting</p>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="col-md-6">
+							<ul class="list-unstyled">
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-success me-3 mt-1"></i>
+									<div>
+										<strong>System Security</strong>
+										<p class="text-muted small mb-0">Hardening and vulnerability management</p>
+									</div>
+								</li>
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-success me-3 mt-1"></i>
+									<div>
+										<strong>Backup & Recovery</strong>
+										<p class="text-muted small mb-0">Data protection and disaster recovery</p>
+									</div>
+								</li>
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-success me-3 mt-1"></i>
+									<div>
+										<strong>Performance Optimization</strong>
+										<p class="text-muted small mb-0">System tuning and optimization</p>
+									</div>
+								</li>
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-success me-3 mt-1"></i>
+									<div>
+										<strong>Cloud Infrastructure</strong>
+										<p class="text-muted small mb-0">Cloud setup and migration</p>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white" style="background: linear-gradient(135deg, #041640 0%, #0a2a5a 100%);">
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-lg-8 mb-4 mb-lg-0">
+				<h2 class="display-6 fw-bold mb-3">Need Expert System Administration?</h2>
+				<p class="lead mb-0">Let's discuss how we can help manage and secure your infrastructure.</p>
+			</div>
+			<div class="col-lg-4 text-lg-end">
+				<a href="<?php echo base_url('/contact-us'); ?>" class="btn btn-warning btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg hover-lift">
+					<i class="fas fa-envelope me-2"></i>Contact Us
+				</a>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+.hover-lift {
+	transition: all 0.3s ease;
+}
+
+.hover-lift:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+}
+</style>

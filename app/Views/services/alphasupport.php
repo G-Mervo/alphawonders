@@ -1,73 +1,214 @@
 <?php defined('FCPATH') OR exit('No direct script access allowed'); ?>
 
-<section class="alph-services text-center" id="support">
+<!-- Service Hero Section -->
+<section class="py-5 bg-primary text-white" style="background: linear-gradient(135deg, #041640 0%, #0a2a5a 100%); margin-top: 0; padding: 5rem 0;">
 	<div class="container">
-		<!-- <h2>IT Support</h2> -->		
-		<img class="img-responsive" src="assets/img/sppt/images.jpg" alt="" width="" height="">
-		<p>Outsource your IT Support services and shift focus on the core business activity</p>
-		<div class="row">
-			<div class="col-lg-3">
-				<h4>HARDWARE SUPPORT</h4>
-				<img class="img-responsive" src="assets/img/sppt/techsupport.jpg" alt="" width="160px" height="120px">
-				<p>Hardware Maintenance offers a range of customizable hardware support services for multivendor systems to help you resolve hardware issues quickly and convenient.</p>
+		<div class="row align-items-center">
+			<div class="col-lg-8">
+				<span class="badge bg-warning text-dark px-3 py-2 mb-3 d-inline-block rounded-pill fw-bold">Our Services</span>
+				<h1 class="display-4 fw-bold mb-3">IT Support</h1>
+				<p class="lead mb-0">Comprehensive IT support services including remote, onsite, technical, hardware, and software support for your business.</p>
 			</div>
-			<div class="col-lg-3">
-				<h4>Software SUPPORT</h4>
-				<img class="img-responsive" src="assets/img/sppt/techsupport.jpg" alt="" width="160px" height="120px">
-				<p>Software-related problems can really slow down a business—not to mention tie up IT staff. We provide a service portfolio that offers comprehensive software technical support, including individual problem fixes and product usage advice, for virtually all of your software products. </p>
-			</div>
-			<div class="col-lg-3">
-				<h4>NETWORK INFRASTRUCTURE SUPPORT </h4>
-				<img class="img-responsive" src="assets/img/sppt/techsupport.jpg" alt="" width="160px" height="120px">
-				<p>Network is a very key feature and infrastructure in any business. It should always be up at all times and responding to network failures should be done in a quick way.</p>
-			</div>
-			<div class="col-lg-3">
-				<h4>IT AUDIT & Security</h4>
-				<img class="img-responsive" src="assets/img/sppt/techsupport.jpg" alt="" width="160px" height="120px">
-				<p>In order to succeed in today’s businesses, deploying information technology is one of the various efficient and effective ways in achieving this objective.Therefore, it is important to identify the security loopholes and irregularities or signs of suspicious activities before they actually matter.</p>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-3">
-				<h4>TECHNICAL SUPPORT</h4>
-				<img class="img-responsive" src="assets/img/sppt/techsupport.jpg" alt="" width="240px" height="160px">
-				<p>Your employee may not understand technical things about your IT Infrastructure. There is therefore need for you to ensure that you have the required technical support from qualified and experienced technicians.</p>
-			</div>
-			<div class="col-lg-3">
-				<h4>REMOTE SUPPORT</h4>
-				<img class="img-responsive" src="assets/img/sppt/techsupport.jpg" alt="" width="240px" height="160px">
-				<p>Leveraging today's trend of remote work, we use tools like anydesk, zoom and teamviewer to quickly resolve problems that you may encounter in your day-to-day interaction with IT Infrastructure.</p>
-			</div>
-			<div class="col-lg-3">
-				<h4>ONSITE SUPPORT </h4>
-				<img class="img-responsive" src="assets/img/sppt/techsupport.jpg" alt="" width="240px" height="160px">
-				<p>A dedicated support specialists will attend to your problems on the business premises and help resolve your issues.</p>
-			</div>
-			<div class="col-lg-3">
-				<h4>MONITORING</h4>
-				<img class="img-responsive" src="assets/img/sppt/techsupport.jpg" alt="" width="240px" height="160px">
-				<p>Network activities, user activities, security, websites and social media performance.</p>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-12">
-				<h3>PAY AS YOU GO Support</h3>
-				<p style="line-height: 14.65pt; margin: 12.0pt 0in 12.0pt 0in;"><span style="font-size: 13.0pt; font-family: 'Montserrat',serif;">IT support is a prerequisite for a functioning business in today’s world and working with a proven IT consultant is the sure way to obtain competitive advantage </span></p>
-				<p style="line-height: 14.65pt; margin: 12.0pt 0in 12.0pt 0in;"><span style="font-size: 13.0pt; font-family: 'Montserrat',serif; ">Not all companies or individuals will want to commit to a <b>Fixed price IT Support contract</b>. The best assured way will be to only pay for what you need, as and when you need it. A perfect solution for majority of people and businesses that already have an existing IT Department but just want a little helping hand, possibly extra resources or expertise in certain situations. As well as for small start-up businesses, those who are not truly sure yet how much support they will require as they establish themselves in their business field. </span></p>
-				<p style="line-height: 14.65pt; margin: 12.0pt 0in 12.0pt 0in;"><span style="font-size: 13.0pt; font-family: 'Montserrat',serif;">Whatever your issue, be it large or small, our <b>Pay As You Go IT support</b> is, effectively, your own outsourced IT department on tap, but with none of the standing costs of an in-house operation or a support contract.<br>
-				</span></p>
-				<!-- <div class="row">
-					<div class="col-lg-4"></div>
-					<div class="col-lg-4"></div>
-					<div class="col-lg-4"></div>
-				</div> -->
-			</div>
-		</div>
-		<div class="row" style="margin: 10px 0; padding: 13px;">
-			<div class="col-lg-6 col-lg-offset-3">
-				<a href="<?php echo base_url('hire'); ?>" class="btn btn-success">Get in touch</a>
+			<div class="col-lg-4 text-center">
+				<div class="service-icon-large">
+					<div class="bg-primary bg-opacity-20 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 150px; height: 150px;">
+						<i class="fas fa-headset fa-4x text-primary"></i>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 </section>
 
+<!-- Service Overview -->
+<section class="py-5">
+	<div class="container">
+		<div class="row justify-content-center mb-5">
+			<div class="col-lg-10 text-center">
+				<h2 class="display-6 fw-bold mb-4">Reliable IT Support Services</h2>
+				<p class="lead text-muted">We provide comprehensive IT support to keep your business running smoothly with minimal downtime and maximum productivity.</p>
+			</div>
+		</div>
+
+		<div class="row g-4 mb-5">
+			<div class="col-lg-4 col-md-6">
+				<div class="card border-0 shadow-sm h-100 hover-lift">
+					<div class="card-body p-4">
+						<div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+							<i class="fas fa-desktop fa-2x text-primary"></i>
+						</div>
+						<h4 class="fw-bold mb-2">Remote Support</h4>
+						<p class="text-muted mb-0">Quick and efficient remote IT support to resolve issues without on-site visits, saving time and costs.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-6">
+				<div class="card border-0 shadow-sm h-100 hover-lift">
+					<div class="card-body p-4">
+						<div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+							<i class="fas fa-tools fa-2x text-success"></i>
+						</div>
+						<h4 class="fw-bold mb-2">Onsite Support</h4>
+						<p class="text-muted mb-0">Professional on-site technical support for hardware installation, repairs, and complex issues.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-6">
+				<div class="card border-0 shadow-sm h-100 hover-lift">
+					<div class="card-body p-4">
+						<div class="bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+							<i class="fas fa-laptop-code fa-2x text-info"></i>
+						</div>
+						<h4 class="fw-bold mb-2">Technical Support</h4>
+						<p class="text-muted mb-0">Expert technical assistance for software issues, configuration, troubleshooting, and optimization.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-6">
+				<div class="card border-0 shadow-sm h-100 hover-lift">
+					<div class="card-body p-4">
+						<div class="bg-warning bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+							<i class="fas fa-server fa-2x text-warning"></i>
+						</div>
+						<h4 class="fw-bold mb-2">Hardware Support</h4>
+						<p class="text-muted mb-0">Installation, maintenance, and repair of computers, servers, printers, and network equipment.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-6">
+				<div class="card border-0 shadow-sm h-100 hover-lift">
+					<div class="card-body p-4">
+						<div class="bg-danger bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+							<i class="fas fa-download fa-2x text-danger"></i>
+						</div>
+						<h4 class="fw-bold mb-2">Software Support</h4>
+						<p class="text-muted mb-0">Installation, updates, troubleshooting, and support for business applications and software.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-6">
+				<div class="card border-0 shadow-sm h-100 hover-lift">
+					<div class="card-body p-4">
+						<div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+							<i class="fas fa-clock fa-2x text-primary"></i>
+						</div>
+						<h4 class="fw-bold mb-2">24/7 Support</h4>
+						<p class="text-muted mb-0">Round-the-clock IT support to ensure your business operations continue without interruption.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Services List -->
+<section class="py-5 bg-light">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-10 mx-auto">
+				<div class="card border-0 shadow-lg rounded-4 p-4 p-md-5">
+					<h3 class="fw-bold mb-4 text-center">Our IT Support Services</h3>
+					<div class="row g-4">
+						<div class="col-md-6">
+							<ul class="list-unstyled">
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-primary me-3 mt-1"></i>
+									<div>
+										<strong>Remote Support</strong>
+										<p class="text-muted small mb-0">Quick remote assistance</p>
+									</div>
+								</li>
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-primary me-3 mt-1"></i>
+									<div>
+										<strong>Onsite Support</strong>
+										<p class="text-muted small mb-0">Professional on-site service</p>
+									</div>
+								</li>
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-primary me-3 mt-1"></i>
+									<div>
+										<strong>Technical Support</strong>
+										<p class="text-muted small mb-0">Expert technical assistance</p>
+									</div>
+								</li>
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-primary me-3 mt-1"></i>
+									<div>
+										<strong>Hardware Support</strong>
+										<p class="text-muted small mb-0">Installation and repairs</p>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="col-md-6">
+							<ul class="list-unstyled">
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-primary me-3 mt-1"></i>
+									<div>
+										<strong>Software Support</strong>
+										<p class="text-muted small mb-0">Application support and updates</p>
+									</div>
+								</li>
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-primary me-3 mt-1"></i>
+									<div>
+										<strong>Network Support</strong>
+										<p class="text-muted small mb-0">Network troubleshooting</p>
+									</div>
+								</li>
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-primary me-3 mt-1"></i>
+									<div>
+										<strong>Help Desk</strong>
+										<p class="text-muted small mb-0">User support and training</p>
+									</div>
+								</li>
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-primary me-3 mt-1"></i>
+									<div>
+										<strong>24/7 Monitoring</strong>
+										<p class="text-muted small mb-0">Proactive system monitoring</p>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white" style="background: linear-gradient(135deg, #041640 0%, #0a2a5a 100%);">
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-lg-8 mb-4 mb-lg-0">
+				<h2 class="display-6 fw-bold mb-3">Need Reliable IT Support?</h2>
+				<p class="lead mb-0">Let's discuss how we can keep your IT infrastructure running smoothly and efficiently.</p>
+			</div>
+			<div class="col-lg-4 text-lg-end">
+				<a href="<?php echo base_url('/contact-us'); ?>" class="btn btn-warning btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg hover-lift">
+					<i class="fas fa-envelope me-2"></i>Contact Us
+				</a>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+.hover-lift {
+	transition: all 0.3s ease;
+}
+
+.hover-lift:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+}
+</style>

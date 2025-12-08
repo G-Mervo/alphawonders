@@ -1,53 +1,214 @@
 <?php defined('FCPATH') OR exit('No direct script access allowed'); ?>
 
-<section class="alph-services text-center" id="consultancy">
-	<div class="container-fluid">
-		<h2>I.T Consultancy</h2>
-		<p>We work together with our clients advising them how to use information technology in order to meet their business objectives, overcome problems and improve the structure and efficiency of IT systems in their organisations</p>
-		<div class="row" id="conslt">
-			<div class="col-lg-6">
-				<img class="img-responsive" src="assets/img/conslt_sppt/itconsulting.png" alt="" width="290px" height="240px">	
+<!-- Service Hero Section -->
+<section class="py-5 bg-primary text-white" style="background: linear-gradient(135deg, #041640 0%, #0a2a5a 100%); margin-top: 0; padding: 5rem 0;">
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-lg-8">
+				<span class="badge bg-warning text-dark px-3 py-2 mb-3 d-inline-block rounded-pill fw-bold">Our Services</span>
+				<h1 class="display-4 fw-bold mb-3">IT Consultancy</h1>
+				<p class="lead mb-0">Expert IT consulting services to guide your digital transformation and help you make informed technology decisions.</p>
 			</div>
-			<div class="col-lg-6">
-				<p>Due you need a little bit extra capacity or don't want to employ someone permanently?<br> Or do you require our experise for a short period of time?<br><br> Most important, we’ve seen similar issues with past clients - researched and uncovered solutions. So when we hit a client requirement that’s uncommon, we’ve either seen it before or know where to go to find out - or even sometimes it’s just knowing where to ask to get the right referral to expertise</p>
-				<p>We will be glad to help you more than anything else since we have interacted and studied our successful clients and will help our new clients replicate behaviors and methodologies that lead to project success.</p>
-				<span class="conslt-btn" style="margin: 10px 0; padding: 13px;"><a href="<?php echo base_url('hire'); ?>" class="btn btn-success">Get in touch</a></span>
-			</div>
-		</div>
-		<div class="row" id="conslt-ds">
-			<div class="col-lg-8 col-lg-offset-2">
-				<h4>What we do</h4>
-				<p>We combine IT and business knowledge, since the world of IT consultancy demands a broad range of skills. </p>
-				<p>As IT consultant, we works in partnership with clients, advising them how to use information technology in order to meet their business objectives or overcome problems. We work to improve the structure and efficiency of IT systems in various organisations. </p>
-				<p>IT consultants may be used to provide strategic guidance to clients with regard to technology, IT infrastructures and enabling major business processes through enhancements to IT. </p>
-				<p>They can also be used to provide guidance during selection and procurement as well as providing expert technical assistance, and may be responsible for user training and feedback. IT consultants may also be involved in sales and business development, as well as technical duties. </p>
-			</div>
-		</div>
-		<div class="row" id="conslt-ds-2">
-			<div class="col-lg-7 col-lg-offset-2">
-				<h4>Responsibilities</h4>
-				<ol>
-					<li>meeting with clients to determine requirements; </li>
-					<li>working with clients to define the scope of a project; </li>
-					<li>planning timescales and the resources needed; </li>
-					<li>travelling to customer sites; </li>
-					<li>liaising with staff at all levels of a client organisation; </li>
-					<li>defining software, hardware and network requirements; </li>
-					<li>developing agreed solutions and implementing new systems; </li>
-					<li>clarifying a client's system specifications, understanding their work practices and the nature of their business; </li>
-					<li>analysing IT requirements within companies and giving independent and objective advice on the use of IT; </li>
-					<li>presenting solutions in written or oral reports; </li>
-					<li>helping clients with change-management activities; </li>
-					<li>purchasing systems where appropriate; </li>
-					<li>designing, testing, installing and monitoring new systems; </li>
-					<li>preparing documentation and presenting progress reports to customers; </li>
-				</ol>
-			</div>
-		</div>
-		<div class="row" style="margin: 50px 0; padding: 13px;">
-			<div class="col-lg-6 col-lg-offset-3">
-				<a href="<?php echo base_url('hire'); ?>" class="btn btn-success">Get in touch</a>
+			<div class="col-lg-4 text-center">
+				<div class="service-icon-large">
+					<div class="bg-warning bg-opacity-20 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 150px; height: 150px;">
+						<i class="fas fa-lightbulb fa-4x text-warning"></i>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 </section>
+
+<!-- Service Overview -->
+<section class="py-5">
+	<div class="container">
+		<div class="row justify-content-center mb-5">
+			<div class="col-lg-10 text-center">
+				<h2 class="display-6 fw-bold mb-4">Strategic IT Consulting</h2>
+				<p class="lead text-muted">We provide expert consulting in any related IT field and technology to help you navigate the digital landscape and achieve your business goals.</p>
+			</div>
+		</div>
+
+		<div class="row g-4 mb-5">
+			<div class="col-lg-4 col-md-6">
+				<div class="card border-0 shadow-sm h-100 hover-lift">
+					<div class="card-body p-4">
+						<div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+							<i class="fas fa-chart-line fa-2x text-primary"></i>
+						</div>
+						<h4 class="fw-bold mb-2">Technology Strategy</h4>
+						<p class="text-muted mb-0">Develop comprehensive technology strategies aligned with your business objectives and growth plans.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-6">
+				<div class="card border-0 shadow-sm h-100 hover-lift">
+					<div class="card-body p-4">
+						<div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+							<i class="fas fa-sync-alt fa-2x text-success"></i>
+						</div>
+						<h4 class="fw-bold mb-2">Digital Transformation</h4>
+						<p class="text-muted mb-0">Guide your organization through digital transformation initiatives and modernization projects.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-6">
+				<div class="card border-0 shadow-sm h-100 hover-lift">
+					<div class="card-body p-4">
+						<div class="bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+							<i class="fas fa-cloud fa-2x text-info"></i>
+						</div>
+						<h4 class="fw-bold mb-2">Cloud Consulting</h4>
+						<p class="text-muted mb-0">Expert advice on cloud migration, architecture, and optimization for AWS, Azure, and other platforms.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-6">
+				<div class="card border-0 shadow-sm h-100 hover-lift">
+					<div class="card-body p-4">
+						<div class="bg-warning bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+							<i class="fas fa-shield-alt fa-2x text-warning"></i>
+						</div>
+						<h4 class="fw-bold mb-2">Security Consulting</h4>
+						<p class="text-muted mb-0">Security assessments, compliance consulting, and cybersecurity strategy development.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-6">
+				<div class="card border-0 shadow-sm h-100 hover-lift">
+					<div class="card-body p-4">
+						<div class="bg-danger bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+							<i class="fas fa-database fa-2x text-danger"></i>
+						</div>
+						<h4 class="fw-bold mb-2">Infrastructure Consulting</h4>
+						<p class="text-muted mb-0">Network design, server architecture, and infrastructure planning for scalable solutions.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-md-6">
+				<div class="card border-0 shadow-sm h-100 hover-lift">
+					<div class="card-body p-4">
+						<div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+							<i class="fas fa-handshake fa-2x text-primary"></i>
+						</div>
+						<h4 class="fw-bold mb-2">Vendor Selection</h4>
+						<p class="text-muted mb-0">Help you evaluate and select the right technology vendors and solutions for your needs.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Services List -->
+<section class="py-5 bg-light">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-10 mx-auto">
+				<div class="card border-0 shadow-lg rounded-4 p-4 p-md-5">
+					<h3 class="fw-bold mb-4 text-center">Our IT Consultancy Services</h3>
+					<div class="row g-4">
+						<div class="col-md-6">
+							<ul class="list-unstyled">
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-warning me-3 mt-1"></i>
+									<div>
+										<strong>Technology Strategy</strong>
+										<p class="text-muted small mb-0">Strategic planning and roadmap development</p>
+									</div>
+								</li>
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-warning me-3 mt-1"></i>
+									<div>
+										<strong>Digital Transformation</strong>
+										<p class="text-muted small mb-0">Guide modernization initiatives</p>
+									</div>
+								</li>
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-warning me-3 mt-1"></i>
+									<div>
+										<strong>Cloud Consulting</strong>
+										<p class="text-muted small mb-0">Cloud strategy and migration</p>
+									</div>
+								</li>
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-warning me-3 mt-1"></i>
+									<div>
+										<strong>Security Consulting</strong>
+										<p class="text-muted small mb-0">Cybersecurity and compliance</p>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="col-md-6">
+							<ul class="list-unstyled">
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-warning me-3 mt-1"></i>
+									<div>
+										<strong>Infrastructure Planning</strong>
+										<p class="text-muted small mb-0">Network and server architecture</p>
+									</div>
+								</li>
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-warning me-3 mt-1"></i>
+									<div>
+										<strong>Vendor Selection</strong>
+										<p class="text-muted small mb-0">Technology evaluation and selection</p>
+									</div>
+								</li>
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-warning me-3 mt-1"></i>
+									<div>
+										<strong>IT Audits</strong>
+										<p class="text-muted small mb-0">Comprehensive technology assessments</p>
+									</div>
+								</li>
+								<li class="mb-3 d-flex align-items-start">
+									<i class="fas fa-check-circle text-warning me-3 mt-1"></i>
+									<div>
+										<strong>Project Management</strong>
+										<p class="text-muted small mb-0">IT project oversight and guidance</p>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white" style="background: linear-gradient(135deg, #041640 0%, #0a2a5a 100%);">
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-lg-8 mb-4 mb-lg-0">
+				<h2 class="display-6 fw-bold mb-3">Need Expert IT Consulting?</h2>
+				<p class="lead mb-0">Let's discuss how we can help guide your technology decisions and digital transformation.</p>
+			</div>
+			<div class="col-lg-4 text-lg-end">
+				<a href="<?php echo base_url('/contact-us'); ?>" class="btn btn-warning btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg hover-lift">
+					<i class="fas fa-envelope me-2"></i>Contact Us
+				</a>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+.hover-lift {
+	transition: all 0.3s ease;
+}
+
+.hover-lift:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+}
+</style>
