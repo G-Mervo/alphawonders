@@ -53,7 +53,7 @@
 					<div class="mb-3">
 						<p class="mb-2"><i class="fas fa-phone me-2"></i><a href="tel:+254736099643" class="text-light text-decoration-none">+254 736 099 643</a></p>
 						<p class="mb-0"><i class="fas fa-envelope me-2"></i><a href="mailto:info@alphawonders.com" class="text-light text-decoration-none">info@alphawonders.com</a></p>
-					</div>
+				</div>
 				</div>
 				<div class="col-lg-3 col-md-6">
 					<h5 class="fw-bold mb-4">Newsletter</h5>
@@ -94,9 +94,9 @@
 	<script src="<?php echo base_url("vendor/twitter-api/tweetie.js") ?>"></script>
 	<script src="<?php echo base_url("assets/js/main.js") ?>"></script>
 	<script src="<?php echo base_url("assets/js/wow.min.js") ?>"></script>
-	<script>
-		new WOW().init();
-	</script>
+    <script>
+    	new WOW().init();
+    </script>
 	<script>
 		$(document).ready(function(){
 			$("#newsletterForm").on('submit', function(e){
@@ -104,11 +104,11 @@
 				var form = $(this);
 				var email = $("#sub").val();
 				
-				$.post("<?php echo base_url("/subscribe"); ?>",
-				{
+			  	$.post("<?php echo base_url("/subscribe"); ?>",
+			  	{
 					email_sub: email
-				},
-				function(data, status){
+			  	},
+			  	function(data, status){
 					if(status === "success") {
 						alert("Thank you for subscribing!");
 						form[0].reset();
@@ -117,7 +117,7 @@
 					}
 				}).fail(function(){
 					alert("Unable to subscribe. Please try again later.");
-				});
+			  	});
 			});
 		});
 	</script>

@@ -1,23 +1,33 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 
 	<!-- Hero Section -->
-	<section class="hero-section bg-gradient-primary text-white py-5 mt-5">
-		<div class="container py-5">
+	<section class="hero-section py-5" style="background: linear-gradient(135deg, #041640 0%, #0a2a5a 100%); margin-top: 76px; min-height: 600px; display: flex; align-items: center; position: relative; overflow: hidden;">
+		<!-- Background Pattern -->
+		<div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1; background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.3) 1px, transparent 0); background-size: 40px 40px;"></div>
+		
+		<div class="container py-5 position-relative" style="z-index: 1;">
 			<div class="row align-items-center">
 				<div class="col-lg-6">
-					<h1 class="display-4 fw-bold mb-4 wow fadeInUp">Today's Businesses and the World Relies on Technology</h1>
-					<p class="lead mb-4 wow fadeInUp" data-wow-delay="0.2s">Software is ruling the world! Thousands of lines of code power the applications you use daily in your business or personal life.</p>
-					<div class="d-flex gap-3 wow fadeInUp" data-wow-delay="0.4s">
-						<a href="<?php echo base_url('/hire'); ?>" class="btn btn-light btn-lg rounded-pill px-4">
+					<h1 class="display-3 fw-bold mb-4 wow fadeInUp" style="color: #ffffff; text-shadow: 0 4px 6px rgba(0,0,0,0.3); line-height: 1.2;">
+						Today's Businesses and the World Relies on Technology
+					</h1>
+					<p class="lead mb-4 wow fadeInUp" data-wow-delay="0.2s" style="color: #e0e0e0; font-size: 1.25rem; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+						Software is ruling the world! Thousands of lines of code power the applications you use daily in your business or personal life.
+					</p>
+					<div class="d-flex flex-column flex-sm-row gap-3 wow fadeInUp" data-wow-delay="0.4s">
+						<a href="<?php echo base_url('/hire'); ?>" class="btn btn-warning btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg" style="background: linear-gradient(135deg, #ffb000 0%, #ffc733 100%); border: none; transition: transform 0.3s, box-shadow 0.3s;">
 							<i class="fas fa-rocket me-2"></i>Get Started
 						</a>
-						<a href="<?php echo base_url('/contact-us'); ?>" class="btn btn-outline-light btn-lg rounded-pill px-4">
+						<a href="<?php echo base_url('/contact-us'); ?>" class="btn btn-outline-light btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg" style="border: 2px solid rgba(255,255,255,0.8); transition: all 0.3s;">
 							<i class="fas fa-envelope me-2"></i>Contact Us
 						</a>
 					</div>
 				</div>
-				<div class="col-lg-6 text-center">
-					<img class="img-fluid rounded-4 shadow-lg wow fadeInRight" src="<?php echo base_url('assets/img/prog.jpg'); ?>" alt="Technology and Code" style="max-height: 400px;">
+				<div class="col-lg-6 text-center mt-5 mt-lg-0">
+					<div class="position-relative">
+						<div style="position: absolute; top: -20px; right: -20px; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(255,176,0,0.2) 0%, rgba(255,199,51,0.1) 100%); border-radius: 20px; z-index: -1;"></div>
+						<img class="img-fluid rounded-4 shadow-lg wow fadeInRight" src="<?php echo base_url('assets/img/prog.jpg'); ?>" alt="Technology and Code" style="max-height: 450px; width: auto; border: 3px solid rgba(255,255,255,0.1);">
+					</div>
 				</div>
 			</div>
 		</div>
@@ -129,7 +139,7 @@
 							<p class="card-text text-muted">Consulting in any related IT field and technology</p>
 							<a href="<?php echo base_url('/ict-consultancy'); ?>" class="btn btn-sm btn-outline-primary mt-2">Learn More</a>
 						</div>
-					</div>
+			</div>
 				</div>
 
 				<div class="col-lg-3 col-md-6">
@@ -172,7 +182,7 @@
 				</div>
 			</div>
 		</div>
-	</section>
+		</section>
 
 
 
@@ -207,7 +217,7 @@
 			</div>
 
 			<div class="row g-4">
-				<div class="col-lg-9">
+					<div class="col-lg-9">
 
 					<div class="row g-4">
 						<div class="col-md-6">
@@ -226,9 +236,9 @@
 											<a href="<?php echo base_url('blog/introduction-to-quantum-computers'); ?>" class="btn btn-sm btn-outline-primary">Read more</a>
 										</div>
 									</div>
-								</div>
+								</div>						 
 							</div>
-						</div>
+							</div>
 
 						<div class="col-md-6">
 							<div class="card h-100 border-0 shadow-sm">
@@ -266,9 +276,9 @@
 											<a href="<?php echo base_url('blog/privacy-policies-more-data-regulations'); ?>" class="btn btn-sm btn-outline-primary">Read more</a>
 										</div>
 									</div>
-								</div>
+								</div>						 
 							</div>
-						</div>
+							</div>
 
 						<div class="col-md-6">
 							<div class="card h-100 border-0 shadow-sm">
@@ -289,13 +299,13 @@
 								</div>
 							</div>
 						</div>
-					</div>
+						</div>
 
 						
 
-				</div>
+					</div>
 
-				<div class="col-lg-3">
+					<div class="col-lg-3">
 					<div class="card border-0 shadow-sm">
 						<div class="card-body">
 							<h5 class="card-title mb-3">Follow Us</h5>
@@ -309,7 +319,7 @@
 				</div>
 			</div>
 		</div>
-	</section>
+		</section>
 
 	<!-- Contact Section -->
 	<section class="py-5" id="contacts">
@@ -319,7 +329,7 @@
 					<div class="text-center mb-5">
 						<h2 class="display-5 fw-bold mb-3 wow fadeInUp">Contact Us</h2>
 						<p class="lead text-muted wow fadeInUp" data-wow-delay="0.2s">Send us a message today and let's discuss how we can help your business</p>
-					</div>
+							</div>
 
 					<form action="<?php echo base_url('/send'); ?>" method="POST" class="row g-3">
 						<div class="col-md-6 wow fadeInUp" data-wow-delay="0.4s">
@@ -328,7 +338,7 @@
 								<span class="input-group-text"><i class="fas fa-user"></i></span>
 								<input type="text" class="form-control form-control-lg" id="fullname" name="fullname" placeholder="Your full name" required>
 							</div>
-						</div>
+							</div>
 
 						<div class="col-md-6 wow fadeInUp" data-wow-delay="0.5s">
 							<label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
@@ -344,23 +354,23 @@
 								<span class="input-group-text"><i class="fas fa-phone"></i></span>
 								<input type="tel" class="form-control form-control-lg" id="phone_number" name="phone_number" placeholder="+254 700 000 000" required>
 							</div>
-						</div>
+								</div>
 
 						<div class="col-md-12 wow fadeInUp" data-wow-delay="0.7s">
 							<label for="message" class="form-label">Message <span class="text-danger">*</span></label>
 							<textarea class="form-control form-control-lg" id="message" name="message" rows="5" placeholder="Tell us about your project or inquiry..." required></textarea>
-						</div>
+							</div>							
 
 						<div class="col-md-12 text-center wow fadeInUp" data-wow-delay="0.8s">
 							<button type="submit" class="btn btn-primary btn-lg px-5 rounded-pill">
 								<i class="fas fa-paper-plane me-2"></i>Send Message
 							</button>
-						</div>
+						</div>					
 					</form>
-				</div>
+					</div>
 			</div>
 		</div>
-	</section>
+		</section>
 
 
 
@@ -371,7 +381,7 @@
 			<a href="https://twitter.com/Alphawondersltd" target="_blank" class="btn btn-outline-primary rounded-pill px-4">
 				<i class="fab fa-twitter me-2"></i>@Alphawondersltd
 			</a>
-		</div>
+                </div>
 	</section>
 
 	
