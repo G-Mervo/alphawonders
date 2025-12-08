@@ -8,28 +8,30 @@ class Security extends BaseConfig
 {
     /**
      * --------------------------------------------------------------------------
-     * CSRF Protection
+     * CSRF Protection Method
      * --------------------------------------------------------------------------
      *
-     * Enables CSRF protection for forms.
+     * Protection Method for Cross Site Request Forgery protection.
+     *
+     * @var string 'cookie' or 'session'
      */
-    public bool $csrfProtection = 'session';
+    public string $csrfProtection = 'cookie';
 
     /**
      * --------------------------------------------------------------------------
      * CSRF Token Randomization
      * --------------------------------------------------------------------------
      *
-     * Randomize the token on each request?
+     * Randomize the CSRF Token for added security.
      */
-    public bool $tokenRandomize = true;
+    public bool $tokenRandomize = false;
 
     /**
      * --------------------------------------------------------------------------
      * CSRF Token Name
      * --------------------------------------------------------------------------
      *
-     * The token name.
+     * Token name for Cross Site Request Forgery protection.
      */
     public string $tokenName = 'csrf_test_name';
 
@@ -38,7 +40,7 @@ class Security extends BaseConfig
      * CSRF Header Name
      * --------------------------------------------------------------------------
      *
-     * The header name.
+     * Header name for Cross Site Request Forgery protection.
      */
     public string $headerName = 'X-CSRF-TOKEN';
 
@@ -47,7 +49,7 @@ class Security extends BaseConfig
      * CSRF Cookie Name
      * --------------------------------------------------------------------------
      *
-     * The cookie name.
+     * Cookie name for Cross Site Request Forgery protection.
      */
     public string $cookieName = 'csrf_cookie_name';
 
@@ -56,7 +58,9 @@ class Security extends BaseConfig
      * CSRF Expires
      * --------------------------------------------------------------------------
      *
-     * The number in seconds the token should expire.
+     * Expiration time for Cross Site Request Forgery protection cookie.
+     *
+     * Defaults to two hours (in seconds).
      */
     public int $expires = 7200;
 
@@ -65,7 +69,7 @@ class Security extends BaseConfig
      * CSRF Regenerate
      * --------------------------------------------------------------------------
      *
-     * Regenerate token on every submission?
+     * Regenerate CSRF Token on every submission.
      */
     public bool $regenerate = true;
 
@@ -74,19 +78,9 @@ class Security extends BaseConfig
      * CSRF Redirect
      * --------------------------------------------------------------------------
      *
-     * Redirect to previous page with error on failure?
-     */
-    public bool $redirect = true;
-
-    /**
-     * --------------------------------------------------------------------------
-     * CSRF SameSite
-     * --------------------------------------------------------------------------
+     * Redirect to previous page with error on failure.
      *
-     * Setting for CSRF cookie's samesite attribute.
-     * Allowed values are: None, Lax, Strict or ''
+     * @see https://codeigniter4.github.io/userguide/libraries/security.html#redirection-on-failure
      */
-    public string $samesite = 'Lax';
+    public bool $redirect = (ENVIRONMENT === 'production');
 }
-
-

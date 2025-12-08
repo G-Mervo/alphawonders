@@ -3,8 +3,11 @@
 namespace Config;
 
 /**
+ * Paths
+ *
  * Holds the paths that are used by the system to
  * locate the main directories, app, system, etc.
+ *
  * Modifying these allows you to restructure your application,
  * share a system folder between multiple applications, and more.
  *
@@ -14,23 +17,25 @@ class Paths
 {
     /**
      * ---------------------------------------------------------------
-     * SYSTEM DIRECTORY NAME
+     * SYSTEM FOLDER NAME
      * ---------------------------------------------------------------
      *
-     * This variable must contain the name of your "system" directory.
-     * Set the path if it is not in the same directory as this file.
+     * This must contain the name of your "system" folder. Include
+     * the path if the folder is not in the same directory as this file.
      */
     public string $systemDirectory = __DIR__ . '/../../vendor/codeigniter4/framework/system';
 
     /**
      * ---------------------------------------------------------------
-     * APPLICATION DIRECTORY NAME
+     * APPLICATION FOLDER NAME
      * ---------------------------------------------------------------
      *
      * If you want this front controller to use a different "app"
-     * directory than the default one you can set its name here. The
-     * directory can also be renamed or relocated anywhere on your
-     * server. If you do, use an absolute server path.
+     * folder than the default one you can set its name here. The folder
+     * can also be renamed or relocated anywhere on your server. If
+     * you do, use a full server path.
+     *
+     * @see http://codeigniter.com/user_guide/general/managing_apps.html
      */
     public string $appDirectory = __DIR__ . '/..';
 
@@ -68,5 +73,3 @@ class Paths
      */
     public string $viewDirectory = __DIR__ . '/../Views';
 }
-
-
