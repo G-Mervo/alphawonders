@@ -1,18 +1,71 @@
-/*favorite colors {
-	background-color:#F2F7F9; 
-	color:#CC88FF;#FF34AC;#2222FF;#FF89CF DIFF SHADES OF BLUE #1F1FDE; #0C0CD1; #0A0AA7; #06068F, #060666
-	Diff shade of green #0C7F00 #B1E622 */
+/* Modern CSS for Alphawonders - Bootstrap 5 Compatible */
+:root {
+	--primary-color: #041640;
+	--secondary-color: #ffb000;
+	--accent-color: #0d6efd;
+	--text-dark: #212529;
+	--text-muted: #6c757d;
+	--bg-light: #f8f9fa;
+}
+
 * {
-	margin:0px;
-	padding:0px;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 body {
-	background:  #fff; 
+	background: #fff;
 	overflow-x: hidden;
-	font-family: 'Segoe Ui', "Helvetica Neue",'open sans', Helvetica, Arial, sans-serif !important;  
-	text-rendering: optimizeLegibility !important;
-	-webkit-font-smoothing: antialiased !important;
+	font-family: 'Inter', 'Segoe UI', "Helvetica Neue", 'Open Sans', Helvetica, Arial, sans-serif;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	color: var(--text-dark);
+	padding-top: 80px; /* Account for fixed navbar */
+}
+
+/* Hero Section */
+.hero-section {
+	background: linear-gradient(135deg, #041640 0%, #0a2a5a 100%);
+	min-height: 500px;
+	display: flex;
+	align-items: center;
+}
+
+.bg-gradient-primary {
+	background: linear-gradient(135deg, #041640 0%, #0a2a5a 100%);
+}
+
+/* Card Hover Effects */
+.hover-shadow {
+	transition: all 0.3s ease;
+}
+
+.hover-shadow:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+}
+
+.transition {
+	transition: all 0.3s ease;
+}
+
+/* Navbar Styles */
+.navbar-dark {
+	background-color: var(--primary-color) !important;
+}
+
+.navbar-brand {
+	font-weight: 700;
+}
+
+.nav-link {
+	font-weight: 500;
+	transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+	color: var(--secondary-color) !important;
 }
 
 .navbar {

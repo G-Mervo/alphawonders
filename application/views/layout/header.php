@@ -46,80 +46,87 @@
     <meta property="twitter:description" content="Alphawonders Solutions provides ICT expertise and services such as software development, system administration, design(web & graphic), marketing, IT consultancy, IT support, cyber security to help businesses and individuals in different industries and sectors to leverage ICT in their day-to-day activities.">
     <meta property="twitter:image" content="https://alphawonders.com/assets/icons/logo.png">
 
-	<!-- Scripts -->
-	<script src = "<?php echo base_url("assets/js/jquery-3.2.1.min.js") ?>"></script>	
-	<script src= "<?php echo base_url("assets/js/bootstrap.min.js"); ?>" ></script>
-	<script src="<?php echo base_url("assets/js/owl.carousel.min.js") ?>"></script>
-	<script src="<?php echo base_url("vendor/twitter-api/tweetie.js") ?>"></script>
-	<script src="<?php echo base_url("assets/js/main.js") ?>"></script>
-	<script src="<?php echo base_url("assets/js/jquery.cookie-1.4.1.min.js") ?>"></script>
-
 	<!-- Stylesheets -->
 	<link rel="icon" type="image/png" href="<?php echo base_url('/assets/icon/awlogo.png'); ?>">
-	<link rel = "stylesheet" href="<?php echo base_url('assets/css/bootstrap.min.css'); ?>">
-	<link rel="stylesheet" href="<?php echo base_url('assets/fontawesome-5.1.0/css/all.css'); ?>">
+	<!-- Bootstrap 5.3 CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<!-- Font Awesome 6 -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<!-- Google Fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+	<!-- Custom Stylesheets -->
 	<link rel = "stylesheet" href="<?php echo base_url('assets/css/custom.css'); ?>">
 	<link rel = "stylesheet" href="<?php echo base_url('assets/css/responsive.css'); ?>">
 	<link href="<?php echo base_url('assets/css/blog.css'); ?>" rel="stylesheet">
 	<link rel="stylesheet" href="<?php echo base_url('assets/css/animate.min.css'); ?>">
+	<!-- Owl Carousel CSS -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/css/owl.theme.css'); ?>"/> 
     <link rel="stylesheet" href="<?php echo base_url('assets/css/owl.carousel.css'); ?>"/> 
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet"> 
 </head>
 <body>
 	<div id="fb-root"></div>
 	<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v4.0&appId=688908964868655&autoLogAppEvents=1"></script>
 	<header>
-		<nav class="navbar navbar-default navbar-fixed-top"> <!-- tap-nav -->
-			<div class="container-fluid">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-lg">
+			<div class="container">
+				<a class="navbar-brand d-flex align-items-center" href="<?php echo base_url('/'); ?>">
+					<img src="<?php echo base_url('assets/icon/logo.png'); ?>" alt="Alphawonders" class="me-2" style="width: 50px; height: 50px;">
+					<span class="fw-bold fs-5">Alphawonders</span>
+				</a>
+				
+				<!-- Contact info for desktop -->
+				<div class="d-none d-lg-flex align-items-center me-4 text-white">
+					<div class="me-4">
+						<i class="fas fa-phone me-2"></i>
+						<a href="tel:+254736099643" class="text-white text-decoration-none">+254 736 099 643</a>
+					</div>
+					<div>
+						<i class="fas fa-envelope me-2"></i>
+						<a href="mailto:info@alphawonders.com" class="text-white text-decoration-none">info@alphawonders.com</a>
+					</div>
+				</div>
 
-				<div class="navbar-header">						
-			        <a class="navbar-brand" href="<?php echo base_url('/'); ?>">
-			         	<img src="<?php echo base_url('assets/icon/logo.png'); ?>" alt="Alphawonders">
-			         	<div class="lg-id" id="al-lg">
-			         		<p>Alphawonders</p>
-			         	</div>
-			        </a>
-					<!-- Brand and toggle get grouped for better mobile display -->
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-2">
-					    <span class="sr-only">Toggle navigation</span>
-					    <span class="icon-bar"></span>
-					    <span class="icon-bar"></span>
-					    <span class="icon-bar"></span>
-					</button>
-				</div>
-				<div class="alp-qck-co collapse navbar-collapse">
-					<p class="">
-						<span class="qck-co-1">
-							<a class="btn btn-primary" href="<?php echo base_url('/hire'); ?>">Hire</a>
-						</span>
-						<span class="qck-co-2">
-							<span class="tel">Tel: <a class="alp-tel" href="#"> +254 736 099 643</a></span> 
-							<span class="" id="cont-email">Email: <a href="mailto:info@alphawonders.com">  info@alphawonders.com</a></span>
-						</span>
-						
-					</p>
-				</div>
-				<!-- Collect the nav links, forms, and other content for toggling -->
-	        	<div class="collapse navbar-collapse" id="navbar-collapse-2">
-					<ul class="nav navbar-nav navbar-right">
-					    <li><a href="<?php echo base_url('/softwares'); ?>">Software Development</a></li>
-					    <li><a href="<?php echo base_url('/system-administration'); ?>">System Administration</a></li>
-					    <li><a href="<?php echo base_url('/digital-marketing'); ?>">Digital Marketing</a></li>
-					    <li><a href="<?php echo base_url('/design'); ?>">Design</a></li>
-					    <li><a href="<?php echo base_url('/ict-consultancy'); ?>">IT Consultancy</a></li>
-					    <li><a href="<?php echo base_url('/it-support'); ?>">IT Support</a></li>
-					    <!-- <li><a href="<?php //echo base_url('/'); ?>">Cyber Security</a></li> -->
-					    <!-- <li><a href="<?php //echo base_url('/'); ?>">Data Analytics</a></li> -->
-						<li><a href="<?php echo base_url('/contact-us'); ?>">Contact Us</a></li>
-						<li><a href="<?php echo base_url('/blog'); ?>">Blog</a></li>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<ul class="navbar-nav ms-auto align-items-center">
+						<li class="nav-item">
+							<a class="nav-link" href="<?php echo base_url('/softwares'); ?>">Software Development</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?php echo base_url('/system-administration'); ?>">System Administration</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?php echo base_url('/digital-marketing'); ?>">Digital Marketing</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?php echo base_url('/design'); ?>">Design</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?php echo base_url('/ict-consultancy'); ?>">IT Consultancy</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?php echo base_url('/it-support'); ?>">IT Support</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?php echo base_url('/blog'); ?>">Blog</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="<?php echo base_url('/contact-us'); ?>">Contact Us</a>
+						</li>
+						<li class="nav-item ms-2">
+							<a class="btn btn-primary rounded-pill px-4" href="<?php echo base_url('/hire'); ?>">
+								<i class="fas fa-briefcase me-2"></i>Hire Us
+							</a>
+						</li>
 					</ul>
-					          		
-				</div><!-- /.navbar-collapse -->
-
-			</div><!-- /.container -->
-		</nav><!-- /.navbar -->
-
+				</div>
+			</div>
+		</nav>
 	</header>
 
 	<div class="alph-wrapper">
