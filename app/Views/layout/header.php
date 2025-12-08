@@ -72,35 +72,43 @@ if (!defined('BASEPATH')) {
 <body>
 	<div id="fb-root"></div>
 	<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v4.0&appId=688908964868655&autoLogAppEvents=1"></script>
-	<header>
-		<nav class="navbar navbar-expand-xl navbar-dark bg-dark fixed-top shadow-lg" style="padding: 0.5rem 0;">
-			<div class="container-fluid px-3 px-lg-4">
-				<!-- Logo and Brand -->
-				<a class="navbar-brand d-flex align-items-center me-4" href="<?= base_url('/') ?>" style="min-width: 180px;">
-					<img src="<?= base_url('assets/icon/logo.png') ?>" alt="Alphawonders Logo" class="me-2" style="width: 45px; height: 45px; object-fit: contain;">
-					<span class="fw-bold fs-5 text-white d-none d-sm-inline">Alphawonders</span>
-				</a>
-				
-				<!-- Contact info for large desktop -->
-				<div class="d-none d-xxl-flex align-items-center me-4 text-white" style="white-space: nowrap;">
-					<div class="me-4">
+	
+	<!-- Top Contact Bar -->
+	<div class="top-contact-bar" style="background-color: #041640; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+		<div class="container-fluid px-3 px-lg-4">
+			<div class="d-flex justify-content-end align-items-center">
+				<div class="d-flex align-items-center text-white" style="gap: 2rem;">
+					<a href="tel:+254736099643" class="text-white text-decoration-none d-flex align-items-center" style="font-size: 0.9rem;">
 						<i class="fas fa-phone me-2"></i>
-						<a href="tel:+254736099643" class="text-white text-decoration-none" style="font-size: 0.9rem;">+254 736 099 643</a>
-					</div>
-					<div>
+						<span>+254 736 099 643</span>
+					</a>
+					<a href="mailto:info@alphawonders.com" class="text-white text-decoration-none d-flex align-items-center" style="font-size: 0.9rem;">
 						<i class="fas fa-envelope me-2"></i>
-						<a href="mailto:info@alphawonders.com" class="text-white text-decoration-none" style="font-size: 0.9rem;">info@alphawonders.com</a>
-					</div>
+						<span>info@alphawonders.com</span>
+					</a>
 				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Main Navigation Bar -->
+	<header class="main-nav-header">
+		<nav class="navbar navbar-expand-xl navbar-dark bg-dark shadow-lg" style="padding: 0.75rem 0;">
+			<div class="container-fluid px-3 px-lg-4">
+				<!-- Logo - Extreme Left -->
+				<a class="navbar-brand d-flex align-items-center" href="<?= base_url('/') ?>" style="margin-right: 3rem;">
+					<img src="<?= base_url('assets/icon/logo.png') ?>" alt="Alphawonders Logo" style="width: 60px; height: 60px; object-fit: contain; margin-right: 0.75rem;">
+					<span class="fw-bold text-white" style="font-size: 1.35rem;">Alphawonders</span>
+				</a>
 
 				<!-- Mobile Toggle Button -->
-				<button class="navbar-toggler border-0 ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 
 				<!-- Navigation Menu -->
 				<div class="collapse navbar-collapse" id="navbarNav">
-					<ul class="navbar-nav ms-auto align-items-center" style="gap: 0; flex-wrap: nowrap;">
+					<ul class="navbar-nav ms-auto align-items-center">
 						<li class="nav-item">
 							<a class="nav-link px-2 px-lg-3 py-2" href="<?= base_url('softwares') ?>" style="white-space: nowrap; font-size: 0.95rem;">
 								<span class="d-lg-none"><i class="fas fa-code me-2"></i></span>Software Development
@@ -136,12 +144,12 @@ if (!defined('BASEPATH')) {
 								<span class="d-lg-none"><i class="fas fa-blog me-2"></i></span>Blog
 							</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link px-2 px-lg-3 py-2" href="<?= base_url('contact-us') ?>" style="white-space: nowrap; font-size: 0.95rem;">
-								<span class="d-lg-none"><i class="fas fa-envelope me-2"></i></span>Contact Us
+						<li class="nav-item ms-lg-2">
+							<a class="btn btn-outline-light rounded-pill px-3 px-lg-4 py-2 me-2" href="<?= base_url('contact-us') ?>" style="white-space: nowrap; font-size: 0.9rem;">
+								<i class="fas fa-envelope me-2"></i>Contact Us
 							</a>
 						</li>
-						<li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+						<li class="nav-item">
 							<a class="btn btn-primary rounded-pill px-3 px-lg-4 py-2" href="<?= base_url('hire') ?>" style="white-space: nowrap; font-size: 0.9rem;">
 								<i class="fas fa-briefcase me-2"></i>Hire Us
 							</a>
@@ -155,4 +163,4 @@ if (!defined('BASEPATH')) {
 	<div class="alph-wrapper">
 
 					
-			    
+			     

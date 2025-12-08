@@ -21,7 +21,50 @@ body {
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	color: var(--text-dark);
-	padding-top: 80px; /* Account for fixed navbar */
+	padding-top: 120px; /* Account for two-tier fixed header */
+}
+
+/* Top Contact Bar */
+.top-contact-bar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 1040;
+	background-color: #041640 !important;
+}
+
+.top-contact-bar a {
+	transition: opacity 0.3s ease;
+}
+
+.top-contact-bar a:hover {
+	opacity: 0.8;
+	color: var(--secondary-color) !important;
+}
+
+/* Main Navigation Header */
+.main-nav-header {
+	position: fixed;
+	top: 40px;
+	left: 0;
+	right: 0;
+	z-index: 1030;
+}
+
+/* Mobile: Single tier header */
+@media (max-width: 991px) {
+	.top-contact-bar {
+		display: none !important;
+	}
+	
+	.main-nav-header {
+		top: 0;
+	}
+	
+	body {
+		padding-top: 80px; /* Reduced for single navbar on mobile */
+	}
 }
 
 /* Hero Section */
@@ -72,6 +115,17 @@ body {
 .navbar-brand {
 	font-weight: 700;
 	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.navbar-brand img {
+	flex-shrink: 0;
+}
+
+.navbar-brand span {
+	white-space: nowrap;
 }
 
 .nav-link {
@@ -109,13 +163,45 @@ body {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: flex-start;
+	gap: 1rem;
+}
+
+/* Contact info styling */
+.navbar .d-flex.align-items-center a {
+	transition: opacity 0.3s ease;
+}
+
+.navbar .d-flex.align-items-center a:hover {
+	opacity: 0.8;
+}
+
+/* Better spacing for buttons */
+.navbar-nav .btn {
+	margin-left: 0.5rem;
+	font-weight: 500;
+}
+
+.navbar-nav .btn-outline-light {
+	border-color: rgba(255, 255, 255, 0.5);
+}
+
+.navbar-nav .btn-outline-light:hover {
+	background-color: rgba(255, 255, 255, 0.1);
+	border-color: rgba(255, 255, 255, 0.8);
+}
+
+@media (min-width: 992px) {
+	.navbar .container-fluid {
+		padding-left: 2rem;
+		padding-right: 2rem;
+	}
 }
 
 @media (min-width: 1400px) {
 	.navbar .container-fluid {
-		padding-left: 2rem;
-		padding-right: 2rem;
+		padding-left: 3rem;
+		padding-right: 3rem;
 	}
 }
 
