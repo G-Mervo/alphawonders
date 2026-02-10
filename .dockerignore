@@ -1,6 +1,7 @@
 .git
 .github
 .gitignore
+.env
 .env.local
 .env.*.local
 
@@ -34,8 +35,10 @@ Thumbs.db
 
 # Docker files (don't need to be in the image)
 docker-compose.yml
+docker-compose.dev.yml
 Dockerfile
 .dockerignore
+Makefile
 
 # Tests (not needed in production)
 tests/

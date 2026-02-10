@@ -7,15 +7,23 @@ services:
       - "8080:8080"
     environment:
       - CI_ENVIRONMENT=production
+      # App
+      - app.baseURL=${APP_BASE_URL:-https://alphawonders.com/}
+      - app.forceGlobalSecureRequests=true
+      - app.defaultLocale=en
+      - app.negotiateLocale=false
+      - app.supportedLocales=[en]
+      - app.appTimezone=Africa/Nairobi
+      - app.charset=UTF-8
+      # Database
       - database.default.hostname=postgres
       - database.default.database=${DB_DATABASE:-alphaw}
       - database.default.username=${DB_USERNAME}
       - database.default.password=${DB_PASSWORD}
       - database.default.DBDriver=Postgre
       - database.default.port=5432
+      - database.default.DBPrefix=
       - database.default.charset=utf8
-      - app.baseURL=${APP_BASE_URL:-https://alphawonders.com/}
-      - app.forceGlobalSecureRequests=true
     volumes:
       - app-writable:/var/www/html/writable
       - app-attachments:/var/www/html/attachments
