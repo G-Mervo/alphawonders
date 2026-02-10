@@ -7,15 +7,22 @@ use App\Models\AlphaBlogModel;
 class Dashboard extends BaseController
 {
     protected $alphaBlogModel;
+    protected $db;
 
     public function __construct()
     {
         $this->alphaBlogModel = new AlphaBlogModel();
+        $this->db = \Config\Database::connect();
     }
 
     public function admin()
     {
         $data['title'] = 'Dashboard | Alphawonders';
+        $data['blogCount'] = $this->db->table('blog')->countAllResults();
+        $data['messagesCount'] = $this->db->table('messages')->countAllResults();
+        $data['commentsCount'] = $this->db->table('posts_comments')->countAllResults();
+        $data['subscribersCount'] = $this->db->table('subscriptions')->countAllResults();
+        $data['recentPosts'] = $this->alphaBlogModel->orderBy('date_created', 'DESC')->findAll(5);
 
         return view('dashboard/inc/header', $data) .
                view('dashboard/index', $data) .
@@ -34,6 +41,7 @@ class Dashboard extends BaseController
     public function messages()
     {
         $data['title'] = 'Messages | Alphawonders';
+        $data['messages'] = $this->db->table('messages')->orderBy('id', 'DESC')->get()->getResultArray();
 
         return view('dashboard/inc/header', $data) .
                view('dashboard/messages', $data) .

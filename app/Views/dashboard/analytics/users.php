@@ -1,19 +1,14 @@
-import hasOwnProp from './has-own-prop';
+<?php defined('FCPATH') OR exit('No direct script access allowed'); ?>
 
-export default function extend(a, b) {
-    for (var i in b) {
-        if (hasOwnProp(b, i)) {
-            a[i] = b[i];
-        }
-    }
+<div class="mb-4">
+	<h3 class="fw-bold mb-1">Users Analytics</h3>
+	<p class="text-muted">User activity and engagement data.</p>
+</div>
 
-    if (hasOwnProp(b, 'toString')) {
-        a.toString = b.toString;
-    }
-
-    if (hasOwnProp(b, 'valueOf')) {
-        a.valueOf = b.valueOf;
-    }
-
-    return a;
-}
+<div class="card border-0 shadow-sm">
+	<div class="card-body text-center py-5">
+		<i class="fa-solid fa-users fa-3x text-muted mb-3"></i>
+		<h5 class="text-muted">Coming Soon</h5>
+		<p class="text-muted">Analytics integration will be available in a future update.</p>
+	</div>
+</div>
