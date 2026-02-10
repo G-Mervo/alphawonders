@@ -26,6 +26,15 @@ services:
       - database.default.port=5432
       - database.default.DBPrefix=
       - database.default.charset=utf8
+      # Email (SMTP)
+      - email.fromEmail=noreply@alphawonders.com
+      - email.fromName=Alphawonders
+      - email.protocol=smtp
+      - email.SMTPHost=${SMTP_HOST:-smtp.gmail.com}
+      - email.SMTPUser=${SMTP_USER:-}
+      - email.SMTPPass=${SMTP_PASS:-}
+      - email.SMTPPort=${SMTP_PORT:-587}
+      - email.SMTPCrypto=tls
     volumes:
       - app-writable:/var/www/html/writable
       - app-attachments:/var/www/html/attachments

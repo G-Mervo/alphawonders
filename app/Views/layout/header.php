@@ -106,15 +106,52 @@
 		/* Desktop styles */
 		@media (min-width: 992px) {
 			.navbar-nav {
-				gap: 0.25rem;
+				gap: 0.15rem;
 			}
 			.nav-link {
-				padding: 0.5rem 0.75rem !important;
+				padding: 0.5rem 0.6rem !important;
 				border-radius: 0.375rem;
 			}
 			.nav-link:hover {
 				background: rgba(255, 176, 0, 0.1);
 			}
+		}
+
+		/* Medium-large screens - tighter nav spacing */
+		@media (min-width: 992px) and (max-width: 1199.98px) {
+			.navbar-nav {
+				gap: 0;
+			}
+			.navbar-nav .nav-link {
+				padding: 0.4rem 0.4rem !important;
+				font-size: 0.85rem !important;
+			}
+			.navbar-nav .btn {
+				font-size: 0.8rem !important;
+				padding: 0.4rem 0.75rem !important;
+			}
+		}
+
+		/* Hire CTA button */
+		.nav-item-hire {
+			flex-shrink: 0 !important;
+		}
+		.btn-hire-cta {
+			color: #fff;
+			background: transparent;
+			border: 1.5px solid rgba(255, 255, 255, 0.6);
+			font-size: 0.88rem;
+			letter-spacing: 0.3px;
+			white-space: nowrap;
+			transition: all 0.25s ease;
+		}
+		.btn-hire-cta:hover,
+		.btn-hire-cta:focus {
+			color: #041640;
+			background: #fff;
+			border-color: #fff;
+			box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+			transform: translateY(-1px);
 		}
 		
 		/* Tablet and Mobile styles */
@@ -269,9 +306,9 @@
 							</div>
 						</li>
 						<!-- CTA Button -->
-						<li class="nav-item ms-lg-2 mt-2 mt-lg-0">
-							<a class="btn btn-warning rounded-pill px-3 px-lg-3 fw-bold shadow-sm text-dark" href="<?php echo base_url('/hire'); ?>" style="transition: all 0.3s; background: linear-gradient(135deg, #ffb000 0%, #ffc733 100%); border: none; white-space: nowrap; font-size: 0.9rem;">
-								<i class="fas fa-briefcase me-1" aria-hidden="true"></i>Hire
+						<li class="nav-item nav-item-hire ms-lg-2 mt-2 mt-lg-0">
+							<a class="btn btn-hire-cta rounded-pill px-4 px-lg-3 fw-semibold" href="<?php echo base_url('/hire'); ?>">
+								<i class="fas fa-briefcase me-1" aria-hidden="true"></i>Hire Us
 							</a>
 						</li>
 					</ul>

@@ -411,7 +411,7 @@ img {
 
 .navbar-nav.navbar-right .btn { position: relative; z-index: 2; padding: 4px 20px; margin: 10px auto; transition: transform 0.3s; }
 
-.navbar .navbar-collapse { position: relative; overflow: hidden !important; }
+.navbar .navbar-collapse { position: relative; overflow: visible !important; }
 .navbar .navbar-collapse .navbar-right > li:last-child { padding-left: 15px; }
 
 .navbar .nav-collapse { position: absolute; z-index: 1; top: 0; left: 0; right: 0; bottom: 0; margin: 0; padding-right: 10px; padding-left: 30px; width: 100%; }
@@ -502,10 +502,10 @@ img {
 }
 
 .alph-wrapper {
-	margin-top: 105px;
+	margin-top: 0;
 	margin-left: auto;
 	margin-right: auto;
-	padding: 0 15px;
+	padding: 0;
 }
 
 .alert {

@@ -247,9 +247,112 @@ class Alphawonders extends BaseController
         ];
 
         if ($this->alphaWModel->hires($data)) {
+            // Send email notification
+            $this->sendHireNotification($data);
             return redirect()->to(base_url())->with('success', 'Request submitted successfully!');
         } else {
             return redirect()->to(base_url('/'));
+        }
+    }
+
+    private function sendHireNotification(array $data): void
+    {
+        try {
+            $email = \Config\Services::email();
+
+            $email->setFrom(config('Email')->fromEmail, config('Email')->fromName);
+            $email->setTo('mervin@alphawonders.com');
+            $email->setSubject('New Hire Request from ' . esc($data['name']));
+
+            $body = '
+            <html>
+            <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+                <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                    <div style="background: linear-gradient(135deg, #041640, #0a2a5a); color: #ffffff; padding: 20px 30px;">
+                        <h2 style="margin: 0; font-size: 22px;">New Hire Request</h2>
+                        <p style="margin: 5px 0 0; opacity: 0.8; font-size: 14px;">Submitted on ' . date('M d, Y \a\t h:i A') . '</p>
+                    </div>
+                    <div style="padding: 30px;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #041640; width: 35%;">Name</td>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">' . esc($data['name']) . '</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #041640;">Email</td>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee;"><a href="mailto:' . esc($data['email']) . '">' . esc($data['email']) . '</a></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #041640;">Phone</td>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">' . esc($data['tel']) . '</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #041640;">Budget</td>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">' . esc($data['budget']) . '</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #041640;">Location</td>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">' . esc($data['location']) . '</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #041640;">Client Type</td>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">' . esc($data['client']) . '</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #041640;">Work Type</td>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">' . esc($data['work']) . '</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #041640;">Project Type</td>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">' . esc($data['nature']) . '</td>
+                            </tr>' .
+                            (!empty($data['company_name']) ? '
+                            <tr>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #041640;">Company</td>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">' . esc($data['company_name']) . '</td>
+                            </tr>' : '') .
+                            (!empty($data['industry']) ? '
+                            <tr>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #041640;">Industry</td>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">' . esc($data['industry']) . '</td>
+                            </tr>' : '') .
+                            (!empty($data['timeline']) ? '
+                            <tr>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #041640;">Timeline</td>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">' . esc($data['timeline']) . '</td>
+                            </tr>' : '') .
+                            (!empty($data['skype']) ? '
+                            <tr>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #041640;">Skype</td>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">' . esc($data['skype']) . '</td>
+                            </tr>' : '') .
+                            (!empty($data['whatsapp']) ? '
+                            <tr>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold; color: #041640;">WhatsApp</td>
+                                <td style="padding: 10px 0; border-bottom: 1px solid #eee;">' . esc($data['whatsapp']) . '</td>
+                            </tr>' : '') . '
+                        </table>
+                        <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 6px; border-left: 4px solid #ffb000;">
+                            <strong style="color: #041640;">Project Description:</strong>
+                            <p style="margin: 8px 0 0; color: #333; line-height: 1.6;">' . nl2br(esc($data['description'])) . '</p>
+                        </div>
+                        <div style="margin-top: 20px; padding: 10px; background: #e8f4f8; border-radius: 6px; font-size: 12px; color: #666;">
+                            <strong>Device:</strong> ' . esc($data['device']) . ' |
+                            <strong>Browser:</strong> ' . esc($data['browser_name']) . ' |
+                            <strong>IP:</strong> ' . esc($data['ip_address']) . '
+                        </div>
+                    </div>
+                    <div style="background: #041640; color: #aaa; padding: 15px 30px; font-size: 12px; text-align: center;">
+                        Alphawonders Solutions &mdash; Providing ICT Expertise &amp; Services
+                    </div>
+                </div>
+            </body>
+            </html>';
+
+            $email->setMessage($body);
+            $email->send(false);
+        } catch (\Exception $e) {
+            log_message('error', 'Hire notification email failed: ' . $e->getMessage());
         }
     }
 
