@@ -59,6 +59,14 @@ COPY docker/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
 # Copy PHP configuration
 COPY docker/php.ini /usr/local/etc/php/conf.d/custom.ini
 
+# Copy and set entrypoint script
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Install curl for healthcheck
+RUN apt-get update && apt-get install -y curl && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 EXPOSE 8080
 
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
