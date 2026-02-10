@@ -17,7 +17,6 @@ class CreateBlogTable extends Migration
                         'constraint' => 100,
                         'null' => true,
                         'default' => null,
-                        'after' => 'blog_url',
                     ],
                 ]);
             }
