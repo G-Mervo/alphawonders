@@ -1,0 +1,39 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: alphawonders-app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      - CI_ENVIRONMENT=production
+      - database.default.hostname=postgres
+      - database.default.database=${DB_DATABASE:-alphaw}
+      - database.default.username=${DB_USERNAME:-alphaw_user}
+      - database.default.password=${DB_PASSWORD}
+      - database.default.DBDriver=Postgre
+      - database.default.port=5432
+      - database.default.charset=utf8
+    volumes:
+      - app-writable:/var/www/html/writable
+      - app-attachments:/var/www/html/attachments
+    networks:
+      - shared-services
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  app-writable:
+  app-attachments:
+
+networks:
+  shared-services:
+    external: true

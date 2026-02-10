@@ -1,0 +1,47 @@
+.git
+.github
+.gitignore
+.env
+.env.local
+.env.*.local
+
+# Composer dev dependencies are installed fresh in the container
+vendor/
+
+# Old CodeIgniter 3 application code
+application/
+
+# Documentation
+docs/
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Node
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary / logs
+*.log
+*.tmp
+*.temp
+*.cache
+
+# Docker files (don't need to be in the image)
+docker-compose.yml
+Dockerfile
+.dockerignore
+
+# Tests (not needed in production)
+tests/
+phpunit.xml
+phpunit.xml.dist
+
+# Scripts
+scripts/
