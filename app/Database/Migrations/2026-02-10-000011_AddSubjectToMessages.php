@@ -13,13 +13,11 @@ class AddSubjectToMessages extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => 200,
                 'null'       => true,
-                'after'      => 'phoneno',
             ],
             'is_read' => [
                 'type'    => 'BOOLEAN',
                 'default' => false,
                 'null'    => false,
-                'after'   => 'message',
             ],
         ]);
     }

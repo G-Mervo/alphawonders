@@ -216,8 +216,18 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link <?= $currentUri === 'aw-cp/messages' ? 'active' : ''; ?>" href="<?= base_url('aw-cp/messages'); ?>">
+            <a class="nav-link <?= str_starts_with($currentUri, 'aw-cp/hires') ? 'active' : ''; ?>" href="<?= base_url('aw-cp/hires'); ?>">
+                <i class="fa-solid fa-briefcase"></i> Projects & Hires
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link <?= str_starts_with($currentUri, 'aw-cp/messages') ? 'active' : ''; ?>" href="<?= base_url('aw-cp/messages'); ?>">
                 <i class="fa-solid fa-envelope"></i> Messages
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link <?= $currentUri === 'aw-cp/subscribers' ? 'active' : ''; ?>" href="<?= base_url('aw-cp/subscribers'); ?>">
+                <i class="fa-solid fa-bell"></i> Subscribers
             </a>
         </li>
         <li class="nav-item">
@@ -229,18 +239,8 @@
     <div class="nav-section">Analytics</div>
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a class="nav-link <?= $currentUri === 'aw-cp/users_analytics' ? 'active' : ''; ?>" href="<?= base_url('aw-cp/users_analytics'); ?>">
-                <i class="fa-solid fa-users"></i> Users
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link <?= $currentUri === 'aw-cp/visits_analytics' ? 'active' : ''; ?>" href="<?= base_url('aw-cp/visits_analytics'); ?>">
-                <i class="fa-solid fa-chart-line"></i> Visits
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link <?= $currentUri === 'aw-cp/interactions_analytics' ? 'active' : ''; ?>" href="<?= base_url('aw-cp/interactions_analytics'); ?>">
-                <i class="fa-solid fa-chart-bar"></i> Interactions
+            <a class="nav-link <?= str_starts_with($currentUri, 'aw-cp/users_analytics') || str_starts_with($currentUri, 'aw-cp/visits_analytics') || str_starts_with($currentUri, 'aw-cp/interactions_analytics') ? 'active' : ''; ?>" href="<?= base_url('aw-cp/users_analytics'); ?>">
+                <i class="fa-solid fa-chart-line"></i> Analytics Overview
             </a>
         </li>
     </ul>

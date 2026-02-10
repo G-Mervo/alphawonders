@@ -14,12 +14,10 @@ class AddStatusToHires extends Migration
                 'constraint' => 20,
                 'default'    => 'pending',
                 'null'       => false,
-                'after'      => 'timeline',
             ],
             'admin_notes' => [
                 'type' => 'TEXT',
                 'null' => true,
-                'after' => 'status',
             ],
         ]);
     }
