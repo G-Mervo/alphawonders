@@ -1,0 +1,57 @@
+# Independent PostgreSQL stack — shared across all services on this host.
+# Lives at ~/infra/ on the EC2 instance.
+#
+# Usage:
+#   docker compose -f docker-compose.postgres.yml up -d
+#
+# The "shared-services" network is created here and declared external
+# by every app that needs the database.
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${PG_USER:-mervo}
+      POSTGRES_PASSWORD: ${PG_PASSWORD:?Set PG_PASSWORD in .env}
+      POSTGRES_DB: ${PG_DB:-alphaw}
+    ports:
+      - "127.0.0.1:5432:5432"            # bind to localhost only
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - shared-services
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PG_USER:-mervo} -d ${PG_DB:-alphaw}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@alphawonders.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-changeme}
+      PGADMIN_LISTEN_PORT: 5050
+    ports:
+      - "127.0.0.1:5050:5050"            # bind to localhost only
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    networks:
+      - shared-services
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  pgadmin-data:
+
+networks:
+  shared-services:
+    name: shared-services
+    driver: bridge

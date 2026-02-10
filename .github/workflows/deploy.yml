@@ -50,30 +50,50 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            set -e
+
             # Log in to GHCR
             echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-            # Navigate to project directory
+            # ── Ensure shared PostgreSQL is running ──
+            if ! docker network inspect shared-services >/dev/null 2>&1; then
+              echo "shared-services network not found — bootstrapping PostgreSQL stack..."
+              cd ~/infra
+              docker compose -f docker-compose.postgres.yml up -d
+              echo "Waiting for PostgreSQL to become healthy..."
+              for i in $(seq 1 20); do
+                if docker inspect --format='{{.State.Health.Status}}' postgres 2>/dev/null | grep -q "healthy"; then
+                  echo "PostgreSQL is healthy!"
+                  break
+                fi
+                echo "  attempt $i/20..."
+                sleep 3
+              done
+            else
+              echo "shared-services network exists — PostgreSQL assumed running."
+            fi
+
+            # ── Deploy application ──
             cd ~/alphawonders
 
             # Pull the latest image
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
-            # Restart the container
+            # Restart the app container (entrypoint runs migrations automatically)
             docker compose down
             docker compose up -d
 
             # Wait for container to be healthy
-            echo "Waiting for container health check..."
+            echo "Waiting for app container health check..."
             for i in $(seq 1 30); do
               if docker inspect --format='{{.State.Health.Status}}' alphawonders-app 2>/dev/null | grep -q "healthy"; then
                 echo "Container is healthy!"
                 exit 0
               fi
-              echo "Attempt $i/30 - waiting..."
+              echo "  attempt $i/30..."
               sleep 5
             done
 
             echo "Warning: Container did not become healthy within timeout, checking status..."
             docker ps --filter name=alphawonders-app
-            docker logs --tail 20 alphawonders-app
+            docker logs --tail 30 alphawonders-app

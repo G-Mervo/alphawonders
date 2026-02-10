@@ -14,6 +14,7 @@ composer.phar
 # .env
 .env.local
 .env.*.local
+infra/.env
 
 # IDE and Editor files
 .idea/

@@ -21,4 +21,8 @@ chmod -R 775 /var/www/html/writable
 mkdir -p /var/www/html/attachments
 chown -R www-data:www-data /var/www/html/attachments
 
+# Run database migrations (idempotent — safe on every boot)
+echo "Running database migrations..."
+cd /var/www/html && php spark migrate --all 2>&1 || echo "Warning: migration failed (DB may not be ready yet)"
+
 exec "$@"
