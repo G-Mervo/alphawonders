@@ -3,8 +3,8 @@ services:
     image: ghcr.io/${GITHUB_REPO:-alphawonders/alphawonders}:latest
     container_name: alphawonders-app
     restart: unless-stopped
-    ports:
-      - "8080:8080"
+    expose:
+      - "8080"                          # internal only — nginx-proxy routes traffic here
     environment:
       - CI_ENVIRONMENT=production
       # App

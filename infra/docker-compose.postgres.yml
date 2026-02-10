@@ -1,13 +1,22 @@
-# Independent PostgreSQL stack — shared across all services on this host.
+# ──────────────────────────────────────────────────────────────
+# Shared Infrastructure Stack
 # Lives at ~/infra/ on the EC2 instance.
+#
+# Contains:
+#   - PostgreSQL 15   (shared DB for all apps)
+#   - pgAdmin 4       (DB admin UI, localhost only)
+#   - Nginx           (reverse proxy, multi-domain SSL termination)
+#   - Certbot         (Let's Encrypt certificate management)
 #
 # Usage:
 #   docker compose -f docker-compose.postgres.yml up -d
 #
-# The "shared-services" network is created here and declared external
-# by every app that needs the database.
+# The "shared-services" network is created here.
+# Every app declares it as external and exposes an internal port.
+# ──────────────────────────────────────────────────────────────
 
 services:
+  # ── Database ──
   postgres:
     image: postgres:15-alpine
     container_name: postgres
@@ -17,7 +26,7 @@ services:
       POSTGRES_PASSWORD: ${PG_PASSWORD:?Set PG_PASSWORD in .env}
       POSTGRES_DB: ${PG_DB:-alphaw}
     ports:
-      - "127.0.0.1:5432:5432"            # bind to localhost only
+      - "127.0.0.1:5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
@@ -38,7 +47,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-changeme}
       PGADMIN_LISTEN_PORT: 5050
     ports:
-      - "127.0.0.1:5050:5050"            # bind to localhost only
+      - "127.0.0.1:5050:5050"
     volumes:
       - pgadmin-data:/var/lib/pgadmin
     networks:
@@ -47,9 +56,45 @@ services:
       postgres:
         condition: service_healthy
 
+  # ── Reverse Proxy ──
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: nginx-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/snippets:/etc/nginx/snippets:ro
+      - certbot-webroot:/var/www/certbot:ro
+      - certbot-certs:/etc/letsencrypt:ro
+    networks:
+      - shared-services
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # ── SSL Certificate Manager ──
+  certbot:
+    image: certbot/certbot:latest
+    container_name: certbot
+    volumes:
+      - certbot-webroot:/var/www/certbot
+      - certbot-certs:/etc/letsencrypt
+    # Run renewal check every 12 hours
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --quiet; sleep 12h & wait $${!}; done'"
+    networks:
+      - shared-services
+
 volumes:
   pgdata:
   pgadmin-data:
+  certbot-webroot:
+  certbot-certs:
 
 networks:
   shared-services:
