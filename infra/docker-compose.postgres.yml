@@ -5,14 +5,12 @@
 # Contains:
 #   - PostgreSQL 15   (shared DB for all apps)
 #   - pgAdmin 4       (DB admin UI, localhost only)
-#   - Nginx           (reverse proxy, multi-domain SSL termination)
-#   - Certbot         (Let's Encrypt certificate management)
+#   - Nginx           (reverse proxy, routes domains to app containers)
+#
+# SSL is handled by AWS ALB + ACM — Nginx only serves HTTP.
 #
 # Usage:
 #   docker compose -f docker-compose.postgres.yml up -d
-#
-# The "shared-services" network is created here.
-# Every app declares it as external and exposes an internal port.
 # ──────────────────────────────────────────────────────────────
 
 services:
@@ -56,20 +54,16 @@ services:
       postgres:
         condition: service_healthy
 
-  # ── Reverse Proxy ──
+  # ── Reverse Proxy (HTTP only — ALB handles SSL) ──
   nginx:
     image: nginx:1.27-alpine
     container_name: nginx-proxy
     restart: unless-stopped
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
-      - ./nginx/snippets:/etc/nginx/snippets:ro
-      - certbot-webroot:/var/www/certbot:ro
-      - certbot-certs:/etc/letsencrypt:ro
     networks:
       - shared-services
     healthcheck:
@@ -78,23 +72,9 @@ services:
       timeout: 5s
       retries: 3
 
-  # ── SSL Certificate Manager ──
-  certbot:
-    image: certbot/certbot:latest
-    container_name: certbot
-    volumes:
-      - certbot-webroot:/var/www/certbot
-      - certbot-certs:/etc/letsencrypt
-    # Run renewal check every 12 hours
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --quiet; sleep 12h & wait $${!}; done'"
-    networks:
-      - shared-services
-
 volumes:
   pgdata:
   pgadmin-data:
-  certbot-webroot:
-  certbot-certs:
 
 networks:
   shared-services:

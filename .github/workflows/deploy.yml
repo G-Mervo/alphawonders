@@ -55,36 +55,36 @@ jobs:
             # Log in to GHCR
             echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-            # ── Ensure shared PostgreSQL is running ──
+            # ── Ensure shared infra is running (postgres + nginx-proxy) ──
             if ! docker network inspect shared-services >/dev/null 2>&1; then
-              echo "shared-services network not found — bootstrapping PostgreSQL stack..."
+              echo "shared-services network missing — starting infra stack..."
               cd ~/infra
               docker compose -f docker-compose.postgres.yml up -d
-              echo "Waiting for PostgreSQL to become healthy..."
+              echo "Waiting for PostgreSQL..."
               for i in $(seq 1 20); do
                 if docker inspect --format='{{.State.Health.Status}}' postgres 2>/dev/null | grep -q "healthy"; then
                   echo "PostgreSQL is healthy!"
                   break
                 fi
-                echo "  attempt $i/20..."
                 sleep 3
               done
             else
-              echo "shared-services network exists — PostgreSQL assumed running."
+              echo "Infra stack running."
             fi
 
             # ── Deploy application ──
             cd ~/alphawonders
 
-            # Pull the latest image
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
-            # Restart the app container (entrypoint runs migrations automatically)
             docker compose down
             docker compose up -d
 
-            # Wait for container to be healthy
-            echo "Waiting for app container health check..."
+            # Reload nginx so it picks up the new app container
+            docker exec nginx-proxy nginx -s reload 2>/dev/null || true
+
+            # Wait for healthy
+            echo "Waiting for app health check..."
             for i in $(seq 1 30); do
               if docker inspect --format='{{.State.Health.Status}}' alphawonders-app 2>/dev/null | grep -q "healthy"; then
                 echo "Container is healthy!"
@@ -94,6 +94,6 @@ jobs:
               sleep 5
             done
 
-            echo "Warning: Container did not become healthy within timeout, checking status..."
+            echo "Warning: health check timeout"
             docker ps --filter name=alphawonders-app
             docker logs --tail 30 alphawonders-app
