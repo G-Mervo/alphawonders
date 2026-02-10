@@ -26,6 +26,11 @@ $routes->get('/blog/category/(:segment)', 'Alphawonders::blogCategory/$1');
 $routes->post('/blog/comment', 'Alphawonders::post_comments');
 $routes->get('/blog/(:segment)', 'Alphawonders::blogPost/$1');
 
+// Auth routes (outside auth filter)
+$routes->get('/aw-cp/login', 'Auth::login');
+$routes->post('/aw-cp/login', 'Auth::login');
+$routes->get('/aw-cp/logout', 'Auth::logout');
+
 // Admin/Dashboard routes - using ambiguous paths for security
 $routes->get('/aw-cp', 'Dashboard::admin');
 $routes->get('/aw-cp/services', 'Dashboard::services');

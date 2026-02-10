@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
 
+# Install dependencies if vendor/ is missing (e.g. source code volume mount)
+if [ ! -d "/var/www/html/vendor" ] || [ ! -f "/var/www/html/vendor/autoload.php" ]; then
+    echo "vendor/ not found, running composer install..."
+    cd /var/www/html && composer install --no-interaction --no-dev --optimize-autoloader
+fi
+
 # Ensure writable subdirectories exist (volume mount may start empty)
 mkdir -p /var/www/html/writable/cache
 mkdir -p /var/www/html/writable/logs

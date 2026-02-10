@@ -36,8 +36,10 @@ services:
       - email.SMTPPort=${SMTP_PORT:-587}
       - email.SMTPCrypto=${SMTP_CRYPTO:-tls}
     volumes:
+      - .:/var/www/html
       - app-writable:/var/www/html/writable
       - app-attachments:/var/www/html/attachments
+      - ./docker/php.dev.ini:/usr/local/etc/php/conf.d/custom.ini
     networks:
       - shared-services
     healthcheck:
@@ -53,7 +55,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: mervo
-      POSTGRES_PASSWORD: '$$Tpr09!dKQ-2.0/4(UwZC*7'
+      POSTGRES_PASSWORD: "$Tpr09!dKQ-2.0/4(UwZC*7"
       POSTGRES_DB: alphaw
     ports:
       - "5432:5432"
