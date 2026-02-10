@@ -20,15 +20,15 @@ class Alphawonders extends BaseController
     public function index()
     {
         $data['title'] = 'Alphawonders';
-        
+
         try {
             $data['blogs'] = $this->alphaBlogModel->retrieveBlog();
         } catch (\Exception $e) {
             $data['blogs'] = [];
         }
 
-        return view('layout/header', $data) . 
-               view('index', $data) . 
+        return view('layout/header', $data) .
+               view('index', $data) .
                view('layout/footer');
     }
 
@@ -36,8 +36,8 @@ class Alphawonders extends BaseController
     {
         $data['title'] = 'Alphawonders Solutions';
 
-        return view('layout/header', $data) . 
-               view('alphawonders', $data) . 
+        return view('layout/header', $data) .
+               view('alphawonders', $data) .
                view('layout/footer');
     }
 
@@ -45,8 +45,8 @@ class Alphawonders extends BaseController
     {
         $data['title'] = 'software | Alphawonders';
 
-        return view('layout/header', $data) . 
-               view('services/alphasoftwares', $data) . 
+        return view('layout/header', $data) .
+               view('services/alphasoftwares', $data) .
                view('layout/footer');
     }
 
@@ -54,8 +54,8 @@ class Alphawonders extends BaseController
     {
         $data['title'] = 'System';
 
-        return view('layout/header', $data) . 
-               view('services/alphasystems', $data) . 
+        return view('layout/header', $data) .
+               view('services/alphasystems', $data) .
                view('layout/footer');
     }
 
@@ -63,8 +63,8 @@ class Alphawonders extends BaseController
     {
         $data['title'] = 'Design | Alphawonders';
 
-        return view('layout/header', $data) . 
-               view('services/alphadesigns', $data) . 
+        return view('layout/header', $data) .
+               view('services/alphadesigns', $data) .
                view('layout/footer');
     }
 
@@ -72,8 +72,8 @@ class Alphawonders extends BaseController
     {
         $data['title'] = 'Digital Marketing | Alphawonders';
 
-        return view('layout/header', $data) . 
-               view('services/alphamarketing', $data) . 
+        return view('layout/header', $data) .
+               view('services/alphamarketing', $data) .
                view('layout/footer');
     }
 
@@ -81,8 +81,8 @@ class Alphawonders extends BaseController
     {
         $data['title'] = 'IT Consultancy | Alphawonders';
 
-        return view('layout/header', $data) . 
-               view('services/alphaconsultancy', $data) . 
+        return view('layout/header', $data) .
+               view('services/alphaconsultancy', $data) .
                view('layout/footer');
     }
 
@@ -90,8 +90,8 @@ class Alphawonders extends BaseController
     {
         $data['title'] = 'IT Support | Alphawonders';
 
-        return view('layout/header', $data) . 
-               view('services/alphasupport', $data) . 
+        return view('layout/header', $data) .
+               view('services/alphasupport', $data) .
                view('layout/footer');
     }
 
@@ -99,8 +99,8 @@ class Alphawonders extends BaseController
     {
         $data['title'] = 'AI Services | Alphawonders';
 
-        return view('layout/header', $data) . 
-               view('services/alphaiservices', $data) . 
+        return view('layout/header', $data) .
+               view('services/alphaiservices', $data) .
                view('layout/footer');
     }
 
@@ -108,8 +108,8 @@ class Alphawonders extends BaseController
     {
         $data['title'] = 'Hire | Alphawonders';
 
-        return view('layout/header', $data) . 
-               view('hires', $data) . 
+        return view('layout/header', $data) .
+               view('hires', $data) .
                view('layout/footer');
     }
 
@@ -117,15 +117,15 @@ class Alphawonders extends BaseController
     {
         $data['title'] = 'Contact us | Alphawonders';
 
-        return view('layout/header', $data) . 
-               view('contacts', $data) . 
+        return view('layout/header', $data) .
+               view('contacts', $data) .
                view('layout/footer');
     }
 
     public function send_contact_data()
     {
         $validation = \Config\Services::validation();
-        
+
         $validation->setRules([
             'fullname' => 'required|trim',
             'email' => 'required|valid_email|trim',
@@ -164,7 +164,7 @@ class Alphawonders extends BaseController
     public function subscriptions_email()
     {
         $validation = \Config\Services::validation();
-        
+
         $validation->setRules([
             'email_sub' => 'required|valid_email|trim'
         ]);
@@ -197,7 +197,7 @@ class Alphawonders extends BaseController
     public function hires_details()
     {
         $validation = \Config\Services::validation();
-        
+
         $validation->setRules([
             'name' => 'required|trim',
             'email' => 'required|valid_email|trim',
@@ -359,49 +359,86 @@ class Alphawonders extends BaseController
     public function alphablog()
     {
         $data['title'] = 'Blog | Alphawonders';
-        
+
         try {
-            $data['blogs'] = $this->alphaBlogModel->retrieveBlog();
+            $data['blogs'] = $this->alphaBlogModel->getRecentPosts(6);
+            $data['pager'] = $this->alphaBlogModel->pager;
+            $data['recentPosts'] = $this->alphaBlogModel->orderBy('date_created', 'DESC')->limit(4)->findAll();
         } catch (\Exception $e) {
             $data['blogs'] = [];
+            $data['pager'] = null;
+            $data['recentPosts'] = [];
         }
 
-        return view('layout/header', $data) . 
-               view('blog/index', $data) . 
+        return view('layout/header', $data) .
+               view('blog/index', $data) .
                view('layout/footer');
     }
 
-    public function alphapost()
+    public function blogPost(string $slug)
     {
-        $data['title'] = 'Blog | Alphawonders';
+        $post = $this->alphaBlogModel->getPostBySlug($slug);
 
-        return view('layout/header', $data) . 
-               view('blog/post', $data) . 
+        if (!$post) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Blog post not found.');
+        }
+
+        $data['title'] = esc($post['blog_title']) . ' | Alphawonders Blog';
+        $data['post'] = $post;
+        $data['comments'] = $this->alphaBlogModel->getCommentsByPostId((int) $post['id']);
+        $data['recentPosts'] = $this->alphaBlogModel->orderBy('date_created', 'DESC')->limit(4)->findAll();
+
+        return view('layout/header', $data) .
+               view('blog/show', $data) .
+               view('layout/footer');
+    }
+
+    public function blogCategory(string $category)
+    {
+        $data['title'] = ucwords(str_replace('-', ' ', $category)) . ' | Alphawonders Blog';
+        $data['category'] = $category;
+
+        try {
+            $data['blogs'] = $this->alphaBlogModel->getPostsByCategory($category, 6);
+            $data['pager'] = $this->alphaBlogModel->pager;
+            $data['recentPosts'] = $this->alphaBlogModel->orderBy('date_created', 'DESC')->limit(4)->findAll();
+        } catch (\Exception $e) {
+            $data['blogs'] = [];
+            $data['pager'] = null;
+            $data['recentPosts'] = [];
+        }
+
+        return view('layout/header', $data) .
+               view('blog/index', $data) .
                view('layout/footer');
     }
 
     public function post_comments()
     {
         $validation = \Config\Services::validation();
-        
+
         $validation->setRules([
-            'comm-sct' => 'required|trim'
+            'comm-sct' => 'required',
+            'post_id' => 'required|numeric',
+            'post_slug' => 'required'
         ]);
 
         if (!$validation->run($this->request->getPost())) {
-            return redirect()->to(base_url('/'));
+            return redirect()->to(base_url('blog'));
         }
 
         $userAgent = $this->request->getUserAgent();
         $device = $userAgent->isMobile() ? 'Mobile' : 'Desktop';
 
+        $commentee = $this->request->getPost('commentee');
+
         $data = [
-            'email_addr' => 'null',
-            'phoneno' => 'null',
+            'email_addr' => null,
+            'phoneno' => null,
             'comment' => $this->request->getPost('comm-sct'),
-            'commentee' => 'guest',
+            'commentee' => !empty($commentee) ? $commentee : 'guest',
             'activity_name' => 'Post Comment',
-            'post_id' => '1',
+            'post_id' => $this->request->getPost('post_id'),
             'browser_name' => $userAgent->getBrowser() . ' ' . $userAgent->getVersion(),
             'ip_address' => $this->request->getIPAddress(),
             'platform' => $userAgent->getPlatform(),
@@ -410,12 +447,12 @@ class Alphawonders extends BaseController
             'time' => date("Y-m-d H:i:s"),
         ];
 
-        if ($this->alphaBlogModel->insertComments($data)) {
-            return redirect()->to(base_url())->with('success', 'Comment posted successfully!');
+        $slug = $this->request->getPost('post_slug');
+
+        if ($this->alphaBlogModel->insertComment($data)) {
+            return redirect()->to(base_url('blog/' . $slug))->with('success', 'Comment posted successfully!');
         } else {
-            return redirect()->to(base_url('/'));
+            return redirect()->to(base_url('blog/' . $slug));
         }
     }
 }
-
-

@@ -311,10 +311,10 @@
 					<?php if(isset($blogs) && !empty($blogs) && is_array($blogs)): ?>
 						<?php foreach(array_slice($blogs, 0, 4) as $blog): ?>
 							<?php 
-								$blogTitle = isset($blog['title']) ? $blog['title'] : (is_object($blog) && isset($blog->title) ? $blog->title : 'Blog Post');
-								$blogDesc = isset($blog['description']) ? $blog['description'] : (is_object($blog) && isset($blog->description) ? $blog->description : 'Read more about this topic...');
-								$blogImage = isset($blog['image']) ? $blog['image'] : (is_object($blog) && isset($blog->image) ? $blog->image : 'assets/img/qtmcomp.jpg');
-								$blogUrl = isset($blog['url']) ? $blog['url'] : (is_object($blog) && isset($blog->url) ? $blog->url : 'blog/post');
+								$blogTitle = $blog['blog_title'] ?? 'Blog Post';
+								$blogDesc = strip_tags($blog['blog_description'] ?? 'Read more about this topic...');
+								$blogImage = $blog['blog_image'] ?? 'assets/img/qtmcomp.jpg';
+								$blogUrl = 'blog/' . ($blog['blog_url'] ?? 'post');
 							?>
 							<div class="col-md-6">
 								<div class="card h-100 border-0 shadow-sm hover-lift">
