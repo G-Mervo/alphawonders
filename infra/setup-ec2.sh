@@ -1,21 +1,18 @@
 #!/bin/bash
 # ──────────────────────────────────────────────────────────────
 # EC2 First-Time Setup Script
-# Bootstraps the full multi-domain stack:
-#   1. Shared PostgreSQL + pgAdmin + Nginx reverse proxy
-#   2. Alphawonders app
 #
-# SSL is handled by AWS ALB + ACM (not on this instance).
+# Architecture:
+#   CloudFront (ACM SSL) → EC2:80 → nginx-proxy → app containers
+#                                  → postgres (shared DB)
 #
 # Prerequisites:
 #   - Docker + Docker Compose v2 installed
-#   - ~/infra/.env     created from infra/.env.example
-#   - ~/infra/nginx/   copied from repo's infra/nginx/
-#   - ~/infra/docker-compose.postgres.yml from repo
-#   - ~/alphawonders/.env  created from .env.example
-#   - ~/alphawonders/docker-compose.yml from repo
-#   - AWS ALB pointing to this instance on port 80
-#   - ACM certificate attached to the ALB listener (443)
+#   - ~/infra/.env     (from infra/.env.example)
+#   - ~/infra/nginx/   (from repo's infra/nginx/)
+#   - ~/infra/docker-compose.postgres.yml
+#   - ~/alphawonders/.env (from .env.example)
+#   - ~/alphawonders/docker-compose.yml
 #
 # Usage:
 #   chmod +x setup-ec2.sh && ./setup-ec2.sh
@@ -24,25 +21,24 @@ set -euo pipefail
 
 INFRA_DIR="$HOME/infra"
 
-echo "=== EC2 Multi-Domain Stack Setup ==="
+echo "=== EC2 Setup ==="
 echo ""
 
 # ── Pre-flight checks ──
 for f in "$INFRA_DIR/.env" "$INFRA_DIR/docker-compose.postgres.yml" "$INFRA_DIR/nginx/nginx.conf"; do
     if [ ! -f "$f" ]; then
-        echo "ERROR: $f not found. Copy the infra/ directory from the repo first."
+        echo "ERROR: $f not found."
         exit 1
     fi
 done
 
 if [ ! -f "$HOME/alphawonders/.env" ]; then
     echo "ERROR: ~/alphawonders/.env not found."
-    echo "Copy .env.example to ~/alphawonders/.env and fill in your credentials."
     exit 1
 fi
 
-# ── Step 1: Start infrastructure (PostgreSQL + Nginx) ──
-echo "── Step 1: Starting infrastructure stack ──"
+# ── Step 1: Start infra (PostgreSQL + Nginx) ──
+echo "── Step 1: Starting infrastructure ──"
 cd "$INFRA_DIR"
 docker compose -f docker-compose.postgres.yml up -d
 
@@ -56,48 +52,58 @@ for i in $(seq 1 30); do
     sleep 3
 done
 
-echo "Nginx proxy started."
-
-# ── Step 2: Start Alphawonders app ──
+# ── Step 2: Start app ──
 echo ""
-echo "── Step 2: Starting Alphawonders app ──"
+echo "── Step 2: Starting Alphawonders ──"
 cd "$HOME/alphawonders"
 docker compose up -d
 
-echo "Waiting for app health check..."
+echo "Waiting for app..."
 for i in $(seq 1 30); do
     if docker inspect --format='{{.State.Health.Status}}' alphawonders-app 2>/dev/null | grep -q "healthy"; then
         echo "App is healthy!"
         break
     fi
-    [ "$i" -eq 30 ] && { echo "WARNING: App health check timeout."; docker logs --tail 20 alphawonders-app; }
+    [ "$i" -eq 30 ] && { echo "WARNING: timeout"; docker logs --tail 20 alphawonders-app; }
     sleep 5
 done
 
-# ── Step 3: Verify ──
-echo ""
-echo "── Step 3: Verification ──"
+# ── Verify ──
 echo ""
 docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
 echo ""
-echo "=== Setup complete! ==="
+echo "=== EC2 setup done! ==="
 echo ""
-echo "Architecture:"
-echo "  Internet -> ALB (443/SSL via ACM) -> EC2:80 -> nginx-proxy -> app containers"
+echo "AWS setup (one-time):"
 echo ""
-echo "AWS setup needed:"
-echo "  1. Request ACM certificate for your domain(s)"
-echo "  2. Create ALB with HTTPS:443 listener using the ACM cert"
-echo "  3. ALB target group -> this EC2 instance on port 80"
-echo "  4. ALB HTTP:80 listener -> redirect to HTTPS:443"
-echo "  5. Security group: ALB allows 80+443 from internet, EC2 allows 80 from ALB only"
-echo "  6. Point DNS (Route 53 or registrar) to the ALB DNS name"
+echo "  1. ACM (must be in us-east-1 for CloudFront):"
+echo "     - Request public certificate for alphawonders.com + *.alphawonders.com"
+echo "     - Validate via DNS (add the CNAME records ACM gives you)"
 echo ""
-echo "To add another domain/site:"
-echo "  1. Copy infra/nginx/conf.d/_template.conf.example to newsite.conf"
-echo "  2. Edit the domain, container name, and port"
-echo "  3. Add domain to ALB + ACM cert (or request new cert)"
-echo "  4. Reload: docker exec nginx-proxy nginx -s reload"
+echo "  2. CloudFront distribution:"
+echo "     - Origin: http://<EC2-public-IP>  (HTTP only, port 80)"
+echo "     - Origin protocol: HTTP only"
+echo "     - Viewer protocol: Redirect HTTP to HTTPS"
+echo "     - Allowed HTTP methods: GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE"
+echo "     - Cache policy: CachingDisabled (or custom — dynamic site)"
+echo "     - Origin request policy: AllViewer (forwards Host, cookies, query strings)"
+echo "     - Alternate domain names (CNAMEs): alphawonders.com, www.alphawonders.com"
+echo "     - Custom SSL certificate: select the ACM cert from step 1"
 echo ""
-echo "GitHub Actions secrets:"
-echo "  EC2_HOST, EC2_USER, EC2_SSH_KEY, GHCR_PAT"
+echo "  3. DNS (Route 53 or registrar):"
+echo "     - alphawonders.com     → ALIAS/CNAME → <cloudfront-distribution>.cloudfront.net"
+echo "     - www.alphawonders.com → ALIAS/CNAME → <cloudfront-distribution>.cloudfront.net"
+echo ""
+echo "  4. EC2 Security Group:"
+echo "     - Allow inbound port 80 from CloudFront managed prefix list"
+echo "       (com.amazonaws.global.cloudfront.origin-facing)"
+echo "     - Allow inbound port 22 from your IP only"
+echo ""
+echo "  5. GitHub Actions secrets (repo Settings > Secrets):"
+echo "     - EC2_HOST, EC2_USER, EC2_SSH_KEY, GHCR_PAT"
+echo ""
+echo "To add another domain:"
+echo "  1. cp ~/infra/nginx/conf.d/_template.conf.example ~/infra/nginx/conf.d/newdomain.conf"
+echo "  2. Edit domain, container, port"
+echo "  3. Add domain to CloudFront alt names + ACM cert (or new cert + distribution)"
+echo "  4. docker exec nginx-proxy nginx -s reload"

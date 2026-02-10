@@ -7,7 +7,7 @@
 #   - pgAdmin 4       (DB admin UI, localhost only)
 #   - Nginx           (reverse proxy, routes domains to app containers)
 #
-# SSL is handled by AWS ALB + ACM — Nginx only serves HTTP.
+# SSL is handled by CloudFront + ACM — Nginx only serves HTTP.
 #
 # Usage:
 #   docker compose -f docker-compose.postgres.yml up -d
@@ -54,7 +54,7 @@ services:
       postgres:
         condition: service_healthy
 
-  # ── Reverse Proxy (HTTP only — ALB handles SSL) ──
+  # ── Reverse Proxy (HTTP only — CloudFront + ACM handles SSL) ──
   nginx:
     image: nginx:1.27-alpine
     container_name: nginx-proxy
