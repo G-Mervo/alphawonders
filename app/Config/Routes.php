@@ -46,6 +46,19 @@ $routes->get('/aw-cp/visits_analytics', 'Dashboard::visits_analytics');
 $routes->get('/aw-cp/interactions_analytics', 'Dashboard::interactions_analytics');
 $routes->get('/aw-cp/products', 'Dashboard::products');
 $routes->get('/aw-cp/settings', 'Dashboard::settings');
+$routes->post('/aw-cp/settings', 'Dashboard::settings');
+
+// Hires/Projects management
+$routes->get('/aw-cp/hires', 'Dashboard::hires');
+$routes->get('/aw-cp/hires/view/(:num)', 'Dashboard::hireView/$1');
+$routes->post('/aw-cp/hires/update/(:num)', 'Dashboard::hireUpdateStatus/$1');
+
+// Messages management
+$routes->get('/aw-cp/messages/toggle/(:num)', 'Dashboard::messageToggleRead/$1');
+$routes->get('/aw-cp/messages/delete/(:num)', 'Dashboard::messageDelete/$1');
+
+// Subscribers
+$routes->get('/aw-cp/subscribers', 'Dashboard::subscribers');
 
 // Legacy admin routes (redirect to new ambiguous routes for backward compatibility)
 $routes->get('/admin', function() {
