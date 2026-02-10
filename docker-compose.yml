@@ -1,15 +1,21 @@
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/${GITHUB_REPO:-alphawonders/alphawonders}:latest
     container_name: alphawonders-app
     restart: unless-stopped
     ports:
       - "8080:8080"
     environment:
-      # Override hostname for Docker networking (container name of Postgres)
+      - CI_ENVIRONMENT=production
       - database.default.hostname=postgres
+      - database.default.database=${DB_DATABASE:-alphaw}
+      - database.default.username=${DB_USERNAME}
+      - database.default.password=${DB_PASSWORD}
+      - database.default.DBDriver=Postgre
+      - database.default.port=5432
+      - database.default.charset=utf8
+      - app.baseURL=${APP_BASE_URL:-https://alphawonders.com/}
+      - app.forceGlobalSecureRequests=true
     volumes:
       - app-writable:/var/www/html/writable
       - app-attachments:/var/www/html/attachments
