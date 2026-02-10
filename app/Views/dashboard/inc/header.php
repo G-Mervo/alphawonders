@@ -247,8 +247,8 @@
     <div class="nav-section">System</div>
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a class="nav-link <?= $currentUri === 'aw-cp/products' ? 'active' : ''; ?>" href="<?= base_url('aw-cp/products'); ?>">
-                <i class="fa-solid fa-box"></i> Products
+            <a class="nav-link <?= str_starts_with($currentUri, 'aw-cp/github') ? 'active' : ''; ?>" href="<?= base_url('aw-cp/github'); ?>">
+                <i class="fa-brands fa-github"></i> GitHub Projects
             </a>
         </li>
         <li class="nav-item">

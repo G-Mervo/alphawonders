@@ -5,6 +5,9 @@
         <h3 class="fw-bold mb-1">Projects & Hires</h3>
         <p class="text-muted mb-0">Manage client project requests and track their progress.</p>
     </div>
+    <button type="button" class="btn btn-success" id="aiInsightsBtn">
+        <i class="fa-solid fa-robot me-1"></i> AI Insights
+    </button>
 </div>
 
 <?php if (session()->getFlashdata('success')): ?>
@@ -13,6 +16,22 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 <?php endif; ?>
+
+<!-- AI Insights Panel -->
+<div class="card border-0 shadow-sm mb-4 d-none" id="aiInsightsPanel">
+    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+        <span><i class="fa-solid fa-robot me-2"></i>AI Project Insights</span>
+        <button type="button" class="btn btn-sm btn-outline-light" id="closeInsightsBtn">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    <div class="card-body" id="aiInsightsContent">
+        <div class="text-center py-4">
+            <div class="spinner-border text-success" role="status"></div>
+            <p class="text-muted mt-2">Analyzing project data...</p>
+        </div>
+    </div>
+</div>
 
 <!-- Status Filter Pills -->
 <div class="mb-4">
@@ -104,3 +123,44 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const baseUrl = '<?= base_url(); ?>';
+    const panel = document.getElementById('aiInsightsPanel');
+    const content = document.getElementById('aiInsightsContent');
+    let loaded = false;
+
+    document.getElementById('aiInsightsBtn').addEventListener('click', function() {
+        panel.classList.remove('d-none');
+        this.disabled = true;
+
+        if (!loaded) {
+            fetch(baseUrl + '/aw-cp/ai/project-insights', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest'}
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    content.innerHTML = data.content;
+                    loaded = true;
+                } else {
+                    content.innerHTML = '<div class="alert alert-warning mb-0">' + (data.error || 'Failed to generate insights.') + '</div>';
+                }
+            })
+            .catch(() => {
+                content.innerHTML = '<div class="alert alert-danger mb-0">Network error. Please try again.</div>';
+            })
+            .finally(() => {
+                this.disabled = false;
+            });
+        }
+    });
+
+    document.getElementById('closeInsightsBtn').addEventListener('click', function() {
+        panel.classList.add('d-none');
+        document.getElementById('aiInsightsBtn').disabled = false;
+    });
+});
+</script>

@@ -44,7 +44,9 @@ $routes->get('/aw-cp/blog/delete/(:num)', 'Dashboard::blogDelete/$1');
 $routes->get('/aw-cp/users_analytics', 'Dashboard::users_analytics');
 $routes->get('/aw-cp/visits_analytics', 'Dashboard::visits_analytics');
 $routes->get('/aw-cp/interactions_analytics', 'Dashboard::interactions_analytics');
-$routes->get('/aw-cp/products', 'Dashboard::products');
+$routes->get('/aw-cp/products', function() {
+    return redirect()->to(base_url('aw-cp/github'));
+});
 $routes->get('/aw-cp/settings', 'Dashboard::settings');
 $routes->post('/aw-cp/settings', 'Dashboard::settings');
 
@@ -59,6 +61,24 @@ $routes->get('/aw-cp/messages/delete/(:num)', 'Dashboard::messageDelete/$1');
 
 // Subscribers
 $routes->get('/aw-cp/subscribers', 'Dashboard::subscribers');
+
+// AI endpoints (Groq)
+$routes->post('/aw-cp/ai/generate-blog', 'Dashboard::aiGenerateBlog');
+$routes->post('/aw-cp/ai/suggest-title', 'Dashboard::aiSuggestTitle');
+$routes->post('/aw-cp/ai/suggest-slug', 'Dashboard::aiSuggestSlug');
+$routes->post('/aw-cp/ai/suggest-category', 'Dashboard::aiSuggestCategory');
+$routes->post('/aw-cp/ai/draft-reply', 'Dashboard::aiDraftReply');
+$routes->post('/aw-cp/ai/project-insights', 'Dashboard::aiProjectInsights');
+
+// GitHub Projects
+$routes->get('/aw-cp/github', 'Dashboard::github');
+$routes->get('/aw-cp/github/create', 'Dashboard::githubCreateRepo');
+$routes->post('/aw-cp/github/create', 'Dashboard::githubCreateRepo');
+$routes->get('/aw-cp/github/repo/(:segment)/(:segment)', 'Dashboard::githubRepo/$1/$2');
+$routes->get('/aw-cp/github/repo/(:segment)/(:segment)/issues/create', 'Dashboard::githubCreateIssue/$1/$2');
+$routes->post('/aw-cp/github/repo/(:segment)/(:segment)/issues/create', 'Dashboard::githubCreateIssue/$1/$2');
+$routes->get('/aw-cp/github/repo/(:segment)/(:segment)/releases/create', 'Dashboard::githubCreateRelease/$1/$2');
+$routes->post('/aw-cp/github/repo/(:segment)/(:segment)/releases/create', 'Dashboard::githubCreateRelease/$1/$2');
 
 // Legacy admin routes (redirect to new ambiguous routes for backward compatibility)
 $routes->get('/admin', function() {

@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\AlphaBlogModel;
+use App\Libraries\GroqService;
+use App\Libraries\GitHubService;
 
 class Dashboard extends BaseController
 {
@@ -414,6 +416,7 @@ class Dashboard extends BaseController
                 'google_analytics_id', 'google_search_console_meta',
                 'site_name', 'site_description', 'contact_email',
                 'social_facebook', 'social_twitter', 'social_linkedin',
+                'groq_api_key', 'groq_model', 'github_pat',
             ];
 
             foreach ($keys as $key) {
@@ -445,6 +448,257 @@ class Dashboard extends BaseController
 
         return view('dashboard/inc/header', $data) .
                view('dashboard/settings', $data) .
+               view('dashboard/inc/footer');
+    }
+
+    // ──────────────────────────────────────────────
+    // AI Endpoints (Groq)
+    // ──────────────────────────────────────────────
+
+    public function aiGenerateBlog()
+    {
+        $topic = $this->request->getPost('topic');
+        $outline = $this->request->getPost('outline') ?? '';
+
+        if (!$topic) {
+            return $this->response->setJSON(['success' => false, 'error' => 'Topic is required.']);
+        }
+
+        $groq = new GroqService();
+        $result = $groq->generateBlogPost($topic, $outline);
+
+        if ($result['success']) {
+            // Also suggest a title and slug
+            $titleResult = $groq->suggestTitle($result['content']);
+            $slugResult = $groq->suggestSlug($titleResult['success'] ? $titleResult['content'] : $topic);
+
+            return $this->response->setJSON([
+                'success' => true,
+                'content' => $result['content'],
+                'title'   => $titleResult['success'] ? trim($titleResult['content'], '"\'') : '',
+                'slug'    => $slugResult['success'] ? trim($slugResult['content']) : '',
+            ]);
+        }
+
+        return $this->response->setJSON($result);
+    }
+
+    public function aiSuggestTitle()
+    {
+        $content = $this->request->getPost('content');
+        if (!$content) {
+            return $this->response->setJSON(['success' => false, 'error' => 'Content is required.']);
+        }
+
+        $groq = new GroqService();
+        $result = $groq->suggestTitle($content);
+
+        if ($result['success']) {
+            $result['content'] = trim($result['content'], '"\'');
+        }
+
+        return $this->response->setJSON($result);
+    }
+
+    public function aiSuggestSlug()
+    {
+        $title = $this->request->getPost('title');
+        if (!$title) {
+            return $this->response->setJSON(['success' => false, 'error' => 'Title is required.']);
+        }
+
+        $groq = new GroqService();
+        $result = $groq->suggestSlug($title);
+
+        return $this->response->setJSON($result);
+    }
+
+    public function aiSuggestCategory()
+    {
+        $content = $this->request->getPost('content');
+        if (!$content) {
+            return $this->response->setJSON(['success' => false, 'error' => 'Content is required.']);
+        }
+
+        $groq = new GroqService();
+        $result = $groq->suggestCategory($content);
+
+        return $this->response->setJSON($result);
+    }
+
+    public function aiDraftReply()
+    {
+        $senderName = $this->request->getPost('sender_name');
+        $message = $this->request->getPost('message');
+        $subject = $this->request->getPost('subject') ?? '';
+
+        if (!$message) {
+            return $this->response->setJSON(['success' => false, 'error' => 'Message is required.']);
+        }
+
+        $groq = new GroqService();
+        $result = $groq->draftMessageReply($senderName ?? 'Unknown', $message, $subject);
+
+        return $this->response->setJSON($result);
+    }
+
+    public function aiProjectInsights()
+    {
+        $hires = $this->db->table('hires')->orderBy('date_created', 'DESC')->limit(20)->get()->getResultArray();
+
+        if (empty($hires)) {
+            return $this->response->setJSON(['success' => false, 'error' => 'No project data to analyze.']);
+        }
+
+        $groq = new GroqService();
+        $result = $groq->generateProjectInsights($hires);
+
+        return $this->response->setJSON($result);
+    }
+
+    // ──────────────────────────────────────────────
+    // GitHub Projects Dashboard
+    // ──────────────────────────────────────────────
+
+    public function github()
+    {
+        $data['title'] = 'GitHub Projects | Alphawonders';
+        $gh = new GitHubService();
+        $data['configured'] = $gh->isConfigured();
+
+        if ($data['configured']) {
+            $userResult = $gh->getUser();
+            $reposResult = $gh->listRepos();
+            $data['ghUser'] = $userResult['success'] ? $userResult['data'] : null;
+            $data['repos'] = $reposResult['success'] ? $reposResult['data'] : [];
+            $data['error'] = $userResult['success'] ? null : $userResult['error'];
+        }
+
+        return view('dashboard/inc/header', $data) .
+               view('dashboard/github/index', $data) .
+               view('dashboard/inc/footer');
+    }
+
+    public function githubRepo(string $owner, string $repo)
+    {
+        $data['title'] = "{$owner}/{$repo} | GitHub Projects";
+        $gh = new GitHubService();
+
+        if (!$gh->isConfigured()) {
+            return redirect()->to(base_url('aw-cp/github'));
+        }
+
+        $repoResult = $gh->getRepo($owner, $repo);
+        if (!$repoResult['success']) {
+            return redirect()->to(base_url('aw-cp/github'))->with('error', $repoResult['error']);
+        }
+
+        $data['repo'] = $repoResult['data'];
+        $data['owner'] = $owner;
+        $data['repoName'] = $repo;
+
+        $commitsResult = $gh->getCommits($owner, $repo);
+        $data['commits'] = $commitsResult['success'] ? $commitsResult['data'] : [];
+
+        $langResult = $gh->getLanguages($owner, $repo);
+        $data['languages'] = $langResult['success'] ? $langResult['data'] : [];
+
+        $issuesResult = $gh->listIssues($owner, $repo);
+        $data['issues'] = $issuesResult['success'] ? $issuesResult['data'] : [];
+
+        return view('dashboard/inc/header', $data) .
+               view('dashboard/github/repo_detail', $data) .
+               view('dashboard/inc/footer');
+    }
+
+    public function githubCreateRepo()
+    {
+        $gh = new GitHubService();
+        if (!$gh->isConfigured()) {
+            return redirect()->to(base_url('aw-cp/github'));
+        }
+
+        if ($this->request->getMethod() === 'POST') {
+            $result = $gh->createRepo([
+                'name'          => $this->request->getPost('name'),
+                'description'   => $this->request->getPost('description') ?? '',
+                'private'       => $this->request->getPost('visibility') === 'private',
+                'auto_init'     => (bool) $this->request->getPost('auto_init'),
+            ]);
+
+            if ($result['success']) {
+                return redirect()->to(base_url('aw-cp/github'))->with('success', 'Repository created successfully!');
+            }
+
+            return redirect()->to(base_url('aw-cp/github/create'))->with('error', $result['error']);
+        }
+
+        $data['title'] = 'Create Repository | GitHub Projects';
+        return view('dashboard/inc/header', $data) .
+               view('dashboard/github/create_repo', $data) .
+               view('dashboard/inc/footer');
+    }
+
+    public function githubCreateIssue(string $owner, string $repo)
+    {
+        $gh = new GitHubService();
+        if (!$gh->isConfigured()) {
+            return redirect()->to(base_url('aw-cp/github'));
+        }
+
+        if ($this->request->getMethod() === 'POST') {
+            $issueData = [
+                'title' => $this->request->getPost('title'),
+                'body'  => $this->request->getPost('body') ?? '',
+            ];
+            $labels = $this->request->getPost('labels');
+            if ($labels) {
+                $issueData['labels'] = array_map('trim', explode(',', $labels));
+            }
+
+            $result = $gh->createIssue($owner, $repo, $issueData);
+            if ($result['success']) {
+                return redirect()->to(base_url("aw-cp/github/repo/{$owner}/{$repo}"))->with('success', 'Issue created successfully!');
+            }
+
+            return redirect()->to(base_url("aw-cp/github/repo/{$owner}/{$repo}/issues/create"))->with('error', $result['error']);
+        }
+
+        $data['title'] = "Create Issue | {$owner}/{$repo}";
+        $data['owner'] = $owner;
+        $data['repoName'] = $repo;
+        return view('dashboard/inc/header', $data) .
+               view('dashboard/github/create_issue', $data) .
+               view('dashboard/inc/footer');
+    }
+
+    public function githubCreateRelease(string $owner, string $repo)
+    {
+        $gh = new GitHubService();
+        if (!$gh->isConfigured()) {
+            return redirect()->to(base_url('aw-cp/github'));
+        }
+
+        if ($this->request->getMethod() === 'POST') {
+            $result = $gh->createRelease($owner, $repo, [
+                'tag_name'   => $this->request->getPost('tag_name'),
+                'name'       => $this->request->getPost('name') ?? '',
+                'body'       => $this->request->getPost('body') ?? '',
+                'prerelease' => (bool) $this->request->getPost('prerelease'),
+            ]);
+
+            if ($result['success']) {
+                return redirect()->to(base_url("aw-cp/github/repo/{$owner}/{$repo}"))->with('success', 'Release created successfully!');
+            }
+
+            return redirect()->to(base_url("aw-cp/github/repo/{$owner}/{$repo}/releases/create"))->with('error', $result['error']);
+        }
+
+        $data['title'] = "Create Release | {$owner}/{$repo}";
+        $data['owner'] = $owner;
+        $data['repoName'] = $repo;
+        return view('dashboard/inc/header', $data) .
+               view('dashboard/github/create_release', $data) .
                view('dashboard/inc/footer');
     }
 }

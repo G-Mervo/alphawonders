@@ -99,6 +99,54 @@
         </div>
     </div>
 
+        <!-- AI Integration (Groq) -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white fw-semibold">
+                    <i class="fa-solid fa-robot me-2 text-success"></i>AI Integration (Groq)
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="groq_api_key" class="form-label">Groq API Key</label>
+                        <input type="password" class="form-control" name="groq_api_key" id="groq_api_key"
+                               value="<?= esc($settings['groq_api_key'] ?? ''); ?>"
+                               placeholder="gsk_...">
+                        <div class="form-text">Get a free API key from <a href="https://console.groq.com/keys" target="_blank">console.groq.com</a></div>
+                    </div>
+                    <div class="mb-0">
+                        <label for="groq_model" class="form-label">Model</label>
+                        <select class="form-select" name="groq_model" id="groq_model">
+                            <?php
+                            $models = ['llama-3.3-70b-versatile' => 'Llama 3.3 70B (Recommended)', 'llama-3.1-8b-instant' => 'Llama 3.1 8B (Faster)'];
+                            $currentModel = $settings['groq_model'] ?? 'llama-3.3-70b-versatile';
+                            foreach ($models as $val => $label): ?>
+                                <option value="<?= $val; ?>" <?= $currentModel === $val ? 'selected' : ''; ?>><?= $label; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GitHub Integration -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white fw-semibold">
+                    <i class="fa-brands fa-github me-2"></i>GitHub Integration
+                </div>
+                <div class="card-body">
+                    <div class="mb-0">
+                        <label for="github_pat" class="form-label">Personal Access Token</label>
+                        <input type="password" class="form-control" name="github_pat" id="github_pat"
+                               value="<?= esc($settings['github_pat'] ?? ''); ?>"
+                               placeholder="ghp_...">
+                        <div class="form-text">Create a token at <a href="https://github.com/settings/tokens?type=beta" target="_blank">GitHub Settings > Developer settings > Personal access tokens</a>. Grant <code>repo</code> scope for full access.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="mt-4">
         <button type="submit" class="btn btn-primary btn-lg px-5">
             <i class="fa-solid fa-check me-2"></i>Save Settings
