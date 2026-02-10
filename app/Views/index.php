@@ -29,15 +29,15 @@
 					</div>
 					<div class="d-flex flex-wrap gap-4 mt-4 wow fadeInUp" data-wow-delay="0.6s">
 						<div class="stat-item">
-							<div class="h3 fw-bold text-warning mb-1">500+</div>
+							<div class="h3 fw-bold text-warning mb-1">150+</div>
 							<div class="small text-white-50">Projects Delivered</div>
 						</div>
 						<div class="stat-item">
-							<div class="h3 fw-bold text-warning mb-1">98%</div>
-							<div class="small text-white-50">Client Satisfaction</div>
+							<div class="h3 fw-bold text-warning mb-1">50+</div>
+							<div class="small text-white-50">Happy Clients</div>
 						</div>
 						<div class="stat-item">
-							<div class="h3 fw-bold text-warning mb-1">10+</div>
+							<div class="h3 fw-bold text-warning mb-1">7+</div>
 							<div class="small text-white-50">Years Experience</div>
 						</div>
 					</div>
@@ -232,7 +232,7 @@
 						</div>
 						<div>
 							<h5 class="fw-bold mb-2">Proven Track Record</h5>
-							<p class="text-muted mb-0">500+ successful projects delivered with 98% client satisfaction rate.</p>
+							<p class="text-muted mb-0">150+ successful projects delivered across diverse industries with proven results.</p>
 						</div>
 					</div>
 					<div class="feature-item d-flex mb-4">
@@ -273,19 +273,19 @@
 			<div class="col-lg-6">
 				<div class="stats-grid">
 					<div class="stat-card text-center p-4 bg-light rounded-4 mb-3">
-						<div class="display-4 fw-bold text-primary mb-2">500+</div>
+						<div class="display-4 fw-bold text-primary mb-2">150+</div>
 						<div class="text-muted">Projects Completed</div>
 					</div>
 					<div class="row g-3">
 						<div class="col-6">
 							<div class="stat-card text-center p-4 bg-primary bg-opacity-10 rounded-4">
-								<div class="h2 fw-bold text-primary mb-2">98%</div>
-								<div class="small text-muted">Satisfaction Rate</div>
+								<div class="h2 fw-bold text-primary mb-2">50+</div>
+								<div class="small text-muted">Happy Clients</div>
 							</div>
 						</div>
 						<div class="col-6">
 							<div class="stat-card text-center p-4 bg-warning bg-opacity-10 rounded-4">
-								<div class="h2 fw-bold text-warning mb-2">10+</div>
+								<div class="h2 fw-bold text-warning mb-2">7+</div>
 								<div class="small text-muted">Years Experience</div>
 							</div>
 						</div>

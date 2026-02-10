@@ -62,10 +62,28 @@ services:
     networks:
       - shared-services
 
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@alphawonders.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_LISTEN_PORT: 5050
+    ports:
+      - "5050:5050"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    networks:
+      - shared-services
+    depends_on:
+      - postgres
+
 volumes:
   app-writable:
   app-attachments:
   pgdata:
+  pgadmin-data:
 
 networks:
   shared-services:

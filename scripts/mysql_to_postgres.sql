@@ -183,6 +183,9 @@ CREATE TABLE hires (
     nature        VARCHAR(100) NOT NULL,   -- permanent, contract, internship, attachment
     description   VARCHAR(255) NOT NULL,
     budget        VARCHAR(50)  NOT NULL,
+    company_name  VARCHAR(150) DEFAULT NULL,
+    industry      VARCHAR(100) DEFAULT NULL,
+    timeline      VARCHAR(100) DEFAULT NULL,
     activity_name VARCHAR(50)  DEFAULT NULL,
     browser_name  VARCHAR(100) DEFAULT NULL,
     ip_address    VARCHAR(100) DEFAULT NULL,
