@@ -43,57 +43,73 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Deploy to EC2
-        uses: appleboy/ssh-action@v1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            set -e
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-            # Log in to GHCR
-            echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Deploy via SSM
+        env:
+          INSTANCE_ID: ${{ secrets.EC2_INSTANCE_ID }}
+          DEPLOY_HOME: ${{ secrets.EC2_DEPLOY_HOME }}
+          IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        run: |
+          # EC2_DEPLOY_HOME = absolute home dir of the deploy user, e.g. /home/ubuntu
+          HOME_DIR="${DEPLOY_HOME:-/home/ubuntu}"
 
-            # ── Ensure shared infra is running (postgres + nginx-proxy) ──
-            if ! docker network inspect shared-services >/dev/null 2>&1; then
-              echo "shared-services network missing — starting infra stack..."
-              cd ~/infra
-              docker compose -f docker-compose.postgres.yml up -d
-              echo "Waiting for PostgreSQL..."
-              for i in $(seq 1 20); do
-                if docker inspect --format='{{.State.Health.Status}}' postgres 2>/dev/null | grep -q "healthy"; then
-                  echo "PostgreSQL is healthy!"
-                  break
-                fi
-                sleep 3
-              done
-            else
-              echo "Infra stack running."
-            fi
+          COMMAND_ID=$(aws ssm send-command \
+            --instance-ids "$INSTANCE_ID" \
+            --document-name "AWS-RunShellScript" \
+            --comment "Deploy alphawonders $(date +%Y%m%d-%H%M%S)" \
+            --timeout-seconds 300 \
+            --parameters commands="[
+              \"set -e\",
+              \"echo '── GHCR login ──'\",
+              \"GHCR_PAT=\$(aws ssm get-parameter --name /deploy/ghcr-pat --with-decryption --query Parameter.Value --output text 2>/dev/null || echo '')\",
+              \"if [ -n \\\"\$GHCR_PAT\\\" ]; then echo \\\"\$GHCR_PAT\\\" | docker login ghcr.io -u deploy --password-stdin; fi\",
+              \"echo '── Ensure infra running ──'\",
+              \"if ! docker network inspect shared-services >/dev/null 2>&1; then cd ${HOME_DIR}/infra && docker compose -f docker-compose.postgres.yml up -d && sleep 15; else echo 'Infra running.'; fi\",
+              \"echo '── Pull latest image ──'\",
+              \"docker pull ${IMAGE}\",
+              \"echo '── Restart app ──'\",
+              \"cd ${HOME_DIR}/alphawonders\",
+              \"docker compose down\",
+              \"docker compose up -d\",
+              \"docker exec nginx-proxy nginx -s reload 2>/dev/null || true\",
+              \"echo '── Health check ──'\",
+              \"for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24; do if docker inspect --format='{{.State.Health.Status}}' alphawonders-app 2>/dev/null | grep -q healthy; then echo 'Healthy!'; exit 0; fi; sleep 5; done\",
+              \"echo 'Warning: health check timeout'\",
+              \"docker ps --filter name=alphawonders-app\",
+              \"docker logs --tail 20 alphawonders-app\"
+            ]" \
+            --output text --query 'Command.CommandId')
 
-            # ── Deploy application ──
-            cd ~/alphawonders
+          echo "SSM Command ID: $COMMAND_ID"
 
-            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          # Wait for completion
+          echo "Waiting for deployment..."
+          aws ssm wait command-executed \
+            --command-id "$COMMAND_ID" \
+            --instance-id "$INSTANCE_ID" \
+            2>/dev/null || true
 
-            docker compose down
-            docker compose up -d
+          # Get output
+          RESULT=$(aws ssm get-command-invocation \
+            --command-id "$COMMAND_ID" \
+            --instance-id "$INSTANCE_ID" \
+            --output json)
 
-            # Reload nginx so it picks up the new app container
-            docker exec nginx-proxy nginx -s reload 2>/dev/null || true
+          STATUS=$(echo "$RESULT" | jq -r '.Status')
+          echo "Status: $STATUS"
+          echo ""
+          echo "── stdout ──"
+          echo "$RESULT" | jq -r '.StandardOutputContent'
 
-            # Wait for healthy
-            echo "Waiting for app health check..."
-            for i in $(seq 1 30); do
-              if docker inspect --format='{{.State.Health.Status}}' alphawonders-app 2>/dev/null | grep -q "healthy"; then
-                echo "Container is healthy!"
-                exit 0
-              fi
-              echo "  attempt $i/30..."
-              sleep 5
-            done
-
-            echo "Warning: health check timeout"
-            docker ps --filter name=alphawonders-app
-            docker logs --tail 30 alphawonders-app
+          if [ "$STATUS" != "Success" ]; then
+            echo ""
+            echo "── stderr ──"
+            echo "$RESULT" | jq -r '.StandardErrorContent'
+            exit 1
+          fi
