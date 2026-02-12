@@ -34,6 +34,11 @@ jobs:
 
       # ── Step 1: Store secrets in Parameter Store ──
       - name: Store secrets in SSM Parameter Store
+        env:
+          GHCR_PAT_VALUE: ${{ vars.GHCR_PAT }}
+          PG_PASSWORD_VALUE: ${{ vars.PG_PASSWORD }}
+          PG_USER_VALUE: ${{ vars.PG_USER }}
+          PG_DB_VALUE: ${{ vars.PG_DB }}
         run: |
           REGION="${{ secrets.AWS_REGION }}"
 
@@ -53,12 +58,11 @@ jobs:
             echo "$name — stored"
           }
 
-          # Secrets (sensitive — from repo secrets)
-          store_param "/deploy/ghcr-pat"         "${{ secrets.GHCR_PAT }}"           "GHCR PAT for docker pull"
-          store_param "/deploy/pg-password"      "${{ secrets.PG_PASSWORD }}"         "PostgreSQL password"
-          # Variables (non-sensitive — from repo variables)
-          store_param "/deploy/pg-user"          "${{ vars.PG_USER }}"               "PostgreSQL username"             String
-          store_param "/deploy/pg-db"            "${{ vars.PG_DB }}"                 "PostgreSQL database name"        String
+          # All values from repo variables (passed via env for safe shell escaping)
+          store_param "/deploy/ghcr-pat"         "$GHCR_PAT_VALUE"       "GHCR PAT for docker pull"
+          store_param "/deploy/pg-password"      "$PG_PASSWORD_VALUE"    "PostgreSQL password"
+          store_param "/deploy/pg-user"          "$PG_USER_VALUE"        "PostgreSQL username"             String
+          store_param "/deploy/pg-db"            "$PG_DB_VALUE"          "PostgreSQL database name"        String
 
       # ── Step 2: Package infra files ──
       - name: Package infra files
@@ -93,12 +97,24 @@ jobs:
             ]" \
             --output text --query 'Command.CommandId')
 
-          echo "Command: $COMMAND_ID"
-          aws ssm wait command-executed --command-id "$COMMAND_ID" --instance-id "$INSTANCE_ID" 2>/dev/null || true
+          echo "SSM Command ID: $COMMAND_ID"
+          echo "Waiting for Docker install..."
+          for i in $(seq 1 60); do
+            STATUS=$(aws ssm get-command-invocation \
+              --command-id "$COMMAND_ID" \
+              --instance-id "$INSTANCE_ID" \
+              --query Status --output text 2>/dev/null || echo "Pending")
+            if [ "$STATUS" != "InProgress" ] && [ "$STATUS" != "Pending" ]; then
+              break
+            fi
+            echo "  [$i/60] Status: $STATUS"
+            sleep 5
+          done
 
           RESULT=$(aws ssm get-command-invocation --command-id "$COMMAND_ID" --instance-id "$INSTANCE_ID" --output json)
-          echo "$RESULT" | jq -r '.StandardOutputContent'
           STATUS=$(echo "$RESULT" | jq -r '.Status')
+          echo "Status: $STATUS"
+          echo "$RESULT" | jq -r '.StandardOutputContent'
           if [ "$STATUS" != "Success" ]; then
             echo "$RESULT" | jq -r '.StandardErrorContent'
             exit 1
@@ -133,12 +149,24 @@ jobs:
             ]" \
             --output text --query 'Command.CommandId')
 
-          echo "Command: $COMMAND_ID"
-          aws ssm wait command-executed --command-id "$COMMAND_ID" --instance-id "$INSTANCE_ID" 2>/dev/null || true
+          echo "SSM Command ID: $COMMAND_ID"
+          echo "Waiting for file transfer..."
+          for i in $(seq 1 30); do
+            STATUS=$(aws ssm get-command-invocation \
+              --command-id "$COMMAND_ID" \
+              --instance-id "$INSTANCE_ID" \
+              --query Status --output text 2>/dev/null || echo "Pending")
+            if [ "$STATUS" != "InProgress" ] && [ "$STATUS" != "Pending" ]; then
+              break
+            fi
+            echo "  [$i/30] Status: $STATUS"
+            sleep 5
+          done
 
           RESULT=$(aws ssm get-command-invocation --command-id "$COMMAND_ID" --instance-id "$INSTANCE_ID" --output json)
-          echo "$RESULT" | jq -r '.StandardOutputContent'
           STATUS=$(echo "$RESULT" | jq -r '.Status')
+          echo "Status: $STATUS"
+          echo "$RESULT" | jq -r '.StandardOutputContent'
           if [ "$STATUS" != "Success" ]; then
             echo "$RESULT" | jq -r '.StandardErrorContent'
             exit 1
@@ -187,9 +215,19 @@ jobs:
             ]" \
             --output text --query 'Command.CommandId')
 
-          echo "Command: $COMMAND_ID"
+          echo "SSM Command ID: $COMMAND_ID"
           echo "Waiting for setup to complete..."
-          aws ssm wait command-executed --command-id "$COMMAND_ID" --instance-id "$INSTANCE_ID" 2>/dev/null || true
+          for i in $(seq 1 120); do
+            STATUS=$(aws ssm get-command-invocation \
+              --command-id "$COMMAND_ID" \
+              --instance-id "$INSTANCE_ID" \
+              --query Status --output text 2>/dev/null || echo "Pending")
+            if [ "$STATUS" != "InProgress" ] && [ "$STATUS" != "Pending" ]; then
+              break
+            fi
+            echo "  [$i/120] Status: $STATUS"
+            sleep 5
+          done
 
           RESULT=$(aws ssm get-command-invocation --command-id "$COMMAND_ID" --instance-id "$INSTANCE_ID" --output json)
           STATUS=$(echo "$RESULT" | jq -r '.Status')
