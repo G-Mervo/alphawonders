@@ -1,4 +1,4 @@
-name: Build and Deploy to EC2
+name: Test, Build & Deploy
 
 on:
   push:
@@ -9,7 +9,32 @@ env:
   IMAGE_NAME: g-mervo/alphawonders
 
 jobs:
-  build-and-deploy:
+  # ── Stage 1: Test ──
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: intl, curl, mbstring, xml, pgsql
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: PHP syntax check
+        run: find app/ -name "*.php" -print0 | xargs -0 -n1 php -l
+
+      - name: Run PHPUnit tests
+        run: vendor/bin/phpunit --no-coverage --testdox
+
+  # ── Stage 2: Build ──
+  build:
+    needs: test
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -49,7 +74,15 @@ jobs:
           platforms: linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
+  # ── Stage 3: Deploy ──
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -63,7 +96,6 @@ jobs:
           DEPLOY_HOME: ${{ secrets.EC2_DEPLOY_HOME }}
           IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
         run: |
-          # EC2_DEPLOY_HOME = absolute home dir of the deploy user, e.g. /home/ubuntu
           HOME_DIR="${DEPLOY_HOME}"
 
           COMMAND_ID=$(aws ssm send-command \
