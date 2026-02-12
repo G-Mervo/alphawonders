@@ -9,7 +9,7 @@ services:
       - CI_ENVIRONMENT=production
       # App
       - app.baseURL=${APP_BASE_URL}
-      - app.forceGlobalSecureRequests=true
+      - app.forceGlobalSecureRequests=false
       - app.defaultLocale=en
       - app.negotiateLocale=false
       - app.supportedLocales=[en]
