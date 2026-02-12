@@ -7,260 +7,83 @@ User → CloudFront (ACM SSL) → EC2:80 → nginx-proxy → app containers
                                                     → postgres (shared DB)
 ```
 
-- **EC2** runs all sites on one instance (cost-saving)
-- **Nginx** reverse proxy routes domains to the correct app container
-- **CloudFront + ACM** handles SSL (no certs on the server)
-- **PostgreSQL** runs as a shared container (independent of any app)
-- **CI/CD** deploys via AWS SSM (no SSH keys in GitHub)
+- **EC2** runs all sites on one instance
+- **Nginx** reverse proxy routes domains to app containers
+- **CloudFront + ACM** handles SSL
+- **PostgreSQL** shared container (independent of any app)
+- **SSM Parameter Store** holds all secrets
+- **CI/CD** via AWS SSM (no SSH keys)
 
-### Domains hosted
+### Domains
 
-| Domain | Container | CloudFront | ACM Cert |
-|--------|-----------|------------|----------|
-| alphawonders.com | alphawonders-app:8080 | Own distribution | Own cert |
-| mvacant.com | mvacant-app:8080 | Own distribution | Own cert |
-| keenile.com | keenile-app:8080 | Own distribution | Own cert |
-| somasmart.site | somasmart-app:8080 | Own distribution | Own cert |
-| keenile.ai | keenile-ai-app:8080 | Own distribution | Own cert |
-
----
-
-## What you need before starting
-
-You should already have:
-- [x] AWS account
-- [x] IAM user `mervodeploy` with access key + secret key
-- [x] GitHub Personal Access Token (PAT) with `read:packages` scope (for pulling Docker images from GHCR)
+| Domain | Container |
+|--------|-----------|
+| alphawonders.com | alphawonders-app:8080 |
+| mvacant.com | mvacant-app:8080 |
+| keenile.com | keenile-app:8080 |
+| somasmart.site | somasmart-app:8080 |
+| keenile.ai | keenile-ai-app:8080 |
 
 ---
 
-## Step 1: Create the EC2 instance
+## GitHub Secrets to Set
 
-> The scripts do NOT create the EC2 — you create it manually in the AWS Console.
+Go to **repo → Settings → Secrets and variables → Actions → New repository secret**
 
-1. Go to **AWS Console → EC2 → Launch Instance**
-2. Settings:
-   - **Name:** `alphawonders_prd_server`
-   - **AMI:** Amazon Linux 2023 — **select the 64-bit (Arm) variant** (t4g is ARM/Graviton)
-   - **Instance type:** `t4g.small` (2 vCPU, 2 GB) or `t4g.medium` (2 vCPU, 4 GB)
-   - **Key pair:** Create new (ED25519, .pem format)
-   - **Storage:** 30 GiB gp3 (default 8 GB is too small for Docker + PostgreSQL)
-   - **Security Group:** Create new, allow:
-     - SSH (port 22) from **My IP** only (temporary, for setup)
-     - HTTP (port 80) from **Anywhere** (CloudFront will connect here — locked down later)
-3. Click **Launch Instance**
-4. Note the **Instance ID** (e.g. `i-0abc123def456`) — you'll need it later
+### AWS
 
-> **ARM note:** t4g uses Graviton (ARM) processors. The CI/CD pipeline builds `linux/arm64` Docker images via QEMU + buildx. All base images (php:8.1-fpm, postgres:15, nginx) have ARM variants.
+| Secret | Value |
+|--------|-------|
+| `AWS_ACCESS_KEY_ID` | mervodeploy access key |
+| `AWS_SECRET_ACCESS_KEY` | mervodeploy secret key |
+| `AWS_REGION` | `us-west-2` |
+| `EC2_INSTANCE_ID` | `i-0be89c6434191eeba` |
+| `EC2_DEPLOY_HOME` | `/home/ec2-user` |
 
----
+### App
 
-## Step 2: Attach IAM role to EC2 (for SSM)
-
-The EC2 needs an IAM role so the SSM Agent can register and so deploy commands can run.
-
-1. Go to **IAM → Roles → Create Role**
-2. **Trusted entity:** AWS Service → EC2
-3. **Attach policies:**
-   - `AmazonSSMManagedInstanceCore` (lets SSM Agent connect)
-   - Create an inline policy:
-     ```json
-     {
-       "Version": "2012-10-17",
-       "Statement": [
-         {
-           "Effect": "Allow",
-           "Action": "ssm:GetParameter",
-           "Resource": "arn:aws:ssm:*:*:parameter/deploy/*"
-         }
-       ]
-     }
-     ```
-     (This lets the EC2 read the GHCR PAT from Parameter Store during deploys)
-4. **Name:** `ec2-alphawonders-role`
-5. Go to **EC2 → Instances → Select your instance → Actions → Security → Modify IAM role**
-6. Attach `ec2-alphawonders-role`
+| Secret | Value |
+|--------|-------|
+| `GHCR_PAT` | GitHub PAT with `read:packages` scope |
+| `PG_USER` | PostgreSQL username |
+| `PG_PASSWORD` | PostgreSQL password |
+| `PG_DB` | PostgreSQL database name |
 
 ---
 
-## Step 3: Grant `mervodeploy` IAM user permissions
+## Step-by-Step
 
-This is the IAM user whose access key GitHub Actions uses.
+### 1. Prerequisites (already done)
 
-1. Go to **IAM → Users → mervodeploy → Add permissions → Create inline policy**
-2. JSON:
-   ```json
-   {
-     "Version": "2012-10-17",
-     "Statement": [
-       {
-         "Sid": "SSMDeploy",
-         "Effect": "Allow",
-         "Action": [
-           "ssm:SendCommand",
-           "ssm:GetCommandInvocation"
-         ],
-         "Resource": "*"
-       },
-       {
-         "Sid": "SSMParameterStore",
-         "Effect": "Allow",
-         "Action": [
-           "ssm:GetParameter",
-           "ssm:PutParameter"
-         ],
-         "Resource": "arn:aws:ssm:*:*:parameter/deploy/*"
-       }
-     ]
-   }
-   ```
-3. **Name:** `deploy-policy`
+- [x] EC2 instance launched (t4g.large, Amazon Linux 2023 ARM)
+- [x] IAM role `ec2-alphawonders-role` attached to EC2 (AmazonSSMManagedInstanceCore + /deploy/* read)
+- [x] IAM user `mervodeploy` has SSMDeploy + SSMParameterStore policies
+- [x] SSH key pair created
 
-> You should already have the access key + secret key for this user. If not: IAM → mervodeploy → Security credentials → Create access key.
+### 2. Add GitHub Secrets
 
----
+Add all 9 secrets listed above to your repo.
 
-## Step 4: SSH into EC2 and install Docker
+### 3. Run Setup Workflow (one-time per server)
 
-SSH in using the key pair from Step 1:
+1. Go to **repo → Actions → "Setup New EC2 Server"**
+2. Click **"Run workflow"**
+3. Fill in:
+   - Instance ID: `i-0be89c6434191eeba`
+   - Deploy home: `/home/ec2-user`
+4. Click **"Run workflow"**
 
-```bash
-ssh -i your-key.pem ubuntu@<EC2-PUBLIC-IP>
-```
+This will automatically:
+- Store secrets in SSM Parameter Store
+- Install Docker + Docker Compose on EC2
+- Transfer nginx configs + docker-compose files
+- Start PostgreSQL + Nginx + App
 
-Then run:
+### 4. Set Up ACM Certificates (us-east-1)
 
-```bash
-# Update system
-sudo apt update && sudo apt upgrade -y
+> ACM certs for CloudFront MUST be in **us-east-1**.
 
-# Install Docker
-curl -fsSL https://get.docker.com | sudo sh
-sudo usermod -aG docker $USER
-
-# Install Docker Compose plugin
-sudo apt install -y docker-compose-plugin
-
-# Install AWS CLI (if not pre-installed)
-sudo apt install -y awscli
-
-# Verify SSM Agent is running (pre-installed on Ubuntu 20.04+)
-sudo systemctl status snap.amazon-ssm-agent.amazon-ssm-agent
-
-# Log out and back in (so docker group takes effect)
-exit
-```
-
-SSH back in:
-
-```bash
-ssh -i your-key.pem ubuntu@<EC2-PUBLIC-IP>
-
-# Verify docker works without sudo
-docker ps
-```
-
----
-
-## Step 5: Copy infrastructure files to EC2
-
-From your local machine (where the repo is), copy the infra files:
-
-```bash
-# Copy infra directory
-scp -i your-key.pem -r infra/ ubuntu@<EC2-PUBLIC-IP>:~/infra/
-
-# Copy the app's docker-compose.yml
-scp -i your-key.pem docker-compose.yml ubuntu@<EC2-PUBLIC-IP>:~/alphawonders/docker-compose.yml
-```
-
----
-
-## Step 6: Create environment files on EC2
-
-SSH into the EC2 and create the `.env` files:
-
-### Infra .env
-
-```bash
-nano ~/infra/.env
-```
-
-```env
-PG_USER=alphawonders
-PG_PASSWORD=<choose-a-strong-password>
-PG_DB=alphaw
-PGADMIN_EMAIL=mervin@alphawonders.com
-PGADMIN_PASSWORD=<choose-a-password>
-```
-
-### App .env
-
-```bash
-mkdir -p ~/alphawonders
-nano ~/alphawonders/.env
-```
-
-Copy your app's `.env` file contents here. Key values to set:
-
-```env
-CI_ENVIRONMENT = production
-
-database.default.hostname = postgres
-database.default.database = alphaw
-database.default.username = alphawonders
-database.default.password = <same-password-as-PG_PASSWORD-above>
-database.default.DBDriver = Postgre
-database.default.port = 5432
-```
-
-> The hostname is `postgres` (the container name), NOT `localhost`.
-
----
-
-## Step 7: Run the setup script
-
-Still SSH'd into the EC2:
-
-```bash
-chmod +x ~/infra/setup-ec2.sh
-~/infra/setup-ec2.sh
-```
-
-The script will:
-1. **Ask for your GHCR PAT** → stores it encrypted in AWS SSM Parameter Store (`/deploy/ghcr-pat`)
-2. **Start PostgreSQL + Nginx proxy** (`docker compose -f docker-compose.postgres.yml up -d`)
-3. **Pull and start the app** (`docker compose up -d` in ~/alphawonders)
-4. **Health check** both containers
-5. **Print a status table** of running containers
-
-If everything is green, your app is running on port 80.
-
-Quick test:
-
-```bash
-curl -H "Host: alphawonders.com" http://localhost
-```
-
-You should see HTML output.
-
----
-
-## Step 8: Create ACM certificates (must be in us-east-1)
-
-> ACM certs for CloudFront MUST be in the **us-east-1** region.
-
-For each domain, request a certificate:
-
-1. Go to **AWS Console → switch to us-east-1 → ACM → Request certificate**
-2. **Domain names:** add both the bare domain and www:
-   - `alphawonders.com` + `*.alphawonders.com`
-3. **Validation:** DNS
-4. Click **Request**
-5. ACM gives you CNAME records for validation — add them to your DNS provider
-6. Wait for status to change to **Issued** (usually 5-30 minutes)
-
-Repeat for all 5 domains:
+For each domain: **ACM → Request certificate → DNS validation**
 
 | Certificate | Domain names |
 |-------------|-------------|
@@ -270,163 +93,85 @@ Repeat for all 5 domains:
 | Cert 4 | `somasmart.site`, `*.somasmart.site` |
 | Cert 5 | `keenile.ai`, `*.keenile.ai` |
 
----
+Add the CNAME validation records to your DNS provider. Wait for status: **Issued**.
 
-## Step 9: Create CloudFront distributions
+### 5. Create CloudFront Distributions
 
-Create one CloudFront distribution per domain. For each:
+One per domain. For each:
 
-1. Go to **CloudFront → Create distribution**
-2. **Origin:**
-   - Origin domain: `<EC2-PUBLIC-IP>` (enter as custom origin)
-   - Protocol: **HTTP only**
-   - Port: **80**
-3. **Default cache behavior:**
-   - Viewer protocol policy: **Redirect HTTP to HTTPS**
-   - Allowed HTTP methods: **GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE**
-   - Cache policy: **CachingDisabled**
-   - Origin request policy: **AllViewer**
-4. **Settings:**
-   - Alternate domain names (CNAMEs): `example.com`, `www.example.com`
-   - Custom SSL certificate: select the matching ACM cert from Step 8
-5. Click **Create distribution**
-6. Note the distribution domain (e.g. `d1234abcdef.cloudfront.net`)
+- **Origin:** `35.92.241.82` (HTTP only, port 80)
+- **Viewer protocol:** Redirect HTTP to HTTPS
+- **Allowed methods:** GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE
+- **Cache policy:** CachingDisabled
+- **Origin request policy:** AllViewer
+- **CNAMEs:** `example.com`, `www.example.com`
+- **SSL cert:** matching ACM cert
 
-Repeat for all 5 domains:
+### 6. Update DNS
 
-| Distribution | CNAMEs | ACM Cert |
-|-------------|--------|----------|
-| dist-1 | alphawonders.com, www.alphawonders.com | Cert 1 |
-| dist-2 | mvacant.com, www.mvacant.com | Cert 2 |
-| dist-3 | keenile.com, www.keenile.com | Cert 3 |
-| dist-4 | somasmart.site, www.somasmart.site | Cert 4 |
-| dist-5 | keenile.ai, www.keenile.ai | Cert 5 |
-
----
-
-## Step 10: Update DNS
-
-At your DNS provider (Namecheap, Cloudflare, Route 53, etc.), point each domain to its CloudFront distribution:
+Point each domain to its CloudFront distribution:
 
 ```
-alphawonders.com      CNAME  →  d1234abcdef.cloudfront.net
-www.alphawonders.com  CNAME  →  d1234abcdef.cloudfront.net
-
-mvacant.com           CNAME  →  d5678ghijkl.cloudfront.net
-www.mvacant.com       CNAME  →  d5678ghijkl.cloudfront.net
-
-keenile.com           CNAME  →  d9012mnopqr.cloudfront.net
-www.keenile.com       CNAME  →  d9012mnopqr.cloudfront.net
-
-somasmart.site        CNAME  →  d3456stuvwx.cloudfront.net
-www.somasmart.site    CNAME  →  d3456stuvwx.cloudfront.net
-
-keenile.ai            CNAME  →  d7890yzabcd.cloudfront.net
-www.keenile.ai        CNAME  →  d7890yzabcd.cloudfront.net
+alphawonders.com      CNAME → d1234abcdef.cloudfront.net
+www.alphawonders.com  CNAME → d1234abcdef.cloudfront.net
+mvacant.com           CNAME → d5678ghijkl.cloudfront.net
+...etc
 ```
 
-> If using a root/apex domain (no www), some DNS providers need an ALIAS or ANAME record instead of CNAME. Route 53 supports ALIAS records natively.
+### 7. Lock Down Security Group
+
+**EC2 → Security Groups → Edit inbound rules:**
+
+- **HTTP (80):** Source → `com.amazonaws.global.cloudfront.origin-facing` (prefix list)
+- **SSH (22):** Remove or restrict to your IP
+- Remove any "Anywhere" HTTP rules
 
 ---
 
-## Step 11: Lock down the Security Group
+## Deploying Code Updates
 
-Now that CloudFront is in front, restrict EC2 to only accept traffic from CloudFront:
-
-1. Go to **EC2 → Security Groups → your instance's SG → Edit inbound rules**
-2. **Remove** the "HTTP from anywhere" rule
-3. **Add:** HTTP (port 80) → Source: **Custom** → `com.amazonaws.global.cloudfront.origin-facing` (AWS managed prefix list)
-4. **Keep or remove SSH:**
-   - If you want SSH access: keep port 22 restricted to your IP
-   - If using SSM exclusively: remove the SSH rule entirely
-5. Save
-
-This ensures only CloudFront can reach your EC2 on port 80. Direct IP access is blocked.
+Just push to `master`. GitHub Actions will:
+1. Build ARM Docker image
+2. Push to GHCR
+3. Fetch secrets from Parameter Store via SSM
+4. Pull + restart app on EC2
+5. Health check
 
 ---
 
-## Step 12: Add GitHub Actions secrets
+## New Server in the Future
 
-Go to your GitHub repo → **Settings → Secrets and variables → Actions → New repository secret**
-
-Add these 5 secrets:
-
-| Secret name | Value | Where to get it |
-|-------------|-------|-----------------|
-| `AWS_ACCESS_KEY_ID` | mervodeploy's access key | IAM → mervodeploy → Security credentials |
-| `AWS_SECRET_ACCESS_KEY` | mervodeploy's secret key | Same as above |
-| `AWS_REGION` | e.g. `us-east-1` | The region your EC2 is in |
-| `EC2_INSTANCE_ID` | e.g. `i-0abc123def456` | EC2 Console → Instances |
-| `EC2_DEPLOY_HOME` | e.g. `/home/ubuntu` | Home directory of the user on EC2 |
+1. Launch EC2 (t4g, Amazon Linux 2023 ARM, 30 GiB)
+2. Attach `ec2-alphawonders-role`
+3. Update `EC2_INSTANCE_ID` secret in GitHub
+4. **Actions → Setup New EC2 Server → Run workflow**
+5. Set up ACM + CloudFront + DNS for the new IP
 
 ---
 
-## You're done!
+## Connecting pgAdmin Locally
 
-Push to `master` and GitHub Actions will:
-1. Build the Docker image
-2. Push it to GHCR
-3. SSM into the EC2
-4. Pull the new image
-5. Restart the app container
-6. Health check
+PostgreSQL is bound to `127.0.0.1:5432` on the EC2. To connect your local pgAdmin:
 
----
+```bash
+ssh -L 5432:localhost:5432 alphawonders
+```
 
-## Adding a new site later
-
-1. **Create the nginx conf:**
-   ```bash
-   cp infra/nginx/conf.d/_template.conf.example infra/nginx/conf.d/newsite.conf
-   # Edit: replace DOMAIN, CONTAINER, PORT
-   ```
-
-2. **Create the app's docker-compose.yml** on EC2 at `~/newsite/docker-compose.yml`
-   - Container must join `shared-services` network
-   - Use `expose` not `ports`
-
-3. **Create ACM cert** in us-east-1 for the new domain
-
-4. **Create CloudFront distribution** pointing to EC2:80
-
-5. **Update DNS** to point to the new CloudFront distribution
-
-6. **Copy the new nginx conf to EC2** and reload:
-   ```bash
-   scp newsite.conf ubuntu@<EC2-IP>:~/infra/nginx/conf.d/
-   ssh ubuntu@<EC2-IP> "docker exec nginx-proxy nginx -s reload"
-   ```
+Then connect pgAdmin to `localhost:5432` with your PG credentials.
 
 ---
 
 ## Troubleshooting
 
-**App not reachable via domain:**
+**502 Bad Gateway:** App container not running or not on `shared-services` network
 ```bash
-# Check nginx is routing correctly
-docker exec nginx-proxy nginx -t
-docker logs nginx-proxy
-
-# Check app is running
+ssh alphawonders
 docker ps
-docker logs alphawonders-app
-```
-
-**502 Bad Gateway:**
-- The app container isn't running or isn't on the `shared-services` network
-```bash
 docker network inspect shared-services
 ```
 
-**CloudFront returns 503:**
-- EC2 security group isn't allowing CloudFront prefix list
-- Or the EC2/nginx isn't listening on port 80
+**CloudFront 503:** Security group not allowing CloudFront prefix list, or EC2/nginx not on port 80
 
-**SSM command fails:**
-- Check EC2 instance role has `AmazonSSMManagedInstanceCore`
-- Check SSM Agent is running: `sudo systemctl status snap.amazon-ssm-agent.amazon-ssm-agent`
-- Check mervodeploy has `ssm:SendCommand` permission
+**SSM command fails:** Check EC2 IAM role has `AmazonSSMManagedInstanceCore`, SSM Agent running
 
-**Database connection refused:**
-- App `.env` hostname should be `postgres` (container name), not `localhost`
-- Check postgres container is healthy: `docker inspect postgres --format='{{.State.Health.Status}}'`
+**Database connection refused:** Check postgres container healthy: `docker inspect postgres --format='{{.State.Health.Status}}'`

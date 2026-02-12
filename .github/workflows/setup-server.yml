@@ -58,8 +58,7 @@ jobs:
           store_param "/deploy/pg-user"          "${{ secrets.PG_USER }}"             "PostgreSQL username"             String
           store_param "/deploy/pg-password"      "${{ secrets.PG_PASSWORD }}"         "PostgreSQL password"
           store_param "/deploy/pg-db"            "${{ secrets.PG_DB }}"               "PostgreSQL database name"        String
-          store_param "/deploy/pgadmin-email"    "${{ secrets.PGADMIN_EMAIL }}"       "pgAdmin admin email"             String
-          store_param "/deploy/pgadmin-password" "${{ secrets.PGADMIN_PASSWORD }}"    "pgAdmin admin password"
+          # pgAdmin removed from production — connect locally if needed
 
       # ── Step 2: Package infra files ──
       - name: Package infra files
@@ -171,8 +170,6 @@ jobs:
               \"export PG_USER=\$(get_param /deploy/pg-user)\",
               \"export PG_PASSWORD=\$(get_param /deploy/pg-password)\",
               \"export PG_DB=\$(get_param /deploy/pg-db)\",
-              \"export PGADMIN_EMAIL=\$(get_param /deploy/pgadmin-email)\",
-              \"export PGADMIN_PASSWORD=\$(get_param /deploy/pgadmin-password)\",
               \"export DB_USERNAME=\$PG_USER\",
               \"export DB_PASSWORD=\$PG_PASSWORD\",
               \"export DB_DATABASE=\$PG_DB\",

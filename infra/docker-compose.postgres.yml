@@ -36,24 +36,6 @@ services:
       retries: 5
       start_period: 10s
 
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: pgadmin
-    restart: unless-stopped
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
-      PGADMIN_LISTEN_PORT: 5050
-    ports:
-      - "127.0.0.1:5050:5050"
-    volumes:
-      - pgadmin-data:/var/lib/pgadmin
-    networks:
-      - shared-services
-    depends_on:
-      postgres:
-        condition: service_healthy
-
   # ── Reverse Proxy (HTTP only — CloudFront + ACM handles SSL) ──
   nginx:
     image: nginx:1.27-alpine
@@ -74,7 +56,6 @@ services:
 
 volumes:
   pgdata:
-  pgadmin-data:
 
 networks:
   shared-services:
