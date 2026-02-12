@@ -1,6 +1,6 @@
 services:
   app:
-    image: ghcr.io/${GITHUB_REPO}:latest
+    image: ghcr.io/g-mervo/alphawonders:latest
     container_name: alphawonders-app
     restart: unless-stopped
     expose:

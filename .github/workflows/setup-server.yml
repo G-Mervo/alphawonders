@@ -13,7 +13,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   setup:
@@ -149,7 +148,7 @@ jobs:
         env:
           INSTANCE_ID: ${{ inputs.instance_id }}
           HOME_DIR: ${{ inputs.deploy_home }}
-          IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          IMAGE: ghcr.io/g-mervo/alphawonders:latest
         run: |
           COMMAND_ID=$(aws ssm send-command \
             --instance-ids "$INSTANCE_ID" \
