@@ -85,6 +85,7 @@ jobs:
               \"export DB_USERNAME=\$PG_USER\",
               \"export DB_PASSWORD=\$PG_PASSWORD\",
               \"export DB_DATABASE=\$PG_DB\",
+              \"echo \\\"PG_USER=[\$PG_USER] PG_DB=[\$PG_DB] PG_PASSWORD_LENGTH=[\${#PG_PASSWORD}]\\\"\",
               \"echo '── Ensure infra running ──'\",
               \"if ! docker network inspect shared-services >/dev/null 2>&1; then cd ${HOME_DIR}/infra && docker compose -f docker-compose.postgres.yml up -d && sleep 15; else echo 'Infra running.'; fi\",
               \"echo '── Pull latest image ──'\",
