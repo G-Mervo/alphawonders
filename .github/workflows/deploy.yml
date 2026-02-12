@@ -64,7 +64,7 @@ jobs:
           IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
         run: |
           # EC2_DEPLOY_HOME = absolute home dir of the deploy user, e.g. /home/ubuntu
-          HOME_DIR="${DEPLOY_HOME:-/home/ubuntu}"
+          HOME_DIR="${DEPLOY_HOME}"
 
           COMMAND_ID=$(aws ssm send-command \
             --instance-ids "$INSTANCE_ID" \
@@ -79,9 +79,9 @@ jobs:
               \"GHCR_PAT=\$(get_param /deploy/ghcr-pat)\",
               \"if [ -n \\\"\$GHCR_PAT\\\" ]; then echo \\\"\$GHCR_PAT\\\" | docker login ghcr.io -u deploy --password-stdin; fi\",
               \"echo '── Fetch secrets ──'\",
-              \"export PG_USER=\$(get_param /deploy/pg-user alphawonders)\",
+              \"export PG_USER=\$(get_param /deploy/pg-user)\",
               \"export PG_PASSWORD=\$(get_param /deploy/pg-password)\",
-              \"export PG_DB=\$(get_param /deploy/pg-db alphaw)\",
+              \"export PG_DB=\$(get_param /deploy/pg-db)\",
               \"export DB_USERNAME=\$PG_USER\",
               \"export DB_PASSWORD=\$PG_PASSWORD\",
               \"export DB_DATABASE=\$PG_DB\",

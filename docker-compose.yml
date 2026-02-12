@@ -1,6 +1,6 @@
 services:
   app:
-    image: ghcr.io/${GITHUB_REPO:-alphawonders/alphawonders}:latest
+    image: ghcr.io/${GITHUB_REPO}:latest
     container_name: alphawonders-app
     restart: unless-stopped
     expose:
@@ -8,7 +8,7 @@ services:
     environment:
       - CI_ENVIRONMENT=production
       # App
-      - app.baseURL=${APP_BASE_URL:-https://alphawonders.com/}
+      - app.baseURL=${APP_BASE_URL}
       - app.forceGlobalSecureRequests=true
       - app.defaultLocale=en
       - app.negotiateLocale=false
@@ -17,7 +17,7 @@ services:
       - app.charset=UTF-8
       # Database
       - database.default.hostname=postgres
-      - database.default.database=${DB_DATABASE:-alphaw}
+      - database.default.database=${DB_DATABASE}
       - database.default.username=${DB_USERNAME}
       - database.default.password=${DB_PASSWORD}
       - database.default.DBDriver=Postgre
@@ -25,14 +25,14 @@ services:
       - database.default.DBPrefix=
       - database.default.charset=utf8
       # Email (SMTP)
-      - email.fromEmail=${SMTP_FROM_EMAIL:-noreply@alphawonders.com}
-      - email.fromName=${SMTP_FROM_NAME:-Alphawonders}
+      - email.fromEmail=${SMTP_FROM_EMAIL}
+      - email.fromName=${SMTP_FROM_NAME}
       - email.protocol=smtp
       - email.SMTPHost=${SMTP_HOST}
       - email.SMTPUser=${SMTP_USER}
       - email.SMTPPass=${SMTP_PASS}
-      - email.SMTPPort=${SMTP_PORT:-587}
-      - email.SMTPCrypto=${SMTP_CRYPTO:-tls}
+      - email.SMTPPort=${SMTP_PORT}
+      - email.SMTPCrypto=${SMTP_CRYPTO}
     volumes:
       - app-writable:/var/www/html/writable
       - app-attachments:/var/www/html/attachments

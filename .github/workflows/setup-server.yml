@@ -5,24 +5,11 @@ on:
   workflow_dispatch:
     inputs:
       instance_id:
-        description: 'EC2 Instance ID (e.g. i-0be89c6434191eeba)'
+        description: 'EC2 Instance ID (e.g. i-0abc123)'
         required: true
       deploy_home:
-        description: 'Deploy user home dir'
+        description: 'Deploy user home dir (e.g. /home/ec2-user)'
         required: true
-        default: '/home/ec2-user'
-      pg_user:
-        description: 'PostgreSQL username'
-        required: true
-        default: 'alphawonders'
-      pg_db:
-        description: 'PostgreSQL database name'
-        required: true
-        default: 'alphaw'
-      pgadmin_email:
-        description: 'pgAdmin email'
-        required: true
-        default: 'mervin@alphawonders.com'
 
 env:
   REGISTRY: ghcr.io
@@ -48,10 +35,6 @@ jobs:
 
       # ── Step 1: Store secrets in Parameter Store ──
       - name: Store secrets in SSM Parameter Store
-        env:
-          GHCR_PAT: ${{ secrets.GHCR_PAT }}
-          PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
-          PGADMIN_PASSWORD: ${{ secrets.PGADMIN_PASSWORD }}
         run: |
           REGION="${{ secrets.AWS_REGION }}"
 
@@ -71,12 +54,12 @@ jobs:
             echo "$name — stored"
           }
 
-          store_param "/deploy/ghcr-pat"         "$GHCR_PAT"                         "GHCR PAT for docker pull"
-          store_param "/deploy/pg-user"          "${{ inputs.pg_user }}"              "PostgreSQL username"             String
-          store_param "/deploy/pg-password"      "$PG_PASSWORD"                       "PostgreSQL password"
-          store_param "/deploy/pg-db"            "${{ inputs.pg_db }}"                "PostgreSQL database name"        String
-          store_param "/deploy/pgadmin-email"    "${{ inputs.pgadmin_email }}"        "pgAdmin admin email"             String
-          store_param "/deploy/pgadmin-password" "$PGADMIN_PASSWORD"                  "pgAdmin admin password"
+          store_param "/deploy/ghcr-pat"         "${{ secrets.GHCR_PAT }}"           "GHCR PAT for docker pull"
+          store_param "/deploy/pg-user"          "${{ secrets.PG_USER }}"             "PostgreSQL username"             String
+          store_param "/deploy/pg-password"      "${{ secrets.PG_PASSWORD }}"         "PostgreSQL password"
+          store_param "/deploy/pg-db"            "${{ secrets.PG_DB }}"               "PostgreSQL database name"        String
+          store_param "/deploy/pgadmin-email"    "${{ secrets.PGADMIN_EMAIL }}"       "pgAdmin admin email"             String
+          store_param "/deploy/pgadmin-password" "${{ secrets.PGADMIN_PASSWORD }}"    "pgAdmin admin password"
 
       # ── Step 2: Package infra files ──
       - name: Package infra files
@@ -85,17 +68,9 @@ jobs:
             infra/docker-compose.postgres.yml \
             infra/nginx/ \
             docker-compose.yml
+          echo "Bundle size: $(wc -c < /tmp/infra-bundle.tar.gz) bytes"
 
-          BUNDLE=$(base64 -w0 /tmp/infra-bundle.tar.gz)
-          echo "BUNDLE_SIZE=$(wc -c < /tmp/infra-bundle.tar.gz)" >> $GITHUB_ENV
-
-          # Split into chunks for SSM (max 24KB per parameter)
-          echo "$BUNDLE" > /tmp/bundle.b64
-          echo "BUNDLE_B64<<EOFBUNDLE" >> $GITHUB_ENV
-          cat /tmp/bundle.b64 >> $GITHUB_ENV
-          echo "EOFBUNDLE" >> $GITHUB_ENV
-
-      # ── Step 3: Install Docker + deploy infra via SSM ──
+      # ── Step 3: Install Docker via SSM ──
       - name: Install Docker on EC2
         env:
           INSTANCE_ID: ${{ inputs.instance_id }}
@@ -133,6 +108,7 @@ jobs:
             exit 1
           fi
 
+      # ── Step 4: Transfer infra files via SSM ──
       - name: Transfer infra files to EC2
         env:
           INSTANCE_ID: ${{ inputs.instance_id }}
@@ -149,7 +125,7 @@ jobs:
               \"set -e\",
               \"mkdir -p ${HOME_DIR}/infra ${HOME_DIR}/alphawonders\",
               \"echo '$BUNDLE' | base64 -d > /tmp/infra-bundle.tar.gz\",
-              \"tar xzf /tmp/infra-bundle.tar.gz -C /tmp/infra-extract --strip-components=0 2>/dev/null || (mkdir -p /tmp/infra-extract && tar xzf /tmp/infra-bundle.tar.gz -C /tmp/infra-extract)\",
+              \"mkdir -p /tmp/infra-extract && tar xzf /tmp/infra-bundle.tar.gz -C /tmp/infra-extract\",
               \"cp -r /tmp/infra-extract/infra/* ${HOME_DIR}/infra/\",
               \"cp /tmp/infra-extract/docker-compose.yml ${HOME_DIR}/alphawonders/docker-compose.yml\",
               \"rm -rf /tmp/infra-bundle.tar.gz /tmp/infra-extract\",
@@ -172,7 +148,7 @@ jobs:
             exit 1
           fi
 
-      # ── Step 4: Start everything ──
+      # ── Step 5: Start everything ──
       - name: Start infrastructure and app
         env:
           INSTANCE_ID: ${{ inputs.instance_id }}
@@ -187,16 +163,16 @@ jobs:
             --parameters commands="[
               \"set -e\",
               \"REGION=\$(curl -s http://169.254.169.254/latest/meta-data/placement/region)\",
-              \"get_param() { aws ssm get-parameter --name \\\"\$1\\\" --with-decryption --query Parameter.Value --output text --region \\\"\$REGION\\\" 2>/dev/null || echo \\\"\${2:-}\\\"; }\",
+              \"get_param() { aws ssm get-parameter --name \\\"\$1\\\" --with-decryption --query Parameter.Value --output text --region \\\"\$REGION\\\" 2>/dev/null || echo ''; }\",
               \"echo '── GHCR login ──'\",
               \"GHCR_PAT=\$(get_param /deploy/ghcr-pat)\",
               \"if [ -n \\\"\$GHCR_PAT\\\" ]; then echo \\\"\$GHCR_PAT\\\" | docker login ghcr.io -u deploy --password-stdin; fi\",
               \"echo '── Load secrets ──'\",
-              \"export PG_USER=\$(get_param /deploy/pg-user alphawonders)\",
+              \"export PG_USER=\$(get_param /deploy/pg-user)\",
               \"export PG_PASSWORD=\$(get_param /deploy/pg-password)\",
-              \"export PG_DB=\$(get_param /deploy/pg-db alphaw)\",
-              \"export PGADMIN_EMAIL=\$(get_param /deploy/pgadmin-email admin@alphawonders.com)\",
-              \"export PGADMIN_PASSWORD=\$(get_param /deploy/pgadmin-password changeme)\",
+              \"export PG_DB=\$(get_param /deploy/pg-db)\",
+              \"export PGADMIN_EMAIL=\$(get_param /deploy/pgadmin-email)\",
+              \"export PGADMIN_PASSWORD=\$(get_param /deploy/pgadmin-password)\",
               \"export DB_USERNAME=\$PG_USER\",
               \"export DB_PASSWORD=\$PG_PASSWORD\",
               \"export DB_DATABASE=\$PG_DB\",
@@ -237,9 +213,3 @@ jobs:
 
           echo ""
           echo "=== Server setup complete! ==="
-          echo ""
-          echo "Next steps:"
-          echo "  1. ACM cert (us-east-1) for your domains"
-          echo "  2. CloudFront distribution → EC2:80"
-          echo "  3. DNS CNAMEs → CloudFront"
-          echo "  4. Lock Security Group port 80 to CloudFront prefix list"
