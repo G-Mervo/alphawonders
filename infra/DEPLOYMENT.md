@@ -40,16 +40,18 @@ You should already have:
 
 1. Go to **AWS Console → EC2 → Launch Instance**
 2. Settings:
-   - **Name:** `alphawonders-host` (or whatever you prefer)
-   - **AMI:** Ubuntu 22.04 LTS (or Amazon Linux 2023)
-   - **Instance type:** `t3.small` or `t3.medium` (depending on how many sites)
-   - **Key pair:** Create one (you'll need it for initial SSH setup only)
-   - **Storage:** 30 GB gp3 (minimum)
+   - **Name:** `alphawonders_prd_server`
+   - **AMI:** Amazon Linux 2023 — **select the 64-bit (Arm) variant** (t4g is ARM/Graviton)
+   - **Instance type:** `t4g.small` (2 vCPU, 2 GB) or `t4g.medium` (2 vCPU, 4 GB)
+   - **Key pair:** Create new (ED25519, .pem format)
+   - **Storage:** 30 GiB gp3 (default 8 GB is too small for Docker + PostgreSQL)
    - **Security Group:** Create new, allow:
-     - SSH (port 22) from **your IP only** (temporary, for setup)
-     - HTTP (port 80) from **anywhere** (CloudFront will connect here)
+     - SSH (port 22) from **My IP** only (temporary, for setup)
+     - HTTP (port 80) from **Anywhere** (CloudFront will connect here — locked down later)
 3. Click **Launch Instance**
 4. Note the **Instance ID** (e.g. `i-0abc123def456`) — you'll need it later
+
+> **ARM note:** t4g uses Graviton (ARM) processors. The CI/CD pipeline builds `linux/arm64` Docker images via QEMU + buildx. All base images (php:8.1-fpm, postgres:15, nginx) have ARM variants.
 
 ---
 
