@@ -53,11 +53,12 @@ jobs:
             echo "$name — stored"
           }
 
+          # Secrets (sensitive — from repo secrets)
           store_param "/deploy/ghcr-pat"         "${{ secrets.GHCR_PAT }}"           "GHCR PAT for docker pull"
-          store_param "/deploy/pg-user"          "${{ secrets.PG_USER }}"             "PostgreSQL username"             String
           store_param "/deploy/pg-password"      "${{ secrets.PG_PASSWORD }}"         "PostgreSQL password"
-          store_param "/deploy/pg-db"            "${{ secrets.PG_DB }}"               "PostgreSQL database name"        String
-          # pgAdmin removed from production — connect locally if needed
+          # Variables (non-sensitive — from repo variables)
+          store_param "/deploy/pg-user"          "${{ vars.PG_USER }}"               "PostgreSQL username"             String
+          store_param "/deploy/pg-db"            "${{ vars.PG_DB }}"                 "PostgreSQL database name"        String
 
       # ── Step 2: Package infra files ──
       - name: Package infra files
