@@ -20,8 +20,8 @@ services:
     container_name: postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${PG_USER:-mervo}
-      POSTGRES_PASSWORD: ${PG_PASSWORD:?Set PG_PASSWORD in .env}
+      POSTGRES_USER: ${PG_USER:-alphawonders}
+      POSTGRES_PASSWORD: ${PG_PASSWORD:?Set PG_PASSWORD via Parameter Store}
       POSTGRES_DB: ${PG_DB:-alphaw}
     ports:
       - "127.0.0.1:5432:5432"
@@ -30,7 +30,7 @@ services:
     networks:
       - shared-services
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${PG_USER:-mervo} -d ${PG_DB:-alphaw}"]
+      test: ["CMD-SHELL", "pg_isready -U ${PG_USER:-alphawonders} -d ${PG_DB:-alphaw}"]
       interval: 10s
       timeout: 5s
       retries: 5
