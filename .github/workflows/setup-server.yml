@@ -39,6 +39,7 @@ jobs:
           PG_PASSWORD_VALUE: ${{ vars.PG_PASSWORD }}
           PG_USER_VALUE: ${{ vars.PG_USER }}
           PG_DB_VALUE: ${{ vars.PG_DB }}
+          APP_BASE_URL_VALUE: ${{ vars.APP_BASE_URL }}
         run: |
           REGION="${{ secrets.AWS_REGION }}"
 
@@ -63,6 +64,7 @@ jobs:
           store_param "/deploy/pg-password"      "$PG_PASSWORD_VALUE"    "PostgreSQL password"
           store_param "/deploy/pg-user"          "$PG_USER_VALUE"        "PostgreSQL username"             String
           store_param "/deploy/pg-db"            "$PG_DB_VALUE"          "PostgreSQL database name"        String
+          store_param "/deploy/app-base-url"    "$APP_BASE_URL_VALUE"   "App base URL"                    String
 
       # ── Step 2: Package infra files ──
       - name: Package infra files
@@ -200,7 +202,8 @@ jobs:
               \"export DB_USERNAME=\$PG_USER\",
               \"export DB_PASSWORD=\$PG_PASSWORD\",
               \"export DB_DATABASE=\$PG_DB\",
-              \"echo \\\"PG_USER=[\$PG_USER] PG_DB=[\$PG_DB] PG_PASSWORD_LENGTH=[\${#PG_PASSWORD}]\\\"\",
+              \"export APP_BASE_URL=\$(get_param /deploy/app-base-url)\",
+              \"echo \\\"PG_USER=[\$PG_USER] PG_DB=[\$PG_DB] PG_PASSWORD_LENGTH=[\${#PG_PASSWORD}] APP_BASE_URL=[\$APP_BASE_URL]\\\"\",
               \"echo '── Clean up old containers (safe for fresh setup) ──'\",
               \"cd ${HOME_DIR}/infra\",
               \"docker compose -f docker-compose.postgres.yml down -v 2>/dev/null || true\",
