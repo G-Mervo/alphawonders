@@ -186,7 +186,9 @@ jobs:
             --timeout-seconds 600 \
             --parameters commands="[
               \"set -e\",
-              \"REGION=\$(curl -s http://169.254.169.254/latest/meta-data/placement/region)\",
+              \"TOKEN=\$(curl -sX PUT http://169.254.169.254/latest/api/token -H 'X-aws-ec2-metadata-token-ttl-seconds: 60')\",
+              \"REGION=\$(curl -s -H \\\"X-aws-ec2-metadata-token: \$TOKEN\\\" http://169.254.169.254/latest/meta-data/placement/region)\",
+              \"echo \\\"Region: \$REGION\\\"\",
               \"get_param() { aws ssm get-parameter --name \\\"\$1\\\" --with-decryption --query Parameter.Value --output text --region \\\"\$REGION\\\" 2>/dev/null || echo ''; }\",
               \"echo '── GHCR login ──'\",
               \"GHCR_PAT=\$(get_param /deploy/ghcr-pat)\",
