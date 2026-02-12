@@ -21,7 +21,7 @@ services:
       - database.default.hostname=postgres
       - database.default.database=alphaw
       - database.default.username=mervo
-      - database.default.password=$$Tpr09!dKQ-2.0/4(UwZC*7
+      - database.default.password=$Tpr09!dKQ-2.0/4(UwZC*7
       - database.default.DBDriver=Postgre
       - database.default.port=5432
       - database.default.DBPrefix=
@@ -50,7 +50,7 @@ services:
       start_period: 40s
 
   postgres:
-    image: postgres:15-alpine
+    image: postgres:18-alpine
     container_name: postgres
     restart: unless-stopped
     environment:
