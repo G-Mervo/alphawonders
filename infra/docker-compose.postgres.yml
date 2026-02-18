@@ -3,8 +3,9 @@
 # Lives at ~/infra/ on the EC2 instance.
 #
 # Contains:
-#   - PostgreSQL 15   (shared DB for all apps)
-#   - pgAdmin 4       (DB admin UI, localhost only)
+#   - PostgreSQL 18   (shared relational DB for all apps)
+#   - MongoDB 7       (shared document store for all apps)
+#   - Redis 7         (shared cache / message broker for all apps)
 #   - Nginx           (reverse proxy, routes domains to app containers)
 #
 # SSL is handled by CloudFront + ACM — Nginx only serves HTTP.
@@ -36,6 +37,43 @@ services:
       retries: 5
       start_period: 10s
 
+  # ── MongoDB (shared document store for all apps) ──
+  mongodb:
+    image: mongo:7
+    container_name: mongodb
+    restart: unless-stopped
+    volumes:
+      - mongodata:/data/db
+    networks:
+      - shared-services
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.hello()"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+  # ── Redis (shared cache / message broker for all apps) ──
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: unless-stopped
+    command: >-
+      redis-server
+      --appendonly yes
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+    volumes:
+      - redisdata:/data
+    networks:
+      - shared-services
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
   # ── Reverse Proxy (HTTP only — CloudFront + ACM handles SSL) ──
   nginx:
     image: nginx:1.27-alpine
@@ -56,6 +94,8 @@ services:
 
 volumes:
   pgdata:
+  mongodata:
+  redisdata:
 
 networks:
   shared-services:
