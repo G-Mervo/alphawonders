@@ -4,8 +4,8 @@
 #
 # Contains:
 #   - PostgreSQL 18   (shared relational DB for all apps)
-#   - MongoDB 7       (shared document store for all apps)
-#   - Redis 7         (shared cache / message broker for all apps)
+#   - MongoDB 8       (shared document store for all apps)
+#   - Redis 8         (shared cache / message broker for all apps)
 #   - Nginx           (reverse proxy, routes domains to app containers)
 #
 # SSL is handled by CloudFront + ACM — Nginx only serves HTTP.
@@ -39,7 +39,7 @@ services:
 
   # ── MongoDB (shared document store for all apps) ──
   mongodb:
-    image: mongo:7
+    image: mongo:8
     container_name: mongodb
     restart: unless-stopped
     volumes:
@@ -55,7 +55,7 @@ services:
 
   # ── Redis (shared cache / message broker for all apps) ──
   redis:
-    image: redis:7-alpine
+    image: redis:8-alpine
     container_name: redis
     restart: unless-stopped
     command: >-
