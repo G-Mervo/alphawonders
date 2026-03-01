@@ -7,29 +7,59 @@
 			<i class="fas fa-folder-open text-primary me-2"></i>Blog Categories
 		</h4>
 		<ul class="list-unstyled">
-			<?php
-			$categories = [
-				'machine-learning' => 'Machine Learning',
-				'artificial-intelligence' => 'Artificial Intelligence',
-				'robotics' => 'Robotics',
-				'quantum-computing' => 'Quantum Computing',
-				'digital-marketing' => 'Digital Marketing',
-				'blockchain' => 'Blockchain Technology',
-				'iot' => 'Internet of Things',
-				'cyber-security' => 'Cyber Security',
-				'data-science' => 'Data Science',
-				'trends-technology' => 'Trends in Technology',
-			];
-			foreach ($categories as $slug => $name): ?>
-				<li class="mb-2">
-					<a href="<?= base_url('blog/category/' . $slug); ?>" class="text-decoration-none d-flex align-items-center">
-						<i class="fas fa-chevron-right text-primary me-2 small"></i><?= esc($name); ?>
-					</a>
-				</li>
-			<?php endforeach; ?>
+			<?php if (!empty($categories)): ?>
+				<?php foreach ($categories as $cat): ?>
+					<li class="mb-2">
+						<a href="<?= base_url('blog/category/' . esc($cat['slug'])); ?>" class="text-decoration-none d-flex align-items-center justify-content-between">
+							<span><i class="fas fa-chevron-right text-primary me-2 small"></i><?= esc($cat['name']); ?></span>
+							<span class="badge bg-primary bg-opacity-10 text-primary rounded-pill"><?= (int) ($cat['post_count'] ?? 0); ?></span>
+						</a>
+					</li>
+				<?php endforeach; ?>
+			<?php else: ?>
+				<?php
+				// Fallback hard-coded categories if DB data not available
+				$fallbackCategories = [
+					'machine-learning' => 'Machine Learning',
+					'artificial-intelligence' => 'Artificial Intelligence',
+					'robotics' => 'Robotics',
+					'quantum-computing' => 'Quantum Computing',
+					'digital-marketing' => 'Digital Marketing',
+					'blockchain' => 'Blockchain Technology',
+					'iot' => 'Internet of Things',
+					'cyber-security' => 'Cyber Security',
+					'data-science' => 'Data Science',
+					'trends-technology' => 'Trends in Technology',
+				];
+				foreach ($fallbackCategories as $slug => $name): ?>
+					<li class="mb-2">
+						<a href="<?= base_url('blog/category/' . $slug); ?>" class="text-decoration-none d-flex align-items-center">
+							<i class="fas fa-chevron-right text-primary me-2 small"></i><?= esc($name); ?>
+						</a>
+					</li>
+				<?php endforeach; ?>
+			<?php endif; ?>
 		</ul>
 	</div>
 </div>
+
+<!-- Tags Widget -->
+<?php if (!empty($allTags)): ?>
+<div class="card border-0 shadow-sm mb-4">
+	<div class="card-body">
+		<h4 class="fw-bold mb-3">
+			<i class="fas fa-tags text-info me-2"></i>Tags
+		</h4>
+		<div class="d-flex flex-wrap gap-2">
+			<?php foreach ($allTags as $tag): ?>
+				<a href="<?= base_url('blog/tag/' . esc($tag['slug'])); ?>" class="badge bg-secondary bg-opacity-75 text-white text-decoration-none px-3 py-2 rounded-pill">
+					<?= esc($tag['name']); ?> <span class="badge bg-light text-dark ms-1"><?= (int) ($tag['post_count'] ?? 0); ?></span>
+				</a>
+			<?php endforeach; ?>
+		</div>
+	</div>
+</div>
+<?php endif; ?>
 
 <!-- Popular Articles Widget -->
 <?php if (!empty($recentPosts)): ?>

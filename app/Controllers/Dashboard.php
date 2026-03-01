@@ -3,17 +3,23 @@
 namespace App\Controllers;
 
 use App\Models\AlphaBlogModel;
+use App\Models\BlogCategoryModel;
+use App\Models\BlogTagModel;
 use App\Libraries\GroqService;
 use App\Libraries\GitHubService;
 
 class Dashboard extends BaseController
 {
     protected $alphaBlogModel;
+    protected $blogCategoryModel;
+    protected $blogTagModel;
     protected $db;
 
     public function __construct()
     {
         $this->alphaBlogModel = new AlphaBlogModel();
+        $this->blogCategoryModel = new BlogCategoryModel();
+        $this->blogTagModel = new BlogTagModel();
         $this->db = \Config\Database::connect();
     }
 
@@ -156,6 +162,10 @@ class Dashboard extends BaseController
         $data['title'] = 'Blog Management | Alphawonders';
         $data['posts'] = $this->alphaBlogModel->orderBy('date_created', 'DESC')->findAll();
 
+        // Pre-load tags for all posts to avoid N+1
+        $postIds = array_column($data['posts'], 'id');
+        $data['postTagsMap'] = $this->blogTagModel->getTagsMapForPosts($postIds);
+
         return view('dashboard/inc/header', $data) .
                view('dashboard/blog', $data) .
                view('dashboard/inc/footer');
@@ -165,6 +175,8 @@ class Dashboard extends BaseController
     {
         $data['title'] = 'Create Blog Post | Alphawonders';
         $data['post'] = null;
+        $data['categories'] = $this->blogCategoryModel->getAllCategories();
+        $data['postTags'] = [];
 
         return view('dashboard/inc/header', $data) .
                view('dashboard/blog_form', $data) .
@@ -201,18 +213,33 @@ class Dashboard extends BaseController
             $imagePath = 'assets/img/blog/' . $newName;
         }
 
+        // Resolve category
+        $categoryId = $this->request->getPost('category_id') ?: null;
+        $blogCategory = null;
+        if ($categoryId) {
+            $cat = $this->blogCategoryModel->find($categoryId);
+            $blogCategory = $cat ? $cat['slug'] : null;
+        }
+
         $data = [
             'blog_author' => $this->request->getPost('blog_author'),
             'blog_title' => $this->request->getPost('blog_title'),
             'blog_url' => $slug,
             'blog_description' => $this->request->getPost('blogtxtarea'),
             'blog_image' => $imagePath,
-            'blog_category' => $this->request->getPost('blog_category') ?: null,
+            'blog_category' => $blogCategory,
+            'category_id' => $categoryId,
             'blog_id' => time(),
             'date_created' => date('Y-m-d H:i:s'),
         ];
 
         if ($this->alphaBlogModel->insert($data)) {
+            $newPostId = $this->alphaBlogModel->getInsertID();
+
+            // Sync tags
+            $tagsInput = $this->request->getPost('blog_tags') ?? '';
+            $this->blogTagModel->syncTagsForPost($newPostId, $tagsInput);
+
             return redirect()->to(base_url('aw-cp/blog'))->with('success', 'Blog post created successfully!');
         }
 
@@ -227,6 +254,9 @@ class Dashboard extends BaseController
         if (!$data['post']) {
             return redirect()->to(base_url('aw-cp/blog'))->with('error', 'Post not found.');
         }
+
+        $data['categories'] = $this->blogCategoryModel->getAllCategories();
+        $data['postTags'] = $this->blogTagModel->getTagsForPost($id);
 
         return view('dashboard/inc/header', $data) .
                view('dashboard/blog_form', $data) .
@@ -255,12 +285,21 @@ class Dashboard extends BaseController
 
         $slug = url_title($this->request->getPost('blog_url'), '-', true);
 
+        // Resolve category
+        $categoryId = $this->request->getPost('category_id') ?: null;
+        $blogCategory = null;
+        if ($categoryId) {
+            $cat = $this->blogCategoryModel->find($categoryId);
+            $blogCategory = $cat ? $cat['slug'] : null;
+        }
+
         $data = [
             'blog_author' => $this->request->getPost('blog_author'),
             'blog_title' => $this->request->getPost('blog_title'),
             'blog_url' => $slug,
             'blog_description' => $this->request->getPost('blogtxtarea'),
-            'blog_category' => $this->request->getPost('blog_category') ?: null,
+            'blog_category' => $blogCategory,
+            'category_id' => $categoryId,
         ];
 
         $imageFile = $this->request->getFile('blog_image');
@@ -275,6 +314,10 @@ class Dashboard extends BaseController
         }
 
         if ($this->alphaBlogModel->update($id, $data)) {
+            // Sync tags
+            $tagsInput = $this->request->getPost('blog_tags') ?? '';
+            $this->blogTagModel->syncTagsForPost($id, $tagsInput);
+
             return redirect()->to(base_url('aw-cp/blog'))->with('success', 'Blog post updated successfully!');
         }
 
@@ -451,6 +494,40 @@ class Dashboard extends BaseController
                view('dashboard/inc/footer');
     }
 
+    public function categoryStore()
+    {
+        $name = trim($this->request->getPost('name') ?? '');
+
+        if (empty($name)) {
+            return $this->response->setJSON(['success' => false, 'error' => 'Category name is required.']);
+        }
+
+        $slug = url_title($name, '-', true);
+
+        // Check duplicate
+        $existing = $this->blogCategoryModel->getCategoryBySlug($slug);
+        if ($existing) {
+            return $this->response->setJSON(['success' => false, 'error' => 'A category with this name already exists.']);
+        }
+
+        $this->blogCategoryModel->insert([
+            'name'       => $name,
+            'slug'       => $slug,
+            'created_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        $id = $this->blogCategoryModel->getInsertID();
+
+        return $this->response->setJSON([
+            'success' => true,
+            'category' => [
+                'id'   => $id,
+                'name' => $name,
+                'slug' => $slug,
+            ],
+        ]);
+    }
+
     // ──────────────────────────────────────────────
     // AI Endpoints (Groq)
     // ──────────────────────────────────────────────
@@ -520,8 +597,9 @@ class Dashboard extends BaseController
             return $this->response->setJSON(['success' => false, 'error' => 'Content is required.']);
         }
 
+        $categories = $this->blogCategoryModel->getAllCategories();
         $groq = new GroqService();
-        $result = $groq->suggestCategory($content);
+        $result = $groq->suggestCategory($content, $categories);
 
         return $this->response->setJSON($result);
     }

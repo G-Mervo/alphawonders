@@ -107,9 +107,15 @@ class GroqService
     /**
      * Suggest a category from content
      */
-    public function suggestCategory(string $content): array
+    public function suggestCategory(string $content, array $categoriesList = []): array
     {
-        $categories = 'machine-learning, artificial-intelligence, robotics, quantum-computing, digital-marketing, blockchain, iot, cyber-security, data-science, trends-technology';
+        if (!empty($categoriesList)) {
+            $slugs = array_column($categoriesList, 'slug');
+            $categories = implode(', ', $slugs);
+        } else {
+            $categories = 'machine-learning, artificial-intelligence, robotics, quantum-computing, digital-marketing, blockchain, iot, cyber-security, data-science, trends-technology';
+        }
+
         $system = "You are a content categorizer. Choose the single most relevant category from this list: {$categories}. Return ONLY the category value (e.g. 'artificial-intelligence'), nothing else.";
         $user = "Categorize this content:\n\n" . mb_substr(strip_tags($content), 0, 1500);
 

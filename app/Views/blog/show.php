@@ -5,14 +5,25 @@
 	<div class="container">
 		<div class="row justify-content-center text-center">
 			<div class="col-lg-8">
-				<?php if (!empty($post['blog_category'])): ?>
-					<span class="badge bg-warning text-dark px-3 py-2 mb-3 d-inline-block rounded-pill fw-bold"><?= esc($post['blog_category']); ?></span>
+				<?php if (!empty($postCategory)): ?>
+					<a href="<?= base_url('blog/category/' . esc($postCategory['slug'])); ?>" class="badge bg-warning text-dark px-3 py-2 mb-3 d-inline-block rounded-pill fw-bold text-decoration-none"><?= esc($postCategory['name']); ?></a>
+				<?php elseif (!empty($post['blog_category'])): ?>
+					<span class="badge bg-warning text-dark px-3 py-2 mb-3 d-inline-block rounded-pill fw-bold"><?= esc(ucwords(str_replace('-', ' ', $post['blog_category']))); ?></span>
 				<?php endif; ?>
 				<h1 class="display-4 fw-bold mb-3"><?= esc($post['blog_title']); ?></h1>
 				<p class="lead mb-0">
 					<i class="fas fa-user me-1"></i> by <?= esc($post['blog_author']); ?>
 					<span class="ms-3"><i class="fas fa-clock me-1"></i> <?= date('F d, Y', strtotime($post['date_created'])); ?></span>
 				</p>
+				<?php if (!empty($postTags)): ?>
+					<div class="mt-3">
+						<?php foreach ($postTags as $tag): ?>
+							<a href="<?= base_url('blog/tag/' . esc($tag['slug'])); ?>" class="badge bg-light text-dark text-decoration-none me-1 px-3 py-2 rounded-pill">
+								<i class="fas fa-tag me-1"></i><?= esc($tag['name']); ?>
+							</a>
+						<?php endforeach; ?>
+					</div>
+				<?php endif; ?>
 			</div>
 		</div>
 	</div>

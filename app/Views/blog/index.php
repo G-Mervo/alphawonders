@@ -7,7 +7,9 @@
 			<div class="col-lg-8">
 				<span class="badge bg-warning text-dark px-3 py-2 mb-3 d-inline-block rounded-pill fw-bold">Latest Insights</span>
 				<h1 class="display-4 fw-bold mb-3">
-					<?php if (!empty($category)): ?>
+					<?php if (!empty($tag)): ?>
+						Tag: <?= esc($tag['name']); ?>
+					<?php elseif (!empty($category)): ?>
 						<?= esc(ucwords(str_replace('-', ' ', $category))); ?>
 					<?php else: ?>
 						Alphawonders Blog
@@ -25,7 +27,7 @@
 		<div class="row g-4">
 			<!-- Blog Entries Column -->
 			<div class="col-lg-8">
-				<?php if (!empty($category)): ?>
+				<?php if (!empty($category) || !empty($tag)): ?>
 					<div class="mb-4">
 						<a href="<?= base_url('blog'); ?>" class="btn btn-outline-primary rounded-pill btn-sm">
 							<i class="fas fa-arrow-left me-1"></i> All Posts
@@ -71,7 +73,7 @@
 						<i class="fas fa-blog fa-3x text-muted mb-3"></i>
 						<h4 class="text-muted">No blog posts found</h4>
 						<p class="text-muted">Check back soon for new content!</p>
-						<?php if (!empty($category)): ?>
+						<?php if (!empty($category) || !empty($tag)): ?>
 							<a href="<?= base_url('blog'); ?>" class="btn btn-primary rounded-pill mt-2">View All Posts</a>
 						<?php endif; ?>
 					</div>

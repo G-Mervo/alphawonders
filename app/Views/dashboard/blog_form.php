@@ -65,31 +65,49 @@
 			</div>
 			<div class="row g-3 mt-1">
 				<div class="col-lg-4">
-					<label for="blog_category" class="form-label">
+					<label for="category_id" class="form-label">
 						Category
 						<button type="button" class="btn btn-sm btn-outline-success ms-2 ai-suggest-btn" data-action="category" title="AI Suggest Category">
 							<i class="fa-solid fa-wand-magic-sparkles"></i>
 						</button>
 					</label>
-					<select class="form-select" name="blog_category" id="blog_category">
-						<option value="">-- Select Category --</option>
-						<?php
-						$categories = [
-							'machine-learning', 'artificial-intelligence', 'robotics',
-							'quantum-computing', 'digital-marketing', 'blockchain',
-							'iot', 'cyber-security', 'data-science', 'trends-technology'
-						];
-						$selected = $post['blog_category'] ?? old('blog_category', '');
-						foreach ($categories as $cat): ?>
-							<option value="<?= $cat; ?>" <?= $selected === $cat ? 'selected' : ''; ?>><?= ucwords(str_replace('-', ' ', $cat)); ?></option>
-						<?php endforeach; ?>
-					</select>
+					<div class="input-group">
+						<select class="form-select" name="category_id" id="category_id">
+							<option value="">-- Select Category --</option>
+							<?php
+							$selectedCatId = $post['category_id'] ?? old('category_id', '');
+							if (isset($categories) && is_array($categories)):
+								foreach ($categories as $cat): ?>
+									<option value="<?= esc($cat['id']); ?>" data-slug="<?= esc($cat['slug']); ?>" <?= ($selectedCatId == $cat['id']) ? 'selected' : ''; ?>><?= esc($cat['name']); ?></option>
+								<?php endforeach;
+							endif; ?>
+						</select>
+						<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newCategoryModal" title="Add New Category">
+							<i class="fa-solid fa-plus"></i>
+						</button>
+					</div>
 				</div>
 				<div class="col-lg-4">
 					<label for="blog_image" class="form-label">Featured Image</label>
 					<input type="file" class="form-control" name="blog_image" id="blog_image" accept="image/*">
 					<?php if ($post && !empty($post['blog_image'])): ?>
 						<small class="text-muted">Current: <?= esc($post['blog_image']); ?></small>
+					<?php endif; ?>
+				</div>
+				<div class="col-lg-4">
+					<label for="blog_tags" class="form-label">Tags</label>
+					<input type="text" class="form-control" name="blog_tags" id="blog_tags"
+						   value="<?= esc(isset($postTags) ? implode(', ', array_column($postTags, 'name')) : old('blog_tags', '')); ?>"
+						   placeholder="e.g. python, deep-learning, tutorial">
+					<small class="text-muted">Comma-separated</small>
+					<?php if (!empty($postTags)): ?>
+						<div class="mt-2" id="tag-pills">
+							<?php foreach ($postTags as $t): ?>
+								<span class="badge bg-secondary me-1"><?= esc($t['name']); ?></span>
+							<?php endforeach; ?>
+						</div>
+					<?php else: ?>
+						<div class="mt-2" id="tag-pills"></div>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -104,6 +122,32 @@
 				</button>
 			</div>
 		</form>
+	</div>
+</div>
+
+<!-- New Category Modal -->
+<div class="modal fade" id="newCategoryModal" tabindex="-1">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title"><i class="fa-solid fa-folder-plus me-2"></i>New Category</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			</div>
+			<div class="modal-body">
+				<div class="mb-3">
+					<label for="new_cat_name" class="form-label">Category Name <span class="text-danger">*</span></label>
+					<input type="text" class="form-control" id="new_cat_name" placeholder="e.g. Cloud Computing">
+				</div>
+				<div id="new_cat_error" class="alert alert-danger d-none py-2 small"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-primary btn-sm" id="saveCategoryBtn">
+					<span class="spinner-border spinner-border-sm d-none me-1" id="saveCatSpinner"></span>
+					Save Category
+				</button>
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -140,6 +184,67 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 	const baseUrl = '<?= base_url(); ?>';
+
+	// Tag pills rendering
+	const tagsInput = document.getElementById('blog_tags');
+	const tagPills = document.getElementById('tag-pills');
+
+	function renderTagPills() {
+		const val = tagsInput.value;
+		const tags = val.split(',').map(t => t.trim()).filter(t => t !== '');
+		tagPills.innerHTML = tags.map(t => '<span class="badge bg-secondary me-1">' + t.replace(/</g, '&lt;') + '</span>').join('');
+	}
+
+	tagsInput.addEventListener('input', renderTagPills);
+
+	// New Category Modal save
+	document.getElementById('saveCategoryBtn')?.addEventListener('click', function() {
+		const nameInput = document.getElementById('new_cat_name');
+		const name = nameInput.value.trim();
+		const errorEl = document.getElementById('new_cat_error');
+		const spinner = document.getElementById('saveCatSpinner');
+
+		if (!name) {
+			errorEl.textContent = 'Please enter a category name.';
+			errorEl.classList.remove('d-none');
+			return;
+		}
+
+		errorEl.classList.add('d-none');
+		spinner.classList.remove('d-none');
+		this.disabled = true;
+
+		fetch(baseUrl + '/aw-cp/blog/category/store', {
+			method: 'POST',
+			headers: {'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest'},
+			body: 'name=' + encodeURIComponent(name)
+		})
+		.then(r => r.json())
+		.then(data => {
+			if (data.success) {
+				const sel = document.getElementById('category_id');
+				const opt = document.createElement('option');
+				opt.value = data.category.id;
+				opt.textContent = data.category.name;
+				opt.dataset.slug = data.category.slug;
+				opt.selected = true;
+				sel.appendChild(opt);
+				nameInput.value = '';
+				bootstrap.Modal.getInstance(document.getElementById('newCategoryModal')).hide();
+			} else {
+				errorEl.textContent = data.error || 'Failed to create category.';
+				errorEl.classList.remove('d-none');
+			}
+		})
+		.catch(() => {
+			errorEl.textContent = 'Network error. Please try again.';
+			errorEl.classList.remove('d-none');
+		})
+		.finally(() => {
+			spinner.classList.add('d-none');
+			this.disabled = false;
+		});
+	});
 
 	// AI Generate Blog Post
 	document.getElementById('aiGenerateBtn')?.addEventListener('click', function() {
@@ -242,10 +347,10 @@ document.addEventListener('DOMContentLoaded', function() {
 					} else if (action === 'slug') {
 						document.getElementById('blog_url').value = data.content;
 					} else if (action === 'category') {
-						const sel = document.getElementById('blog_category');
+						const sel = document.getElementById('category_id');
 						const val = data.content.trim();
 						for (let opt of sel.options) {
-							if (opt.value === val) { opt.selected = true; break; }
+							if (opt.dataset.slug === val) { opt.selected = true; break; }
 						}
 					}
 				} else {

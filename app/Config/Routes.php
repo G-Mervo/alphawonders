@@ -24,6 +24,7 @@ $routes->post('/hire-submit', 'Alphawonders::hires_details');
 // Blog routes
 $routes->get('/blog', 'Alphawonders::alphablog');
 $routes->get('/blog/category/(:segment)', 'Alphawonders::blogCategory/$1');
+$routes->get('/blog/tag/(:segment)', 'Alphawonders::blogTag/$1');
 $routes->post('/blog/comment', 'Alphawonders::post_comments');
 $routes->get('/blog/(:segment)', 'Alphawonders::blogPost/$1');
 
@@ -42,6 +43,7 @@ $routes->post('/aw-cp/blog/save', 'Dashboard::blogSave');
 $routes->get('/aw-cp/blog/edit/(:num)', 'Dashboard::blogEdit/$1');
 $routes->post('/aw-cp/blog/update/(:num)', 'Dashboard::blogUpdate/$1');
 $routes->get('/aw-cp/blog/delete/(:num)', 'Dashboard::blogDelete/$1');
+$routes->post('/aw-cp/blog/category/store', 'Dashboard::categoryStore');
 $routes->get('/aw-cp/users_analytics', 'Dashboard::users_analytics');
 $routes->get('/aw-cp/visits_analytics', 'Dashboard::visits_analytics');
 $routes->get('/aw-cp/interactions_analytics', 'Dashboard::interactions_analytics');

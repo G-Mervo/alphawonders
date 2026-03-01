@@ -31,6 +31,7 @@
 						<th>Title</th>
 						<th>Author</th>
 						<th>Category</th>
+						<th>Tags</th>
 						<th>Slug</th>
 						<th>Date</th>
 						<th>Actions</th>
@@ -44,6 +45,15 @@
 								<td><?= esc($post['blog_title']); ?></td>
 								<td><?= esc($post['blog_author']); ?></td>
 								<td><?= esc($post['blog_category'] ?? '-'); ?></td>
+								<td>
+									<?php if (!empty($postTagsMap[$post['id']])): ?>
+										<?php foreach ($postTagsMap[$post['id']] as $tag): ?>
+											<span class="badge bg-secondary bg-opacity-75 me-1"><?= esc($tag['name']); ?></span>
+										<?php endforeach; ?>
+									<?php else: ?>
+										<span class="text-muted">-</span>
+									<?php endif; ?>
+								</td>
 								<td><code><?= esc($post['blog_url']); ?></code></td>
 								<td><?= date('M d, Y', strtotime($post['date_created'])); ?></td>
 								<td>
@@ -61,7 +71,7 @@
 						<?php endforeach; ?>
 					<?php else: ?>
 						<tr>
-							<td colspan="7" class="text-center py-4 text-muted">No blog posts found. <a href="<?= base_url('aw-cp/blog/create'); ?>">Create one now</a>.</td>
+							<td colspan="8" class="text-center py-4 text-muted">No blog posts found. <a href="<?= base_url('aw-cp/blog/create'); ?>">Create one now</a>.</td>
 						</tr>
 					<?php endif; ?>
 				</tbody>

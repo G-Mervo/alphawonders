@@ -10,7 +10,7 @@ class AlphaBlogModel extends Model
     protected $primaryKey = 'id';
     protected $allowedFields = [
         'blog_author', 'blog_title', 'blog_description', 'blog_image',
-        'blog_url', 'blog_category', 'blog_id', 'date_created', 'date_modified'
+        'blog_url', 'blog_category', 'category_id', 'blog_id', 'date_created', 'date_modified'
     ];
     protected $useTimestamps = false;
 
@@ -48,6 +48,24 @@ class AlphaBlogModel extends Model
     public function insertComment(array $data)
     {
         return $this->db->table('posts_comments')->insert($data);
+    }
+
+    public function getPostsByCategoryId(int $categoryId, int $perPage = 6)
+    {
+        return $this->where('category_id', $categoryId)
+                     ->orderBy('date_created', 'DESC')
+                     ->paginate($perPage);
+    }
+
+    public function getPostsByIds(array $ids, int $perPage = 6)
+    {
+        if (empty($ids)) {
+            return [];
+        }
+
+        return $this->whereIn('id', $ids)
+                     ->orderBy('date_created', 'DESC')
+                     ->paginate($perPage);
     }
 
     public function retrieveBlog()

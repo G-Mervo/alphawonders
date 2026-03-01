@@ -4,17 +4,23 @@ namespace App\Controllers;
 
 use App\Models\AlphaWModel;
 use App\Models\AlphaBlogModel;
+use App\Models\BlogCategoryModel;
+use App\Models\BlogTagModel;
 use CodeIgniter\Controller;
 
 class Alphawonders extends BaseController
 {
     protected $alphaWModel;
     protected $alphaBlogModel;
+    protected $blogCategoryModel;
+    protected $blogTagModel;
 
     public function __construct()
     {
         $this->alphaWModel = new AlphaWModel();
         $this->alphaBlogModel = new AlphaBlogModel();
+        $this->blogCategoryModel = new BlogCategoryModel();
+        $this->blogTagModel = new BlogTagModel();
     }
 
     public function sitemap()
@@ -78,6 +84,17 @@ class Alphawonders extends BaseController
                 $xml .= '    <lastmod>' . $today . '</lastmod>' . "\n";
                 $xml .= '    <changefreq>weekly</changefreq>' . "\n";
                 $xml .= '    <priority>0.7</priority>' . "\n";
+                $xml .= '  </url>' . "\n";
+            }
+
+            // Add blog tag pages
+            $tags = $this->blogTagModel->findAll();
+            foreach ($tags as $tag) {
+                $xml .= '  <url>' . "\n";
+                $xml .= '    <loc>' . $baseUrl . '/blog/tag/' . esc($tag['slug']) . '</loc>' . "\n";
+                $xml .= '    <lastmod>' . $today . '</lastmod>' . "\n";
+                $xml .= '    <changefreq>weekly</changefreq>' . "\n";
+                $xml .= '    <priority>0.5</priority>' . "\n";
                 $xml .= '  </url>' . "\n";
             }
         } catch (\Exception $e) {
@@ -438,10 +455,14 @@ class Alphawonders extends BaseController
             $data['blogs'] = $this->alphaBlogModel->getRecentPosts(6);
             $data['pager'] = $this->alphaBlogModel->pager;
             $data['recentPosts'] = $this->alphaBlogModel->orderBy('date_created', 'DESC')->limit(4)->findAll();
+            $data['categories'] = $this->blogCategoryModel->getCategoriesWithPostCount();
+            $data['allTags'] = $this->blogTagModel->getAllTagsWithPostCount();
         } catch (\Exception $e) {
             $data['blogs'] = [];
             $data['pager'] = null;
             $data['recentPosts'] = [];
+            $data['categories'] = [];
+            $data['allTags'] = [];
         }
 
         return view('layout/header', $data) .
@@ -461,6 +482,10 @@ class Alphawonders extends BaseController
         $data['post'] = $post;
         $data['comments'] = $this->alphaBlogModel->getCommentsByPostId((int) $post['id']);
         $data['recentPosts'] = $this->alphaBlogModel->orderBy('date_created', 'DESC')->limit(4)->findAll();
+        $data['postTags'] = $this->blogTagModel->getTagsForPost((int) $post['id']);
+        $data['postCategory'] = !empty($post['category_id']) ? $this->blogCategoryModel->find($post['category_id']) : null;
+        $data['categories'] = $this->blogCategoryModel->getCategoriesWithPostCount();
+        $data['allTags'] = $this->blogTagModel->getAllTagsWithPostCount();
 
         return view('layout/header', $data) .
                view('blog/show', $data) .
@@ -469,17 +494,58 @@ class Alphawonders extends BaseController
 
     public function blogCategory(string $category)
     {
-        $data['title'] = ucwords(str_replace('-', ' ', $category)) . ' | Alphawonders Blog';
+        $catRecord = $this->blogCategoryModel->getCategoryBySlug($category);
+        $data['title'] = ($catRecord ? esc($catRecord['name']) : ucwords(str_replace('-', ' ', $category))) . ' | Alphawonders Blog';
         $data['category'] = $category;
 
         try {
-            $data['blogs'] = $this->alphaBlogModel->getPostsByCategory($category, 6);
+            if ($catRecord) {
+                $data['blogs'] = $this->alphaBlogModel->getPostsByCategoryId((int) $catRecord['id'], 6);
+            } else {
+                // Fallback to slug-based filtering for backward compat
+                $data['blogs'] = $this->alphaBlogModel->getPostsByCategory($category, 6);
+            }
             $data['pager'] = $this->alphaBlogModel->pager;
             $data['recentPosts'] = $this->alphaBlogModel->orderBy('date_created', 'DESC')->limit(4)->findAll();
+            $data['categories'] = $this->blogCategoryModel->getCategoriesWithPostCount();
+            $data['allTags'] = $this->blogTagModel->getAllTagsWithPostCount();
         } catch (\Exception $e) {
             $data['blogs'] = [];
             $data['pager'] = null;
             $data['recentPosts'] = [];
+            $data['categories'] = [];
+            $data['allTags'] = [];
+        }
+
+        return view('layout/header', $data) .
+               view('blog/index', $data) .
+               view('layout/footer');
+    }
+
+    public function blogTag(string $tagSlug)
+    {
+        $tag = $this->blogTagModel->where('slug', $tagSlug)->first();
+
+        if (!$tag) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Tag not found.');
+        }
+
+        $data['title'] = esc($tag['name']) . ' | Alphawonders Blog';
+        $data['tag'] = $tag;
+
+        try {
+            $postIds = $this->blogTagModel->getPostIdsByTag((int) $tag['id']);
+            $data['blogs'] = $this->alphaBlogModel->getPostsByIds($postIds, 6);
+            $data['pager'] = $this->alphaBlogModel->pager;
+            $data['recentPosts'] = $this->alphaBlogModel->orderBy('date_created', 'DESC')->limit(4)->findAll();
+            $data['categories'] = $this->blogCategoryModel->getCategoriesWithPostCount();
+            $data['allTags'] = $this->blogTagModel->getAllTagsWithPostCount();
+        } catch (\Exception $e) {
+            $data['blogs'] = [];
+            $data['pager'] = null;
+            $data['recentPosts'] = [];
+            $data['categories'] = [];
+            $data['allTags'] = [];
         }
 
         return view('layout/header', $data) .
