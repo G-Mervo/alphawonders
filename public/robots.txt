@@ -1,2 +1,5 @@
 User-agent: *
-Disallow: 
+Disallow: /aw-cp/
+Disallow: /cgi-bin/
+
+Sitemap: https://alphawonders.com/sitemap.xml

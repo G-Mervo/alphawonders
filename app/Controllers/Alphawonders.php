@@ -17,6 +17,80 @@ class Alphawonders extends BaseController
         $this->alphaBlogModel = new AlphaBlogModel();
     }
 
+    public function sitemap()
+    {
+        $baseUrl = 'https://alphawonders.com';
+        $today = date('Y-m-d');
+
+        // Static pages with priority
+        $staticPages = [
+            ['loc' => '/',                      'changefreq' => 'weekly',   'priority' => '1.0'],
+            ['loc' => '/softwares',             'changefreq' => 'monthly',  'priority' => '0.8'],
+            ['loc' => '/system-administration', 'changefreq' => 'monthly',  'priority' => '0.8'],
+            ['loc' => '/design',                'changefreq' => 'monthly',  'priority' => '0.8'],
+            ['loc' => '/digital-marketing',     'changefreq' => 'monthly',  'priority' => '0.8'],
+            ['loc' => '/ict-consultancy',       'changefreq' => 'monthly',  'priority' => '0.8'],
+            ['loc' => '/it-support',            'changefreq' => 'monthly',  'priority' => '0.8'],
+            ['loc' => '/ai-services',           'changefreq' => 'monthly',  'priority' => '0.8'],
+            ['loc' => '/hire',                  'changefreq' => 'monthly',  'priority' => '0.7'],
+            ['loc' => '/contact-us',            'changefreq' => 'monthly',  'priority' => '0.7'],
+            ['loc' => '/blog',                  'changefreq' => 'weekly',   'priority' => '0.9'],
+        ];
+
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+        $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+
+        // Add static pages
+        foreach ($staticPages as $page) {
+            $xml .= '  <url>' . "\n";
+            $xml .= '    <loc>' . $baseUrl . $page['loc'] . '</loc>' . "\n";
+            $xml .= '    <lastmod>' . $today . '</lastmod>' . "\n";
+            $xml .= '    <changefreq>' . $page['changefreq'] . '</changefreq>' . "\n";
+            $xml .= '    <priority>' . $page['priority'] . '</priority>' . "\n";
+            $xml .= '  </url>' . "\n";
+        }
+
+        // Add blog posts from database
+        try {
+            $posts = $this->alphaBlogModel->orderBy('date_created', 'DESC')->findAll();
+            $categories = [];
+
+            foreach ($posts as $post) {
+                $lastmod = !empty($post['date_modified']) ? date('Y-m-d', strtotime($post['date_modified'])) : date('Y-m-d', strtotime($post['date_created']));
+
+                $xml .= '  <url>' . "\n";
+                $xml .= '    <loc>' . $baseUrl . '/blog/' . esc($post['blog_url']) . '</loc>' . "\n";
+                $xml .= '    <lastmod>' . $lastmod . '</lastmod>' . "\n";
+                $xml .= '    <changefreq>monthly</changefreq>' . "\n";
+                $xml .= '    <priority>0.6</priority>' . "\n";
+                $xml .= '  </url>' . "\n";
+
+                // Collect unique categories
+                if (!empty($post['blog_category']) && !in_array($post['blog_category'], $categories)) {
+                    $categories[] = $post['blog_category'];
+                }
+            }
+
+            // Add blog category pages
+            foreach ($categories as $category) {
+                $xml .= '  <url>' . "\n";
+                $xml .= '    <loc>' . $baseUrl . '/blog/category/' . esc($category) . '</loc>' . "\n";
+                $xml .= '    <lastmod>' . $today . '</lastmod>' . "\n";
+                $xml .= '    <changefreq>weekly</changefreq>' . "\n";
+                $xml .= '    <priority>0.7</priority>' . "\n";
+                $xml .= '  </url>' . "\n";
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'Sitemap generation error: ' . $e->getMessage());
+        }
+
+        $xml .= '</urlset>';
+
+        return $this->response
+            ->setHeader('Content-Type', 'application/xml; charset=UTF-8')
+            ->setBody($xml);
+    }
+
     public function index()
     {
         $data['title'] = 'Alphawonders';

@@ -5,6 +5,7 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
+$routes->get('/sitemap.xml', 'Alphawonders::sitemap');
 $routes->get('/', 'Alphawonders::index');
 $routes->get('/home', 'Alphawonders::home');
 $routes->get('/softwares', 'Alphawonders::alphasoftwares');
