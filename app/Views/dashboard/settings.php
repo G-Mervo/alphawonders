@@ -97,7 +97,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
         <!-- AI Integration (Groq) -->
         <div class="col-lg-6">
