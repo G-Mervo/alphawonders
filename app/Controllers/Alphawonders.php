@@ -232,7 +232,7 @@ class Alphawonders extends BaseController
         $userAgent = $this->request->getUserAgent();
         $device = $userAgent->isMobile() ? 'Mobile' : 'Desktop';
 
-        $ip = $this->request->getIPAddress();
+        $ip = real_client_ip();
 
         $data = [
             'full_name' => $this->request->getPost('fullname'),
@@ -271,7 +271,7 @@ class Alphawonders extends BaseController
         $userAgent = $this->request->getUserAgent();
         $device = $userAgent->isMobile() ? 'Mobile' : 'Desktop';
 
-        $ip = $this->request->getIPAddress();
+        $ip = real_client_ip();
 
         $data = [
             'email' => $this->request->getPost('email_sub'),
@@ -320,7 +320,7 @@ class Alphawonders extends BaseController
         $userAgent = $this->request->getUserAgent();
         $device = $userAgent->isMobile() ? 'Mobile' : 'Desktop';
 
-        $ip = $this->request->getIPAddress();
+        $ip = real_client_ip();
 
         $data = [
             'name' => $this->request->getPost('name'),
@@ -582,7 +582,7 @@ class Alphawonders extends BaseController
 
         $commentee = $this->request->getPost('commentee');
 
-        $ip = $this->request->getIPAddress();
+        $ip = real_client_ip();
 
         $data = [
             'email_addr' => null,
