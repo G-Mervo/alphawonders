@@ -18,6 +18,8 @@ $routes->get('/ai-services', 'Alphawonders::alphaiservices');
 $routes->get('/hire', 'Alphawonders::alphahires');
 $routes->get('/contact-us', 'Alphawonders::contact');
 $routes->post('/contact-us', 'Alphawonders::send_contact_data');
+$routes->get('/privacy-policy', 'Alphawonders::privacyPolicy');
+$routes->get('/terms-of-service', 'Alphawonders::termsOfService');
 $routes->post('/subscribe', 'Alphawonders::subscriptions_email');
 $routes->post('/hire-submit', 'Alphawonders::hires_details');
 

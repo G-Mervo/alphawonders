@@ -215,6 +215,24 @@ class Alphawonders extends BaseController
                view('layout/footer');
     }
 
+    public function privacyPolicy()
+    {
+        $data['title'] = 'Privacy Policy | Alphawonders';
+
+        return view('layout/header', $data) .
+               view('legal/privacy', $data) .
+               view('layout/footer');
+    }
+
+    public function termsOfService()
+    {
+        $data['title'] = 'Terms of Service | Alphawonders';
+
+        return view('layout/header', $data) .
+               view('legal/terms', $data) .
+               view('layout/footer');
+    }
+
     public function send_contact_data()
     {
         $validation = \Config\Services::validation();

@@ -137,6 +137,8 @@
 						<div class="col-md-6 text-center text-md-end mt-2 mt-md-0">
 							<a href="<?php echo base_url('/blog'); ?>" class="text-white-50 text-decoration-none me-3 footer-link" style="font-size: 0.75rem;">Blog</a>
 							<a href="<?php echo base_url('/hire'); ?>" class="text-white-50 text-decoration-none me-3 footer-link" style="font-size: 0.75rem;">Hire Us</a>
+							<a href="<?php echo base_url('/privacy-policy'); ?>" class="text-white-50 text-decoration-none me-3 footer-link" style="font-size: 0.75rem;">Privacy Policy</a>
+							<a href="<?php echo base_url('/terms-of-service'); ?>" class="text-white-50 text-decoration-none me-3 footer-link" style="font-size: 0.75rem;">Terms of Service</a>
 							<a href="<?php echo base_url('/contact-us'); ?>" class="text-white-50 text-decoration-none footer-link" style="font-size: 0.75rem;">Contact</a>
 						</div>
 					</div>
