@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Models\AlphaBlogModel;
 use App\Models\BlogCategoryModel;
 use App\Models\BlogTagModel;
+use App\Models\SocialMediaPostModel;
+use App\Models\ContentCalendarModel;
 use App\Libraries\GroqService;
 use App\Libraries\GitHubService;
 
@@ -13,6 +15,7 @@ class Dashboard extends BaseController
     protected $alphaBlogModel;
     protected $blogCategoryModel;
     protected $blogTagModel;
+    protected $socialMediaPostModel;
     protected $db;
 
     public function __construct()
@@ -20,6 +23,7 @@ class Dashboard extends BaseController
         $this->alphaBlogModel = new AlphaBlogModel();
         $this->blogCategoryModel = new BlogCategoryModel();
         $this->blogTagModel = new BlogTagModel();
+        $this->socialMediaPostModel = new SocialMediaPostModel();
         $this->db = \Config\Database::connect();
     }
 
@@ -43,6 +47,19 @@ class Dashboard extends BaseController
 
         // Unread messages
         $data['unreadMessages'] = $this->db->table('messages')->where('is_read', false)->countAllResults();
+
+        // Content stats
+        $data['draftCount'] = $this->db->table('blog')->where('status', 'draft')->countAllResults();
+        $data['scheduledCount'] = $this->db->table('blog')->where('status', 'scheduled')->countAllResults();
+        $data['socialPostsCount'] = $this->db->table('social_media_posts')->countAllResults();
+
+        // Upcoming scheduled posts
+        $data['upcomingScheduled'] = $this->db->table('blog')
+            ->where('status', 'scheduled')
+            ->where('scheduled_at >', date('Y-m-d H:i:s'))
+            ->orderBy('scheduled_at', 'ASC')
+            ->limit(5)
+            ->get()->getResultArray();
 
         return view('dashboard/inc/header', $data) .
                view('dashboard/index', $data) .
@@ -183,11 +200,27 @@ class Dashboard extends BaseController
     public function blog()
     {
         $data['title'] = 'Blog Management | Alphawonders';
-        $data['posts'] = $this->alphaBlogModel->orderBy('date_created', 'DESC')->findAll();
+
+        $status = $this->request->getGet('status');
+        $query = $this->alphaBlogModel->orderBy('date_created', 'DESC');
+        if ($status && in_array($status, ['draft', 'scheduled', 'published'])) {
+            $query->where('status', $status);
+        }
+        $data['posts'] = $query->findAll();
+        $data['currentStatus'] = $status ?: 'all';
+
+        // Status counts
+        $data['allCount'] = $this->db->table('blog')->countAllResults();
+        $data['publishedCount'] = $this->db->table('blog')->where('status', 'published')->countAllResults();
+        $data['draftCount'] = $this->db->table('blog')->where('status', 'draft')->countAllResults();
+        $data['scheduledCount'] = $this->db->table('blog')->where('status', 'scheduled')->countAllResults();
 
         // Pre-load tags for all posts to avoid N+1
         $postIds = array_column($data['posts'], 'id');
         $data['postTagsMap'] = $this->blogTagModel->getTagsMapForPosts($postIds);
+
+        // Social score map
+        $data['socialScoreMap'] = $this->socialMediaPostModel->getSocialScoreForPosts($postIds);
 
         return view('dashboard/inc/header', $data) .
                view('dashboard/blog', $data) .
@@ -244,16 +277,35 @@ class Dashboard extends BaseController
             $blogCategory = $cat ? $cat['slug'] : null;
         }
 
+        // Determine status from action
+        $action = $this->request->getPost('action') ?? 'publish';
+        $status = 'published';
+        $scheduledAt = null;
+        $publishedAt = null;
+
+        if ($action === 'draft') {
+            $status = 'draft';
+        } elseif ($action === 'schedule') {
+            $status = 'scheduled';
+            $scheduledAt = $this->request->getPost('scheduled_at');
+        } else {
+            $publishedAt = date('Y-m-d H:i:s');
+        }
+
         $data = [
-            'blog_author' => $this->request->getPost('blog_author'),
-            'blog_title' => $this->request->getPost('blog_title'),
-            'blog_url' => $slug,
+            'blog_author'      => $this->request->getPost('blog_author'),
+            'blog_title'       => $this->request->getPost('blog_title'),
+            'blog_url'         => $slug,
             'blog_description' => $this->request->getPost('blogtxtarea'),
-            'blog_image' => $imagePath,
-            'blog_category' => $blogCategory,
-            'category_id' => $categoryId,
-            'blog_id' => time(),
-            'date_created' => date('Y-m-d H:i:s'),
+            'blog_image'       => $imagePath,
+            'blog_category'    => $blogCategory,
+            'category_id'      => $categoryId,
+            'blog_id'          => time(),
+            'date_created'     => date('Y-m-d H:i:s'),
+            'status'           => $status,
+            'scheduled_at'     => $scheduledAt,
+            'published_at'     => $publishedAt,
+            'meta_description' => $this->request->getPost('meta_description') ?: null,
         ];
 
         if ($this->alphaBlogModel->insert($data)) {
@@ -263,7 +315,8 @@ class Dashboard extends BaseController
             $tagsInput = $this->request->getPost('blog_tags') ?? '';
             $this->blogTagModel->syncTagsForPost($newPostId, $tagsInput);
 
-            return redirect()->to(base_url('aw-cp/blog'))->with('success', 'Blog post created successfully!');
+            $messages = ['draft' => 'Blog post saved as draft!', 'schedule' => 'Blog post scheduled!', 'publish' => 'Blog post published!'];
+            return redirect()->to(base_url('aw-cp/blog'))->with('success', $messages[$action] ?? 'Blog post created!');
         }
 
         return redirect()->to(base_url('aw-cp/blog/create'))->with('error', 'Failed to create blog post.');
@@ -316,14 +369,34 @@ class Dashboard extends BaseController
             $blogCategory = $cat ? $cat['slug'] : null;
         }
 
-        $data = [
-            'blog_author' => $this->request->getPost('blog_author'),
-            'blog_title' => $this->request->getPost('blog_title'),
-            'blog_url' => $slug,
+        // Determine status from action
+        $action = $this->request->getPost('action') ?? 'publish';
+        $statusData = [];
+
+        if ($action === 'draft') {
+            $statusData['status'] = 'draft';
+            $statusData['scheduled_at'] = null;
+        } elseif ($action === 'schedule') {
+            $statusData['status'] = 'scheduled';
+            $statusData['scheduled_at'] = $this->request->getPost('scheduled_at');
+        } else {
+            $statusData['status'] = 'published';
+            if (empty($post['published_at'])) {
+                $statusData['published_at'] = date('Y-m-d H:i:s');
+            }
+            $statusData['scheduled_at'] = null;
+        }
+
+        $data = array_merge([
+            'blog_author'      => $this->request->getPost('blog_author'),
+            'blog_title'       => $this->request->getPost('blog_title'),
+            'blog_url'         => $slug,
             'blog_description' => $this->request->getPost('blogtxtarea'),
-            'blog_category' => $blogCategory,
-            'category_id' => $categoryId,
-        ];
+            'blog_category'    => $blogCategory,
+            'category_id'      => $categoryId,
+            'date_modified'    => date('Y-m-d H:i:s'),
+            'meta_description' => $this->request->getPost('meta_description') ?: null,
+        ], $statusData);
 
         $imageFile = $this->request->getFile('blog_image');
         if ($imageFile && $imageFile->isValid() && !$imageFile->hasMoved()) {
@@ -341,7 +414,8 @@ class Dashboard extends BaseController
             $tagsInput = $this->request->getPost('blog_tags') ?? '';
             $this->blogTagModel->syncTagsForPost($id, $tagsInput);
 
-            return redirect()->to(base_url('aw-cp/blog'))->with('success', 'Blog post updated successfully!');
+            $messages = ['draft' => 'Blog post saved as draft!', 'schedule' => 'Blog post scheduled!', 'publish' => 'Blog post published!'];
+            return redirect()->to(base_url('aw-cp/blog'))->with('success', $messages[$action] ?? 'Blog post updated!');
         }
 
         return redirect()->to(base_url('aw-cp/blog/edit/' . $id))->with('error', 'Failed to update blog post.');
@@ -359,6 +433,59 @@ class Dashboard extends BaseController
         }
 
         return redirect()->to(base_url('aw-cp/blog'))->with('error', 'Failed to delete blog post.');
+    }
+
+    // Blog Preview
+    public function blogPreview(int $id)
+    {
+        $post = $this->alphaBlogModel->getPostById($id);
+        if (!$post) {
+            return redirect()->to(base_url('aw-cp/blog'))->with('error', 'Post not found.');
+        }
+
+        $data['title'] = esc($post['blog_title']) . ' | Preview';
+        $data['post'] = $post;
+        $data['isPreview'] = true;
+        $data['comments'] = $this->alphaBlogModel->getCommentsByPostId((int) $post['id']);
+        $data['recentPosts'] = $this->alphaBlogModel->where('status', 'published')->orderBy('published_at', 'DESC')->limit(4)->findAll();
+        $data['postTags'] = $this->blogTagModel->getTagsForPost((int) $post['id']);
+        $data['postCategory'] = !empty($post['category_id']) ? $this->blogCategoryModel->find($post['category_id']) : null;
+        $data['categories'] = $this->blogCategoryModel->getCategoriesWithPostCount();
+        $data['allTags'] = $this->blogTagModel->getAllTagsWithPostCount();
+
+        return view('layout/header', $data) .
+               view('blog/preview_banner') .
+               view('blog/show', $data) .
+               view('layout/footer');
+    }
+
+    public function blogPreviewUnsaved()
+    {
+        $data['title'] = 'Preview | Alphawonders';
+        $data['post'] = [
+            'id'               => 0,
+            'blog_title'       => $this->request->getPost('blog_title') ?? 'Untitled',
+            'blog_description' => $this->request->getPost('blogtxtarea') ?? '',
+            'blog_author'      => $this->request->getPost('blog_author') ?? 'Author',
+            'blog_url'         => $this->request->getPost('blog_url') ?? '',
+            'blog_image'       => $this->request->getPost('existing_image') ?? 'assets/img/blog/default.jpg',
+            'blog_category'    => '',
+            'category_id'      => $this->request->getPost('category_id'),
+            'date_created'     => date('Y-m-d H:i:s'),
+            'status'           => 'draft',
+        ];
+        $data['isPreview'] = true;
+        $data['comments'] = [];
+        $data['recentPosts'] = $this->alphaBlogModel->where('status', 'published')->orderBy('published_at', 'DESC')->limit(4)->findAll();
+        $data['postTags'] = [];
+        $data['postCategory'] = !empty($data['post']['category_id']) ? $this->blogCategoryModel->find($data['post']['category_id']) : null;
+        $data['categories'] = $this->blogCategoryModel->getCategoriesWithPostCount();
+        $data['allTags'] = $this->blogTagModel->getAllTagsWithPostCount();
+
+        return view('layout/header', $data) .
+               view('blog/preview_banner') .
+               view('blog/show', $data) .
+               view('layout/footer');
     }
 
     // Subscribers
@@ -482,6 +609,7 @@ class Dashboard extends BaseController
                 'google_analytics_id', 'google_search_console_meta',
                 'site_name', 'site_description', 'contact_email',
                 'social_facebook', 'social_twitter', 'social_linkedin',
+                'social_instagram', 'social_tiktok',
                 'groq_api_key', 'groq_model', 'github_pat',
             ];
 
@@ -694,6 +822,94 @@ class Dashboard extends BaseController
         $result = $groq->generateProjectInsights($hires);
 
         return $this->response->setJSON($result);
+    }
+
+    // ──────────────────────────────────────────────
+    // AI Social Media Endpoints
+    // ──────────────────────────────────────────────
+
+    public function aiGenerateSocial()
+    {
+        $title = $this->request->getPost('title');
+        $content = $this->request->getPost('content');
+        $platform = $this->request->getPost('platform');
+        $url = $this->request->getPost('url') ?? '';
+
+        if (!$title || !$content || !$platform) {
+            return $this->response->setJSON(['success' => false, 'error' => 'Title, content, and platform are required.']);
+        }
+
+        $groq = new GroqService();
+        return $this->response->setJSON($groq->generateSocialPost($title, $content, $platform, $url));
+    }
+
+    public function aiGenerateAllSocial()
+    {
+        $title = $this->request->getPost('title');
+        $content = $this->request->getPost('content');
+        $url = $this->request->getPost('url') ?? '';
+
+        if (!$title || !$content) {
+            return $this->response->setJSON(['success' => false, 'error' => 'Title and content are required.']);
+        }
+
+        $groq = new GroqService();
+        return $this->response->setJSON($groq->generateAllSocialPosts($title, $content, $url));
+    }
+
+    public function aiGenerateVideoScript()
+    {
+        $title = $this->request->getPost('title');
+        $content = $this->request->getPost('content');
+        $platform = $this->request->getPost('platform') ?? 'tiktok';
+        $seconds = (int) ($this->request->getPost('seconds') ?? 60);
+
+        if (!$title || !$content) {
+            return $this->response->setJSON(['success' => false, 'error' => 'Title and content are required.']);
+        }
+
+        $groq = new GroqService();
+        return $this->response->setJSON($groq->generateVideoScript($title, $content, $platform, $seconds));
+    }
+
+    public function aiSuggestHashtags()
+    {
+        $content = $this->request->getPost('content');
+        $platform = $this->request->getPost('platform') ?? 'twitter';
+
+        if (!$content) {
+            return $this->response->setJSON(['success' => false, 'error' => 'Content is required.']);
+        }
+
+        $groq = new GroqService();
+        return $this->response->setJSON($groq->suggestHashtags($content, $platform));
+    }
+
+    public function aiGenerateMetaDescription()
+    {
+        $title = $this->request->getPost('title');
+        $content = $this->request->getPost('content');
+
+        if (!$title || !$content) {
+            return $this->response->setJSON(['success' => false, 'error' => 'Title and content are required.']);
+        }
+
+        $groq = new GroqService();
+        return $this->response->setJSON($groq->generateMetaDescription($title, $content));
+    }
+
+    public function aiRepurposeContent()
+    {
+        $title = $this->request->getPost('title');
+        $content = $this->request->getPost('content');
+        $format = $this->request->getPost('format') ?? 'newsletter';
+
+        if (!$title || !$content) {
+            return $this->response->setJSON(['success' => false, 'error' => 'Title and content are required.']);
+        }
+
+        $groq = new GroqService();
+        return $this->response->setJSON($groq->repurposeContent($title, $content, $format));
     }
 
     // ──────────────────────────────────────────────

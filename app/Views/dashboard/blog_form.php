@@ -14,6 +14,24 @@
 	</div>
 </div>
 
+<?php if ($post): ?>
+	<?php
+	$statusColors = ['published' => 'success', 'draft' => 'warning', 'scheduled' => 'info'];
+	$s = $post['status'] ?? 'published';
+	?>
+	<div class="alert alert-<?= $statusColors[$s] ?? 'secondary'; ?> d-flex align-items-center mb-3">
+		<i class="fa-solid fa-circle-info me-2"></i>
+		<div>
+			<strong>Status: <?= ucfirst($s); ?></strong>
+			<?php if ($s === 'scheduled' && !empty($post['scheduled_at'])): ?>
+				&mdash; Scheduled for <?= date('M d, Y \a\t H:i', strtotime($post['scheduled_at'])); ?>
+			<?php elseif ($s === 'published' && !empty($post['published_at'])): ?>
+				&mdash; Published on <?= date('M d, Y \a\t H:i', strtotime($post['published_at'])); ?>
+			<?php endif; ?>
+		</div>
+	</div>
+<?php endif; ?>
+
 <?php if (session()->getFlashdata('errors')): ?>
 	<div class="alert alert-danger alert-dismissible fade show" role="alert">
 		<ul class="mb-0">
@@ -34,7 +52,10 @@
 <div class="card border-0 shadow-sm">
 	<div class="card-header bg-white fw-semibold"><?= $post ? 'Edit Post' : 'New Post'; ?></div>
 	<div class="card-body">
-		<form method="post" action="<?= $post ? base_url('aw-cp/blog/update/' . $post['id']) : base_url('aw-cp/blog/save'); ?>" enctype="multipart/form-data">
+		<form id="blogForm" method="post" action="<?= $post ? base_url('aw-cp/blog/update/' . $post['id']) : base_url('aw-cp/blog/save'); ?>" enctype="multipart/form-data">
+			<input type="hidden" name="action" id="blog_action" value="publish">
+			<input type="hidden" name="scheduled_at" id="scheduled_at_hidden" value="<?= esc($post['scheduled_at'] ?? ''); ?>">
+
 			<div class="row g-3">
 				<div class="col-lg-4">
 					<label for="blog_author" class="form-label">Author</label>
@@ -111,17 +132,72 @@
 					<?php endif; ?>
 				</div>
 			</div>
+
+			<!-- Meta Description -->
+			<div class="mt-3">
+				<label for="meta_description" class="form-label">
+					Meta Description
+					<button type="button" class="btn btn-sm btn-outline-success ms-2" id="aiMetaDescBtn" title="AI Generate Meta Description">
+						<i class="fa-solid fa-wand-magic-sparkles"></i>
+					</button>
+				</label>
+				<textarea class="form-control" id="meta_description" name="meta_description" rows="2" maxlength="300"
+						  placeholder="SEO meta description (150-160 chars recommended)"><?= esc($post['meta_description'] ?? old('meta_description', '')); ?></textarea>
+				<small class="text-muted"><span id="metaCharCount">0</span>/300 characters</small>
+			</div>
+
 			<div class="mt-3">
 				<label for="blogtxtarea" class="form-label">Content</label>
 				<textarea class="form-control" id="blogtxtarea" name="blogtxtarea"><?= $post['blog_description'] ?? old('blogtxtarea', ''); ?></textarea>
 			</div>
-			<div class="text-center mt-4">
-				<a href="<?= base_url('aw-cp/blog'); ?>" class="btn btn-secondary me-2">Cancel</a>
-				<button type="submit" class="btn btn-primary btn-lg">
-					<?= $post ? 'Update Post' : 'Save Post'; ?>
+
+			<!-- Action Buttons -->
+			<div class="d-flex justify-content-center align-items-center gap-2 mt-4 flex-wrap">
+				<a href="<?= base_url('aw-cp/blog'); ?>" class="btn btn-secondary">Cancel</a>
+
+				<button type="button" class="btn btn-outline-secondary" id="btnSaveDraft">
+					<i class="fa-solid fa-file me-1"></i> Save Draft
+				</button>
+
+				<button type="button" class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#scheduleModal">
+					<i class="fa-solid fa-clock me-1"></i> Schedule
+				</button>
+
+				<button type="button" class="btn btn-success" id="btnPublish">
+					<i class="fa-solid fa-paper-plane me-1"></i> Publish Now
+				</button>
+
+				<button type="button" class="btn btn-outline-primary" id="btnPreview">
+					<i class="fa-solid fa-eye me-1"></i> Preview
 				</button>
 			</div>
 		</form>
+	</div>
+</div>
+
+<!-- Schedule Modal -->
+<div class="modal fade" id="scheduleModal" tabindex="-1">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title"><i class="fa-solid fa-clock me-2"></i>Schedule Post</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			</div>
+			<div class="modal-body">
+				<div class="mb-3">
+					<label for="schedule_datetime" class="form-label">Publish Date & Time</label>
+					<input type="datetime-local" class="form-control" id="schedule_datetime"
+						   value="<?= !empty($post['scheduled_at']) ? date('Y-m-d\TH:i', strtotime($post['scheduled_at'])) : ''; ?>"
+						   min="<?= date('Y-m-d\TH:i'); ?>">
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-info btn-sm text-white" id="btnConfirmSchedule">
+					<i class="fa-solid fa-clock me-1"></i> Schedule Post
+				</button>
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -184,6 +260,106 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 	const baseUrl = '<?= base_url(); ?>';
+	const form = document.getElementById('blogForm');
+	const actionInput = document.getElementById('blog_action');
+	const scheduledAtInput = document.getElementById('scheduled_at_hidden');
+
+	// Meta description char counter
+	const metaDesc = document.getElementById('meta_description');
+	const metaCount = document.getElementById('metaCharCount');
+	if (metaDesc) {
+		metaCount.textContent = metaDesc.value.length;
+		metaDesc.addEventListener('input', () => metaCount.textContent = metaDesc.value.length);
+	}
+
+	// Action buttons
+	document.getElementById('btnSaveDraft')?.addEventListener('click', function() {
+		actionInput.value = 'draft';
+		form.submit();
+	});
+
+	document.getElementById('btnPublish')?.addEventListener('click', function() {
+		actionInput.value = 'publish';
+		form.submit();
+	});
+
+	document.getElementById('btnConfirmSchedule')?.addEventListener('click', function() {
+		const dt = document.getElementById('schedule_datetime').value;
+		if (!dt) { alert('Please select a date and time.'); return; }
+		actionInput.value = 'schedule';
+		scheduledAtInput.value = dt.replace('T', ' ') + ':00';
+		bootstrap.Modal.getInstance(document.getElementById('scheduleModal')).hide();
+		form.submit();
+	});
+
+	// Preview button
+	document.getElementById('btnPreview')?.addEventListener('click', function() {
+		<?php if ($post): ?>
+			window.open(baseUrl + '/aw-cp/blog/preview/<?= $post['id']; ?>', '_blank');
+		<?php else: ?>
+			// For unsaved posts, submit to preview endpoint
+			const previewForm = document.createElement('form');
+			previewForm.method = 'POST';
+			previewForm.action = baseUrl + '/aw-cp/blog/preview-unsaved';
+			previewForm.target = '_blank';
+
+			const fields = {
+				blog_title: document.getElementById('blog_title').value,
+				blog_author: document.getElementById('blog_author').value,
+				blog_url: document.getElementById('blog_url').value,
+				blogtxtarea: (typeof tinymce !== 'undefined' && tinymce.get('blogtxtarea')) ? tinymce.get('blogtxtarea').getContent() : document.getElementById('blogtxtarea').value,
+				category_id: document.getElementById('category_id').value,
+				existing_image: '<?= esc($post['blog_image'] ?? 'assets/img/blog/default.jpg'); ?>'
+			};
+
+			for (const [key, val] of Object.entries(fields)) {
+				const input = document.createElement('input');
+				input.type = 'hidden';
+				input.name = key;
+				input.value = val;
+				previewForm.appendChild(input);
+			}
+
+			document.body.appendChild(previewForm);
+			previewForm.submit();
+			document.body.removeChild(previewForm);
+		<?php endif; ?>
+	});
+
+	// AI Generate Meta Description
+	document.getElementById('aiMetaDescBtn')?.addEventListener('click', function() {
+		const icon = this.querySelector('i');
+		const origClass = icon.className;
+		icon.className = 'fa-solid fa-spinner fa-spin';
+		this.disabled = true;
+
+		const title = document.getElementById('blog_title').value;
+		let content = '';
+		if (typeof tinymce !== 'undefined' && tinymce.get('blogtxtarea')) {
+			content = tinymce.get('blogtxtarea').getContent();
+		} else {
+			content = document.getElementById('blogtxtarea').value;
+		}
+
+		if (!title || !content) { alert('Add a title and content first.'); icon.className = origClass; this.disabled = false; return; }
+
+		fetch(baseUrl + '/aw-cp/ai/generate-meta-description', {
+			method: 'POST',
+			headers: {'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest'},
+			body: 'title=' + encodeURIComponent(title) + '&content=' + encodeURIComponent(content)
+		})
+		.then(r => r.json())
+		.then(data => {
+			if (data.success) {
+				metaDesc.value = data.content.trim();
+				metaCount.textContent = metaDesc.value.length;
+			} else {
+				alert(data.error || 'Generation failed.');
+			}
+		})
+		.catch(() => alert('Network error.'))
+		.finally(() => { icon.className = origClass; this.disabled = false; });
+	});
 
 	// Tag pills rendering
 	const tagsInput = document.getElementById('blog_tags');

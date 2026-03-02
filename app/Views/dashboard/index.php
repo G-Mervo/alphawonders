@@ -133,6 +133,49 @@
     </div>
 </div>
 
+<!-- Content Stats Row -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle bg-warning bg-opacity-10 d-flex align-items-center justify-content-center me-3" style="width:42px;height:42px;min-width:42px">
+                    <i class="fa-solid fa-file-pen text-warning"></i>
+                </div>
+                <div>
+                    <div class="fs-4 fw-bold"><?= $draftCount ?? 0; ?></div>
+                    <div class="text-muted small">Drafts</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle bg-info bg-opacity-10 d-flex align-items-center justify-content-center me-3" style="width:42px;height:42px;min-width:42px">
+                    <i class="fa-solid fa-clock text-info"></i>
+                </div>
+                <div>
+                    <div class="fs-4 fw-bold"><?= $scheduledCount ?? 0; ?></div>
+                    <div class="text-muted small">Scheduled Posts</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle bg-success bg-opacity-10 d-flex align-items-center justify-content-center me-3" style="width:42px;height:42px;min-width:42px">
+                    <i class="fa-solid fa-share-nodes text-success"></i>
+                </div>
+                <div>
+                    <div class="fs-4 fw-bold"><?= $socialPostsCount ?? 0; ?></div>
+                    <div class="text-muted small">Social Posts</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Bottom Row -->
 <div class="row g-4">
     <!-- Recent Hires -->
@@ -177,7 +220,7 @@
         </div>
     </div>
 
-    <!-- Quick Actions + Recent Posts -->
+    <!-- Quick Actions + Upcoming Scheduled + Recent Posts -->
     <div class="col-lg-5">
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-header bg-white fw-semibold">
@@ -188,6 +231,9 @@
                     <a href="<?= base_url('aw-cp/blog/create'); ?>" class="btn btn-outline-primary text-start">
                         <i class="fa-solid fa-plus me-2"></i>New Blog Post
                     </a>
+                    <a href="<?= base_url('aw-cp/social/create'); ?>" class="btn btn-outline-success text-start">
+                        <i class="fa-solid fa-share-nodes me-2"></i>Create Social Post
+                    </a>
                     <a href="<?= base_url('aw-cp/hires'); ?>" class="btn btn-outline-danger text-start">
                         <i class="fa-solid fa-briefcase me-2"></i>Manage Projects
                     </a>
@@ -197,6 +243,24 @@
                 </div>
             </div>
         </div>
+
+        <?php if (!empty($upcomingScheduled)): ?>
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-header bg-white fw-semibold">
+                <i class="fa-solid fa-clock me-2 text-info"></i>Upcoming Scheduled
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    <?php foreach ($upcomingScheduled as $sched): ?>
+                        <a href="<?= base_url('aw-cp/blog/edit/' . $sched['id']); ?>" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-0">
+                            <span class="text-truncate me-2"><?= esc($sched['blog_title']); ?></span>
+                            <small class="text-info text-nowrap"><?= date('M d, H:i', strtotime($sched['scheduled_at'])); ?></small>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
 
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white fw-semibold">

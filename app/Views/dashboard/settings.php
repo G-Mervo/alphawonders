@@ -89,10 +89,20 @@
                         <input type="url" class="form-control" name="social_twitter"
                                value="<?= esc($settings['social_twitter'] ?? ''); ?>" placeholder="https://twitter.com/...">
                     </div>
-                    <div class="mb-0">
+                    <div class="mb-3">
                         <label class="form-label"><i class="fa-brands fa-linkedin me-1"></i>LinkedIn</label>
                         <input type="url" class="form-control" name="social_linkedin"
                                value="<?= esc($settings['social_linkedin'] ?? ''); ?>" placeholder="https://linkedin.com/...">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><i class="fa-brands fa-instagram me-1"></i>Instagram</label>
+                        <input type="url" class="form-control" name="social_instagram"
+                               value="<?= esc($settings['social_instagram'] ?? ''); ?>" placeholder="https://instagram.com/...">
+                    </div>
+                    <div class="mb-0">
+                        <label class="form-label"><i class="fa-brands fa-tiktok me-1"></i>TikTok</label>
+                        <input type="url" class="form-control" name="social_tiktok"
+                               value="<?= esc($settings['social_tiktok'] ?? ''); ?>" placeholder="https://tiktok.com/@...">
                     </div>
                 </div>
             </div>
@@ -140,6 +150,35 @@
                                value="<?= esc($settings['github_pat'] ?? ''); ?>"
                                placeholder="ghp_...">
                         <div class="form-text">Create a token at <a href="https://github.com/settings/tokens?type=beta" target="_blank">GitHub Settings > Developer settings > Personal access tokens</a>. Grant <code>repo</code> scope for full access.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- Social Media API Keys (Coming Soon) -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white fw-semibold d-flex align-items-center">
+                    <i class="fa-solid fa-key me-2 text-secondary"></i>Social Media API Keys
+                    <span class="badge bg-secondary ms-auto">Coming Soon</span>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Twitter API Key</label>
+                        <input type="text" class="form-control" disabled placeholder="Will enable auto-posting to Twitter/X">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Facebook Page Token</label>
+                        <input type="text" class="form-control" disabled placeholder="Will enable auto-posting to Facebook">
+                    </div>
+                    <div class="mb-0">
+                        <label class="form-label text-muted">LinkedIn Access Token</label>
+                        <input type="text" class="form-control" disabled placeholder="Will enable auto-posting to LinkedIn">
+                    </div>
+                    <div class="alert alert-info small mt-3 mb-0">
+                        <i class="fa-solid fa-circle-info me-1"></i>
+                        API integration for auto-posting to social platforms is coming in a future update.
                     </div>
                 </div>
             </div>

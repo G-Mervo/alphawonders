@@ -44,6 +44,8 @@ $routes->get('/aw-cp/blog/edit/(:num)', 'Dashboard::blogEdit/$1');
 $routes->post('/aw-cp/blog/update/(:num)', 'Dashboard::blogUpdate/$1');
 $routes->get('/aw-cp/blog/delete/(:num)', 'Dashboard::blogDelete/$1');
 $routes->post('/aw-cp/blog/category/store', 'Dashboard::categoryStore');
+$routes->get('/aw-cp/blog/preview/(:num)', 'Dashboard::blogPreview/$1');
+$routes->post('/aw-cp/blog/preview-unsaved', 'Dashboard::blogPreviewUnsaved');
 $routes->get('/aw-cp/users_analytics', 'Dashboard::users_analytics');
 $routes->get('/aw-cp/visits_analytics', 'Dashboard::visits_analytics');
 $routes->get('/aw-cp/interactions_analytics', 'Dashboard::interactions_analytics');
@@ -53,6 +55,24 @@ $routes->get('/aw-cp/products', function() {
 $routes->get('/aw-cp/settings', 'Dashboard::settings');
 $routes->post('/aw-cp/settings', 'Dashboard::settings');
 $routes->post('/aw-cp/change-password', 'Dashboard::changePassword');
+
+// Social Media Hub
+$routes->get('/aw-cp/social', 'SocialMedia::index');
+$routes->get('/aw-cp/social/create', 'SocialMedia::create');
+$routes->get('/aw-cp/social/create/(:segment)', 'SocialMedia::create/$1');
+$routes->post('/aw-cp/social/save', 'SocialMedia::save');
+$routes->get('/aw-cp/social/edit/(:num)', 'SocialMedia::edit/$1');
+$routes->post('/aw-cp/social/update/(:num)', 'SocialMedia::update/$1');
+$routes->get('/aw-cp/social/delete/(:num)', 'SocialMedia::delete/$1');
+$routes->get('/aw-cp/social/from-blog/(:num)', 'SocialMedia::generateFromBlog/$1');
+$routes->post('/aw-cp/social/bulk-generate', 'SocialMedia::bulkGenerate');
+
+// Content Calendar
+$routes->get('/aw-cp/calendar', 'ContentCalendar::index');
+$routes->get('/aw-cp/calendar/events', 'ContentCalendar::getEvents');
+$routes->post('/aw-cp/calendar/add', 'ContentCalendar::addEvent');
+$routes->post('/aw-cp/calendar/update/(:num)', 'ContentCalendar::updateEvent/$1');
+$routes->get('/aw-cp/calendar/delete/(:num)', 'ContentCalendar::deleteEvent/$1');
 
 // Hires/Projects management
 $routes->get('/aw-cp/hires', 'Dashboard::hires');
@@ -74,6 +94,12 @@ $routes->post('/aw-cp/ai/suggest-slug', 'Dashboard::aiSuggestSlug');
 $routes->post('/aw-cp/ai/suggest-category', 'Dashboard::aiSuggestCategory');
 $routes->post('/aw-cp/ai/draft-reply', 'Dashboard::aiDraftReply');
 $routes->post('/aw-cp/ai/project-insights', 'Dashboard::aiProjectInsights');
+$routes->post('/aw-cp/ai/generate-social', 'Dashboard::aiGenerateSocial');
+$routes->post('/aw-cp/ai/generate-all-social', 'Dashboard::aiGenerateAllSocial');
+$routes->post('/aw-cp/ai/generate-video-script', 'Dashboard::aiGenerateVideoScript');
+$routes->post('/aw-cp/ai/suggest-hashtags', 'Dashboard::aiSuggestHashtags');
+$routes->post('/aw-cp/ai/generate-meta-description', 'Dashboard::aiGenerateMetaDescription');
+$routes->post('/aw-cp/ai/repurpose-content', 'Dashboard::aiRepurposeContent');
 
 // GitHub Projects
 $routes->get('/aw-cp/github', 'Dashboard::github');

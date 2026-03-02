@@ -59,7 +59,7 @@ class Alphawonders extends BaseController
 
         // Add blog posts from database
         try {
-            $posts = $this->alphaBlogModel->orderBy('date_created', 'DESC')->findAll();
+            $posts = $this->alphaBlogModel->where('status', 'published')->orderBy('published_at', 'DESC')->findAll();
             $categories = [];
 
             foreach ($posts as $post) {
@@ -462,9 +462,9 @@ class Alphawonders extends BaseController
         $data['title'] = 'Blog | Alphawonders';
 
         try {
-            $data['blogs'] = $this->alphaBlogModel->getRecentPosts(6);
+            $data['blogs'] = $this->alphaBlogModel->getPublishedPosts(6);
             $data['pager'] = $this->alphaBlogModel->pager;
-            $data['recentPosts'] = $this->alphaBlogModel->orderBy('date_created', 'DESC')->limit(4)->findAll();
+            $data['recentPosts'] = $this->alphaBlogModel->where('status', 'published')->orderBy('published_at', 'DESC')->limit(4)->findAll();
             $data['categories'] = $this->blogCategoryModel->getCategoriesWithPostCount();
             $data['allTags'] = $this->blogTagModel->getAllTagsWithPostCount();
         } catch (\Exception $e) {
@@ -482,7 +482,7 @@ class Alphawonders extends BaseController
 
     public function blogPost(string $slug)
     {
-        $post = $this->alphaBlogModel->getPostBySlug($slug);
+        $post = $this->alphaBlogModel->getPublishedPostBySlug($slug);
 
         if (!$post) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Blog post not found.');
@@ -491,7 +491,7 @@ class Alphawonders extends BaseController
         $data['title'] = esc($post['blog_title']) . ' | Alphawonders Blog';
         $data['post'] = $post;
         $data['comments'] = $this->alphaBlogModel->getCommentsByPostId((int) $post['id']);
-        $data['recentPosts'] = $this->alphaBlogModel->orderBy('date_created', 'DESC')->limit(4)->findAll();
+        $data['recentPosts'] = $this->alphaBlogModel->where('status', 'published')->orderBy('published_at', 'DESC')->limit(4)->findAll();
         $data['postTags'] = $this->blogTagModel->getTagsForPost((int) $post['id']);
         $data['postCategory'] = !empty($post['category_id']) ? $this->blogCategoryModel->find($post['category_id']) : null;
         $data['categories'] = $this->blogCategoryModel->getCategoriesWithPostCount();
@@ -510,13 +510,12 @@ class Alphawonders extends BaseController
 
         try {
             if ($catRecord) {
-                $data['blogs'] = $this->alphaBlogModel->getPostsByCategoryId((int) $catRecord['id'], 6);
+                $data['blogs'] = $this->alphaBlogModel->getPublishedPostsByCategoryId((int) $catRecord['id'], 6);
             } else {
-                // Fallback to slug-based filtering for backward compat
-                $data['blogs'] = $this->alphaBlogModel->getPostsByCategory($category, 6);
+                $data['blogs'] = $this->alphaBlogModel->getPublishedPostsByCategory($category, 6);
             }
             $data['pager'] = $this->alphaBlogModel->pager;
-            $data['recentPosts'] = $this->alphaBlogModel->orderBy('date_created', 'DESC')->limit(4)->findAll();
+            $data['recentPosts'] = $this->alphaBlogModel->where('status', 'published')->orderBy('published_at', 'DESC')->limit(4)->findAll();
             $data['categories'] = $this->blogCategoryModel->getCategoriesWithPostCount();
             $data['allTags'] = $this->blogTagModel->getAllTagsWithPostCount();
         } catch (\Exception $e) {
@@ -545,9 +544,9 @@ class Alphawonders extends BaseController
 
         try {
             $postIds = $this->blogTagModel->getPostIdsByTag((int) $tag['id']);
-            $data['blogs'] = $this->alphaBlogModel->getPostsByIds($postIds, 6);
+            $data['blogs'] = $this->alphaBlogModel->getPublishedPostsByIds($postIds, 6);
             $data['pager'] = $this->alphaBlogModel->pager;
-            $data['recentPosts'] = $this->alphaBlogModel->orderBy('date_created', 'DESC')->limit(4)->findAll();
+            $data['recentPosts'] = $this->alphaBlogModel->where('status', 'published')->orderBy('published_at', 'DESC')->limit(4)->findAll();
             $data['categories'] = $this->blogCategoryModel->getCategoriesWithPostCount();
             $data['allTags'] = $this->blogTagModel->getAllTagsWithPostCount();
         } catch (\Exception $e) {

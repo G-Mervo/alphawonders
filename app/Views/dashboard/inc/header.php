@@ -211,11 +211,6 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link <?= str_starts_with($currentUri, 'aw-cp/blog') ? 'active' : ''; ?>" href="<?= base_url('aw-cp/blog'); ?>">
-                <i class="fa-solid fa-newspaper"></i> Blog
-            </a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link <?= str_starts_with($currentUri, 'aw-cp/hires') ? 'active' : ''; ?>" href="<?= base_url('aw-cp/hires'); ?>">
                 <i class="fa-solid fa-briefcase"></i> Projects & Hires
             </a>
@@ -233,6 +228,24 @@
         <li class="nav-item">
             <a class="nav-link <?= $currentUri === 'aw-cp/services' ? 'active' : ''; ?>" href="<?= base_url('aw-cp/services'); ?>">
                 <i class="fa-solid fa-wrench"></i> Services
+            </a>
+        </li>
+    </ul>
+    <div class="nav-section">Content</div>
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link <?= str_starts_with($currentUri, 'aw-cp/blog') ? 'active' : ''; ?>" href="<?= base_url('aw-cp/blog'); ?>">
+                <i class="fa-solid fa-newspaper"></i> Blog
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link <?= str_starts_with($currentUri, 'aw-cp/social') ? 'active' : ''; ?>" href="<?= base_url('aw-cp/social'); ?>">
+                <i class="fa-solid fa-share-nodes"></i> Social Media
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link <?= str_starts_with($currentUri, 'aw-cp/calendar') ? 'active' : ''; ?>" href="<?= base_url('aw-cp/calendar'); ?>">
+                <i class="fa-solid fa-calendar-days"></i> Content Calendar
             </a>
         </li>
     </ul>

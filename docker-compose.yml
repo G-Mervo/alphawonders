@@ -45,6 +45,28 @@ services:
       retries: 3
       start_period: 40s
 
+  scheduler:
+    image: ghcr.io/g-mervo/alphawonders:latest
+    container_name: alphawonders-scheduler
+    restart: unless-stopped
+    entrypoint: ["sh", "-c", "while true; do php /var/www/html/spark content:publish-scheduled; sleep 60; done"]
+    environment:
+      - CI_ENVIRONMENT=production
+      - database.default.hostname=postgres
+      - database.default.database=${DB_DATABASE}
+      - database.default.username=${DB_USERNAME}
+      - database.default.password=${DB_PASSWORD}
+      - database.default.DBDriver=Postgre
+      - database.default.port=5432
+      - database.default.DBPrefix=
+      - database.default.charset=utf8
+      - app.baseURL=${APP_BASE_URL}
+      - app.appTimezone=Africa/Nairobi
+    volumes:
+      - app-writable:/var/www/html/writable
+    networks:
+      - shared-services
+
 volumes:
   app-writable:
   app-attachments:
