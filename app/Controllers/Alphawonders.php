@@ -320,6 +320,8 @@ class Alphawonders extends BaseController
         $userAgent = $this->request->getUserAgent();
         $device = $userAgent->isMobile() ? 'Mobile' : 'Desktop';
 
+        $ip = $this->request->getIPAddress();
+
         $data = [
             'name' => $this->request->getPost('name'),
             'email' => $this->request->getPost('email'),
@@ -337,7 +339,8 @@ class Alphawonders extends BaseController
             'timeline' => $this->request->getPost('timeline'),
             'activity_name' => 'Hire us',
             'browser_name' => $userAgent->getBrowser() . ' ' . $userAgent->getVersion(),
-            'ip_address' => $this->request->getIPAddress(),
+            'ip_address' => $ip,
+            'country' => geoip_country($ip),
             'platform' => $userAgent->getPlatform(),
             'referral' => $this->request->getServer('HTTP_REFERER'),
             'device' => $device,
@@ -579,6 +582,8 @@ class Alphawonders extends BaseController
 
         $commentee = $this->request->getPost('commentee');
 
+        $ip = $this->request->getIPAddress();
+
         $data = [
             'email_addr' => null,
             'phoneno' => null,
@@ -587,7 +592,8 @@ class Alphawonders extends BaseController
             'activity_name' => 'Post Comment',
             'post_id' => $this->request->getPost('post_id'),
             'browser_name' => $userAgent->getBrowser() . ' ' . $userAgent->getVersion(),
-            'ip_address' => $this->request->getIPAddress(),
+            'ip_address' => $ip,
+            'country' => geoip_country($ip),
             'platform' => $userAgent->getPlatform(),
             'referral' => $this->request->getServer('HTTP_REFERER'),
             'device' => $device,

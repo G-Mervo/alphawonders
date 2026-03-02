@@ -107,18 +107,24 @@ class Dashboard extends BaseController
 
         $status = $this->request->getGet('status');
         $query = $this->db->table('hires')->orderBy('date_created', 'DESC');
-        if ($status && in_array($status, ['pending', 'ongoing', 'completed', 'cancelled'])) {
-            $query->where('status', $status);
+        if ($status === 'spam') {
+            $query->where('is_spam', true);
+        } elseif ($status && in_array($status, ['pending', 'ongoing', 'completed', 'cancelled'])) {
+            $query->where('status', $status)->where('is_spam !=', true);
+        } else {
+            // "All" hides spam by default
+            $query->where('is_spam !=', true);
         }
         $data['hires'] = $query->get()->getResultArray();
         $data['currentStatus'] = $status ?: 'all';
 
-        // Counts
-        $data['allCount'] = $this->db->table('hires')->countAllResults();
-        $data['pendingCount'] = $this->db->table('hires')->where('status', 'pending')->countAllResults();
-        $data['ongoingCount'] = $this->db->table('hires')->where('status', 'ongoing')->countAllResults();
-        $data['completedCount'] = $this->db->table('hires')->where('status', 'completed')->countAllResults();
-        $data['cancelledCount'] = $this->db->table('hires')->where('status', 'cancelled')->countAllResults();
+        // Counts (exclude spam from normal counts)
+        $data['allCount'] = $this->db->table('hires')->where('is_spam !=', true)->countAllResults();
+        $data['pendingCount'] = $this->db->table('hires')->where('status', 'pending')->where('is_spam !=', true)->countAllResults();
+        $data['ongoingCount'] = $this->db->table('hires')->where('status', 'ongoing')->where('is_spam !=', true)->countAllResults();
+        $data['completedCount'] = $this->db->table('hires')->where('status', 'completed')->where('is_spam !=', true)->countAllResults();
+        $data['cancelledCount'] = $this->db->table('hires')->where('status', 'cancelled')->where('is_spam !=', true)->countAllResults();
+        $data['spamCount'] = $this->db->table('hires')->where('is_spam', true)->countAllResults();
 
         return view('dashboard/inc/header', $data) .
                view('dashboard/hires', $data) .
@@ -155,6 +161,23 @@ class Dashboard extends BaseController
         ]);
 
         return redirect()->to(base_url('aw-cp/hires/view/' . $id))->with('success', 'Project updated.');
+    }
+
+    public function hireToggleSpam(int $id)
+    {
+        $hire = $this->db->table('hires')->where('id', $id)->get()->getRowArray();
+        if (!$hire) {
+            return redirect()->to(base_url('aw-cp/hires'))->with('error', 'Project not found.');
+        }
+
+        $newVal = !($hire['is_spam'] ?? false);
+        $this->db->table('hires')->where('id', $id)->update([
+            'is_spam'       => $newVal,
+            'date_modified' => date('Y-m-d H:i:s'),
+        ]);
+
+        $msg = $newVal ? 'Marked as spam.' : 'Unmarked as spam.';
+        return redirect()->to(base_url('aw-cp/hires/view/' . $id))->with('success', $msg);
     }
 
     public function blog()
@@ -526,6 +549,45 @@ class Dashboard extends BaseController
                 'slug' => $slug,
             ],
         ]);
+    }
+
+    public function changePassword()
+    {
+        $userId = session()->get('userId');
+        if (!$userId) {
+            return redirect()->to(base_url('aw-cp/login'));
+        }
+
+        $currentPassword = $this->request->getPost('current_password');
+        $newPassword = $this->request->getPost('new_password');
+        $confirmPassword = $this->request->getPost('confirm_password');
+
+        // Validate inputs
+        if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
+            return redirect()->to(base_url('aw-cp/settings'))->with('pw_error', 'All password fields are required.');
+        }
+
+        if (strlen($newPassword) < 8) {
+            return redirect()->to(base_url('aw-cp/settings'))->with('pw_error', 'New password must be at least 8 characters.');
+        }
+
+        if ($newPassword !== $confirmPassword) {
+            return redirect()->to(base_url('aw-cp/settings'))->with('pw_error', 'New passwords do not match.');
+        }
+
+        // Verify current password
+        $user = $this->db->table('admin_users')->where('id', $userId)->get()->getRowArray();
+        if (!$user || !password_verify($currentPassword, $user['password_hash'])) {
+            return redirect()->to(base_url('aw-cp/settings'))->with('pw_error', 'Current password is incorrect.');
+        }
+
+        // Update password
+        $this->db->table('admin_users')->where('id', $userId)->update([
+            'password_hash' => password_hash($newPassword, PASSWORD_DEFAULT),
+            'updated_at'    => date('Y-m-d H:i:s'),
+        ]);
+
+        return redirect()->to(base_url('aw-cp/settings'))->with('pw_success', 'Password changed successfully.');
     }
 
     // ──────────────────────────────────────────────

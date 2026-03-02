@@ -153,3 +153,44 @@
         </button>
     </div>
 </form>
+
+<!-- Change Password (separate form) -->
+<div class="row g-4 mt-2">
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white fw-semibold">
+                <i class="fa-solid fa-lock me-2 text-warning"></i>Change Password
+            </div>
+            <div class="card-body">
+                <?php if (session()->getFlashdata('pw_error')): ?>
+                    <div class="alert alert-danger py-2 small">
+                        <?= session()->getFlashdata('pw_error'); ?>
+                    </div>
+                <?php endif; ?>
+                <?php if (session()->getFlashdata('pw_success')): ?>
+                    <div class="alert alert-success py-2 small">
+                        <?= session()->getFlashdata('pw_success'); ?>
+                    </div>
+                <?php endif; ?>
+                <form method="post" action="<?= base_url('aw-cp/change-password'); ?>">
+                    <div class="mb-3">
+                        <label for="current_password" class="form-label">Current Password</label>
+                        <input type="password" class="form-control" name="current_password" id="current_password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new_password" class="form-label">New Password</label>
+                        <input type="password" class="form-control" name="new_password" id="new_password" required minlength="8">
+                        <div class="form-text">Minimum 8 characters.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirm_password" class="form-label">Confirm New Password</label>
+                        <input type="password" class="form-control" name="confirm_password" id="confirm_password" required minlength="8">
+                    </div>
+                    <button type="submit" class="btn btn-warning w-100">
+                        <i class="fa-solid fa-key me-2"></i>Change Password
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

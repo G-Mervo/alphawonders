@@ -14,7 +14,12 @@ $s = $hire['status'] ?? 'pending';
             </ol>
         </nav>
     </div>
-    <span class="badge bg-<?= $statusColors[$s] ?? 'secondary'; ?> <?= $s === 'pending' ? 'text-dark' : ''; ?> fs-6 px-3 py-2"><?= ucfirst($s); ?></span>
+    <div>
+        <?php if (!empty($hire['is_spam'])): ?>
+            <span class="badge bg-danger fs-6 px-3 py-2 me-2">SPAM</span>
+        <?php endif; ?>
+        <span class="badge bg-<?= $statusColors[$s] ?? 'secondary'; ?> <?= $s === 'pending' ? 'text-dark' : ''; ?> fs-6 px-3 py-2"><?= ucfirst($s); ?></span>
+    </div>
 </div>
 
 <?php if (session()->getFlashdata('success')): ?>
@@ -124,6 +129,13 @@ $s = $hire['status'] ?? 'pending';
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Save Changes</button>
                 </form>
+                <hr>
+                <a href="<?= base_url('aw-cp/hires/spam/' . $hire['id']); ?>"
+                   class="btn btn-sm <?= empty($hire['is_spam']) ? 'btn-outline-danger' : 'btn-outline-success'; ?> w-100"
+                   onclick="return confirm('<?= empty($hire['is_spam']) ? 'Mark this hire as spam?' : 'Unmark this hire as spam?'; ?>');">
+                    <i class="fa-solid <?= empty($hire['is_spam']) ? 'fa-ban' : 'fa-check'; ?> me-1"></i>
+                    <?= empty($hire['is_spam']) ? 'Mark as Spam' : 'Unmark as Spam'; ?>
+                </a>
             </div>
         </div>
 
@@ -145,13 +157,31 @@ $s = $hire['status'] ?? 'pending';
                             <div class="text-muted"><?= date('M d, Y h:i A', strtotime($hire['date_created'])); ?></div>
                         </div>
                     </div>
-                    <div class="d-flex">
+                    <div class="d-flex mb-2">
                         <i class="fa-solid fa-circle text-secondary me-2 mt-1" style="font-size:8px"></i>
                         <div>
                             <div>Via</div>
                             <div class="text-muted"><?= esc(($hire['device'] ?? '') . ' / ' . ($hire['browser_name'] ?? '')); ?></div>
                         </div>
                     </div>
+                    <?php if (!empty($hire['ip_address'])): ?>
+                    <div class="d-flex mb-2">
+                        <i class="fa-solid fa-circle text-warning me-2 mt-1" style="font-size:8px"></i>
+                        <div>
+                            <div>IP Address</div>
+                            <div class="text-muted"><?= esc($hire['ip_address']); ?></div>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+                    <?php if (!empty($hire['country'])): ?>
+                    <div class="d-flex">
+                        <i class="fa-solid fa-circle text-info me-2 mt-1" style="font-size:8px"></i>
+                        <div>
+                            <div>Country</div>
+                            <div class="text-muted"><i class="fa-solid fa-globe me-1"></i><?= esc($hire['country']); ?></div>
+                        </div>
+                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

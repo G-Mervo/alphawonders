@@ -61,6 +61,11 @@
                 Cancelled <span class="badge bg-secondary ms-1"><?= $cancelledCount ?? 0; ?></span>
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link <?= ($currentStatus ?? '') === 'spam' ? 'active' : ''; ?> text-danger" href="<?= base_url('aw-cp/hires?status=spam'); ?>">
+                <i class="fa-solid fa-ban me-1"></i>Spam <span class="badge bg-danger ms-1"><?= $spamCount ?? 0; ?></span>
+            </a>
+        </li>
     </ul>
 </div>
 
@@ -91,9 +96,15 @@
                             <tr>
                                 <td>
                                     <strong><?= esc($hire['name']); ?></strong>
+                                    <?php if (!empty($hire['is_spam'])): ?>
+                                        <span class="badge bg-danger ms-1">SPAM</span>
+                                    <?php endif; ?>
                                     <div class="text-muted small"><?= esc($hire['email']); ?></div>
                                     <?php if (!empty($hire['company_name'])): ?>
                                         <div class="text-muted small"><i class="fa-solid fa-building me-1"></i><?= esc($hire['company_name']); ?></div>
+                                    <?php endif; ?>
+                                    <?php if (!empty($hire['country'])): ?>
+                                        <div class="text-muted small"><i class="fa-solid fa-globe me-1"></i><?= esc($hire['country']); ?></div>
                                     <?php endif; ?>
                                 </td>
                                 <td>
