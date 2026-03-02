@@ -21,6 +21,7 @@ class Alphawonders extends BaseController
         $this->alphaBlogModel = new AlphaBlogModel();
         $this->blogCategoryModel = new BlogCategoryModel();
         $this->blogTagModel = new BlogTagModel();
+        helper('geoip');
     }
 
     public function sitemap()
@@ -231,6 +232,8 @@ class Alphawonders extends BaseController
         $userAgent = $this->request->getUserAgent();
         $device = $userAgent->isMobile() ? 'Mobile' : 'Desktop';
 
+        $ip = $this->request->getIPAddress();
+
         $data = [
             'full_name' => $this->request->getPost('fullname'),
             'email_addr' => $this->request->getPost('email'),
@@ -238,7 +241,8 @@ class Alphawonders extends BaseController
             'message' => $this->request->getPost('message'),
             'activity_name' => 'Contact us',
             'browser_name' => $userAgent->getBrowser() . ' ' . $userAgent->getVersion(),
-            'ip_address' => $this->request->getIPAddress(),
+            'ip_address' => $ip,
+            'country' => geoip_country($ip),
             'platform' => $userAgent->getPlatform(),
             'referral' => $this->request->getServer('HTTP_REFERER'),
             'device' => $device,
@@ -267,11 +271,14 @@ class Alphawonders extends BaseController
         $userAgent = $this->request->getUserAgent();
         $device = $userAgent->isMobile() ? 'Mobile' : 'Desktop';
 
+        $ip = $this->request->getIPAddress();
+
         $data = [
             'email' => $this->request->getPost('email_sub'),
             'activity_name' => 'Subscribe',
             'browser_name' => $userAgent->getBrowser() . ' ' . $userAgent->getVersion(),
-            'ip_address' => $this->request->getIPAddress(),
+            'ip_address' => $ip,
+            'country' => geoip_country($ip),
             'platform' => $userAgent->getPlatform(),
             'referral' => $this->request->getServer('HTTP_REFERER'),
             'device' => $device,
