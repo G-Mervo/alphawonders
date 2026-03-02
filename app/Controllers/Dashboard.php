@@ -9,6 +9,7 @@ use App\Models\SocialMediaPostModel;
 use App\Models\ContentCalendarModel;
 use App\Libraries\GroqService;
 use App\Libraries\GitHubService;
+use App\Libraries\HtmlSanitizer;
 
 class Dashboard extends BaseController
 {
@@ -296,7 +297,7 @@ class Dashboard extends BaseController
             'blog_author'      => $this->request->getPost('blog_author'),
             'blog_title'       => $this->request->getPost('blog_title'),
             'blog_url'         => $slug,
-            'blog_description' => $this->request->getPost('blogtxtarea'),
+            'blog_description' => HtmlSanitizer::sanitizeHtml($this->request->getPost('blogtxtarea')),
             'blog_image'       => $imagePath,
             'blog_category'    => $blogCategory,
             'category_id'      => $categoryId,
@@ -391,7 +392,7 @@ class Dashboard extends BaseController
             'blog_author'      => $this->request->getPost('blog_author'),
             'blog_title'       => $this->request->getPost('blog_title'),
             'blog_url'         => $slug,
-            'blog_description' => $this->request->getPost('blogtxtarea'),
+            'blog_description' => HtmlSanitizer::sanitizeHtml($this->request->getPost('blogtxtarea')),
             'blog_category'    => $blogCategory,
             'category_id'      => $categoryId,
             'date_modified'    => date('Y-m-d H:i:s'),
@@ -465,7 +466,7 @@ class Dashboard extends BaseController
         $data['post'] = [
             'id'               => 0,
             'blog_title'       => $this->request->getPost('blog_title') ?? 'Untitled',
-            'blog_description' => $this->request->getPost('blogtxtarea') ?? '',
+            'blog_description' => HtmlSanitizer::sanitizeHtml($this->request->getPost('blogtxtarea') ?? ''),
             'blog_author'      => $this->request->getPost('blog_author') ?? 'Author',
             'blog_url'         => $this->request->getPost('blog_url') ?? '',
             'blog_image'       => $this->request->getPost('existing_image') ?? 'assets/img/blog/default.jpg',

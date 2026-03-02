@@ -6,6 +6,7 @@ use App\Models\AlphaWModel;
 use App\Models\AlphaBlogModel;
 use App\Models\BlogCategoryModel;
 use App\Models\BlogTagModel;
+use App\Libraries\HtmlSanitizer;
 use CodeIgniter\Controller;
 
 class Alphawonders extends BaseController
@@ -235,10 +236,10 @@ class Alphawonders extends BaseController
         $ip = real_client_ip();
 
         $data = [
-            'full_name' => $this->request->getPost('fullname'),
+            'full_name' => HtmlSanitizer::sanitizePlainText($this->request->getPost('fullname')),
             'email_addr' => $this->request->getPost('email'),
-            'phoneno' => $this->request->getPost('phone_number'),
-            'message' => $this->request->getPost('message'),
+            'phoneno' => HtmlSanitizer::sanitizePlainText($this->request->getPost('phone_number')),
+            'message' => HtmlSanitizer::sanitizePlainText($this->request->getPost('message')),
             'activity_name' => 'Contact us',
             'browser_name' => $userAgent->getBrowser() . ' ' . $userAgent->getVersion(),
             'ip_address' => $ip,
@@ -323,20 +324,20 @@ class Alphawonders extends BaseController
         $ip = real_client_ip();
 
         $data = [
-            'name' => $this->request->getPost('name'),
+            'name' => HtmlSanitizer::sanitizePlainText($this->request->getPost('name')),
             'email' => $this->request->getPost('email'),
-            'tel' => $this->request->getPost('telno'),
-            'budget' => $this->request->getPost('budget'),
-            'location' => $this->request->getPost('loc'),
-            'skype' => $this->request->getPost('sky'),
-            'client' => $this->request->getPost('client'),
-            'work' => $this->request->getPost('work'),
-            'nature' => $this->request->getPost('project_type') ?: 'contract',
-            'whatsapp' => $this->request->getPost('whts'),
-            'description' => $this->request->getPost('proj_desc'),
-            'company_name' => $this->request->getPost('company_name'),
-            'industry' => $this->request->getPost('industry'),
-            'timeline' => $this->request->getPost('timeline'),
+            'tel' => HtmlSanitizer::sanitizePlainText($this->request->getPost('telno')),
+            'budget' => HtmlSanitizer::sanitizePlainText($this->request->getPost('budget')),
+            'location' => HtmlSanitizer::sanitizePlainText($this->request->getPost('loc')),
+            'skype' => HtmlSanitizer::sanitizePlainText($this->request->getPost('sky') ?? ''),
+            'client' => HtmlSanitizer::sanitizePlainText($this->request->getPost('client')),
+            'work' => HtmlSanitizer::sanitizePlainText($this->request->getPost('work')),
+            'nature' => HtmlSanitizer::sanitizePlainText($this->request->getPost('project_type') ?: 'contract'),
+            'whatsapp' => HtmlSanitizer::sanitizePlainText($this->request->getPost('whts') ?? ''),
+            'description' => HtmlSanitizer::sanitizePlainText($this->request->getPost('proj_desc')),
+            'company_name' => HtmlSanitizer::sanitizePlainText($this->request->getPost('company_name') ?? ''),
+            'industry' => HtmlSanitizer::sanitizePlainText($this->request->getPost('industry') ?? ''),
+            'timeline' => HtmlSanitizer::sanitizePlainText($this->request->getPost('timeline') ?? ''),
             'activity_name' => 'Hire us',
             'browser_name' => $userAgent->getBrowser() . ' ' . $userAgent->getVersion(),
             'ip_address' => $ip,
@@ -586,8 +587,8 @@ class Alphawonders extends BaseController
         $data = [
             'email_addr' => null,
             'phoneno' => null,
-            'comment' => $this->request->getPost('comm-sct'),
-            'commentee' => !empty($commentee) ? $commentee : 'guest',
+            'comment' => HtmlSanitizer::sanitizePlainText($this->request->getPost('comm-sct')),
+            'commentee' => !empty($commentee) ? HtmlSanitizer::sanitizePlainText($commentee) : 'guest',
             'activity_name' => 'Post Comment',
             'post_id' => $this->request->getPost('post_id'),
             'browser_name' => $userAgent->getBrowser() . ' ' . $userAgent->getVersion(),

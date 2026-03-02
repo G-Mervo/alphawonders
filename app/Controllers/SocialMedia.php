@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\SocialMediaPostModel;
 use App\Models\AlphaBlogModel;
 use App\Libraries\GroqService;
+use App\Libraries\HtmlSanitizer;
 
 class SocialMedia extends BaseController
 {
@@ -106,16 +107,16 @@ class SocialMedia extends BaseController
         $data = [
             'blog_id'      => $this->request->getPost('blog_id') ?: null,
             'platform'     => $this->request->getPost('platform'),
-            'content'      => $this->request->getPost('content'),
-            'hashtags'     => $this->request->getPost('hashtags'),
+            'content'      => HtmlSanitizer::sanitizePlainText($this->request->getPost('content')),
+            'hashtags'     => HtmlSanitizer::sanitizePlainText($this->request->getPost('hashtags') ?? ''),
             'media_url'    => $mediaUrl,
             'link_url'     => $this->request->getPost('link_url'),
-            'video_script' => $this->request->getPost('video_script'),
+            'video_script' => HtmlSanitizer::sanitizePlainText($this->request->getPost('video_script') ?? ''),
             'status'       => $status,
             'scheduled_at' => $scheduledAt,
             'posted_at'    => $postedAt,
             'ai_generated' => (bool) $this->request->getPost('ai_generated'),
-            'notes'        => $this->request->getPost('notes'),
+            'notes'        => HtmlSanitizer::sanitizePlainText($this->request->getPost('notes') ?? ''),
             'created_at'   => date('Y-m-d H:i:s'),
             'updated_at'   => date('Y-m-d H:i:s'),
         ];
@@ -164,12 +165,12 @@ class SocialMedia extends BaseController
         $data = array_merge([
             'blog_id'      => $this->request->getPost('blog_id') ?: null,
             'platform'     => $this->request->getPost('platform'),
-            'content'      => $this->request->getPost('content'),
-            'hashtags'     => $this->request->getPost('hashtags'),
+            'content'      => HtmlSanitizer::sanitizePlainText($this->request->getPost('content')),
+            'hashtags'     => HtmlSanitizer::sanitizePlainText($this->request->getPost('hashtags') ?? ''),
             'media_url'    => $mediaUrl,
             'link_url'     => $this->request->getPost('link_url'),
-            'video_script' => $this->request->getPost('video_script'),
-            'notes'        => $this->request->getPost('notes'),
+            'video_script' => HtmlSanitizer::sanitizePlainText($this->request->getPost('video_script') ?? ''),
+            'notes'        => HtmlSanitizer::sanitizePlainText($this->request->getPost('notes') ?? ''),
             'updated_at'   => date('Y-m-d H:i:s'),
         ], $statusData);
 
