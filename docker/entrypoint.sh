@@ -14,13 +14,13 @@ mkdir -p /var/www/html/writable/session
 mkdir -p /var/www/html/writable/uploads
 mkdir -p /var/www/html/writable/debugbar
 
-chown -R www-data:www-data /var/www/html/writable
-chmod -R 775 /var/www/html/writable
+chown -R www-data:www-data /var/www/html/writable 2>/dev/null || true
+chmod -R 775 /var/www/html/writable 2>/dev/null || true
 
 # Ensure uploads directory exists (persisted via Docker volume)
 mkdir -p /var/www/html/public/uploads/blog
-chown -R www-data:www-data /var/www/html/public/uploads
-chmod -R 775 /var/www/html/public/uploads
+chown -R www-data:www-data /var/www/html/public/uploads 2>/dev/null || true
+chmod -R 775 /var/www/html/public/uploads 2>/dev/null || true
 
 # Run database migrations (idempotent — safe on every boot)
 echo "Running database migrations..."
