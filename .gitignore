@@ -28,9 +28,9 @@ infra/.env
 .DS_Store
 Thumbs.db
 
-# User uploads and attachments
-/public/uploads/*
-!/public/uploads/.gitkeep
+# User uploads and attachments (commented out for now — will gitignore uploads later)
+# /public/uploads/*
+# !/public/uploads/.gitkeep
 /attachments/*
 !/attachments/index.html
 !/attachments/*.gitkeep

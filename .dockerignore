@@ -4,12 +4,19 @@
 .env
 .env.local
 .env.*.local
+.claude/
 
 # Composer dev dependencies are installed fresh in the container
 vendor/
 
-# Old CodeIgniter 3 application code
+# Old/legacy files not needed in production
 application/
+attachments/
+app/Views/templates/carbaaz/
+builds
+env
+index.html
+PLANS.md
 
 # Documentation
 docs/
@@ -36,6 +43,7 @@ Thumbs.db
 # Docker files (don't need to be in the image)
 docker-compose.yml
 docker-compose.dev.yml
+infra/docker-compose.postgres.yml
 Dockerfile
 .dockerignore
 Makefile
