@@ -51,8 +51,8 @@
 					</div>
 					<div class="col-6">
 						<div class="rounded-3 p-3 text-center" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);">
-							<i class="fas fa-bullhorn fa-lg text-success mb-2 d-block"></i>
-							<div class="small fw-semibold">Marketers</div>
+							<i class="fas fa-robot fa-lg text-success mb-2 d-block"></i>
+							<div class="small fw-semibold">AI Engineers</div>
 						</div>
 					</div>
 				</div>
@@ -235,6 +235,13 @@
 								</optgroup>
 								<option value="other">Other</option>
 							</select>
+						</div>
+
+						<div class="col-md-6" id="otherWorkField" style="display: none;">
+							<label for="other_work" class="form-label fw-bold">
+								<i class="fas fa-pen text-primary me-2"></i>Please specify <span class="text-danger">*</span>
+							</label>
+							<input type="text" class="form-control form-control-lg" id="other_work" name="other_work" placeholder="Describe the work you need" style="border-radius: 10px;">
 						</div>
 
 						<div class="col-md-6">
@@ -1028,6 +1035,20 @@ function toggleCompanyFields() {
 		document.getElementById('address').value = '';
 	}
 }
+
+// Toggle "Other" text field
+document.getElementById('work').addEventListener('change', function() {
+	var otherField = document.getElementById('otherWorkField');
+	var otherInput = document.getElementById('other_work');
+	if (this.value === 'other') {
+		otherField.style.display = 'block';
+		otherInput.setAttribute('required', 'required');
+	} else {
+		otherField.style.display = 'none';
+		otherInput.removeAttribute('required');
+		otherInput.value = '';
+	}
+});
 
 // Default to Kenya
 selectCountry('KE');
