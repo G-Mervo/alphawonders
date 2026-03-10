@@ -92,9 +92,9 @@
 						   value="<?= esc($settings['social_facebook'] ?? ''); ?>" placeholder="https://facebook.com/...">
 				</div>
 				<div class="mb-3">
-					<label class="form-label"><i class="fa-brands fa-twitter me-1"></i>Twitter / X</label>
+					<label class="form-label"><i class="fa-brands fa-x-twitter me-1"></i>X</label>
 					<input type="url" class="form-control autosave-field" data-key="social_twitter"
-						   value="<?= esc($settings['social_twitter'] ?? ''); ?>" placeholder="https://twitter.com/...">
+						   value="<?= esc($settings['social_twitter'] ?? ''); ?>" placeholder="https://x.com/...">
 				</div>
 				<div class="mb-3">
 					<label class="form-label"><i class="fa-brands fa-linkedin me-1"></i>LinkedIn</label>
@@ -210,8 +210,8 @@
 			</div>
 			<div class="card-body">
 				<div class="mb-3">
-					<label class="form-label text-muted">Twitter API Key</label>
-					<input type="text" class="form-control" disabled placeholder="Will enable auto-posting to Twitter/X">
+					<label class="form-label text-muted">X API Key</label>
+					<input type="text" class="form-control" disabled placeholder="Will enable auto-posting to X">
 				</div>
 				<div class="mb-3">
 					<label class="form-label text-muted">Facebook Page Token</label>

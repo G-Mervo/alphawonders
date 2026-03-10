@@ -24,7 +24,7 @@
 <div class="row g-3 mb-4">
 	<?php
 	$platformConfig = [
-		'twitter'   => ['icon' => 'fa-brands fa-x-twitter',   'color' => 'dark',    'label' => 'Twitter / X'],
+		'twitter'   => ['icon' => 'fa-brands fa-x-twitter',   'color' => 'dark',    'label' => 'X'],
 		'facebook'  => ['icon' => 'fa-brands fa-facebook',    'color' => 'primary',  'label' => 'Facebook'],
 		'linkedin'  => ['icon' => 'fa-brands fa-linkedin',    'color' => 'info',     'label' => 'LinkedIn'],
 		'instagram' => ['icon' => 'fa-brands fa-instagram',   'color' => 'danger',   'label' => 'Instagram'],

@@ -90,8 +90,8 @@
 			<a href="https://www.facebook.com/pg/alphawonders" target="_blank" class="btn btn-outline-primary btn-sm w-100 mb-2 rounded-pill">
 				<i class="fab fa-facebook me-2"></i>Facebook
 			</a>
-			<a href="https://twitter.com/Alphawondersltd" target="_blank" class="btn btn-outline-info btn-sm w-100 mb-2 rounded-pill">
-				<i class="fab fa-twitter me-2"></i>Twitter
+			<a href="https://x.com/Alphawondersltd" target="_blank" class="btn btn-outline-dark btn-sm w-100 mb-2 rounded-pill">
+				<i class="fab fa-x-twitter me-2"></i>X
 			</a>
 			<a href="https://ke.linkedin.com/company/alphawonders" target="_blank" class="btn btn-outline-primary btn-sm w-100 rounded-pill">
 				<i class="fab fa-linkedin me-2"></i>LinkedIn

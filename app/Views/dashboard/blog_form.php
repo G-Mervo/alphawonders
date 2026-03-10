@@ -24,9 +24,9 @@
 		<div>
 			<strong>Status: <?= ucfirst($s); ?></strong>
 			<?php if ($s === 'scheduled' && !empty($post['scheduled_at'])): ?>
-				&mdash; Scheduled for <?= date('M d, Y \a\t H:i', strtotime($post['scheduled_at'])); ?>
+				&mdash; Scheduled for <?= date('M d, Y \a\t g:i A', strtotime($post['scheduled_at'])); ?> (EAT)
 			<?php elseif ($s === 'published' && !empty($post['published_at'])): ?>
-				&mdash; Published on <?= date('M d, Y \a\t H:i', strtotime($post['published_at'])); ?>
+				&mdash; Published on <?= date('M d, Y \a\t g:i A', strtotime($post['published_at'])); ?>
 			<?php endif; ?>
 		</div>
 	</div>
@@ -177,18 +177,42 @@
 
 <!-- Schedule Modal -->
 <div class="modal fade" id="scheduleModal" tabindex="-1">
-	<div class="modal-dialog modal-sm">
+	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title"><i class="fa-solid fa-clock me-2"></i>Schedule Post</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 			</div>
 			<div class="modal-body">
-				<div class="mb-3">
-					<label for="schedule_datetime" class="form-label">Publish Date & Time</label>
-					<input type="datetime-local" class="form-control" id="schedule_datetime"
-						   value="<?= !empty($post['scheduled_at']) ? date('Y-m-d\TH:i', strtotime($post['scheduled_at'])) : ''; ?>"
-						   min="<?= date('Y-m-d\TH:i'); ?>">
+				<div class="row g-3">
+					<div class="col-7">
+						<label for="schedule_date" class="form-label">Date</label>
+						<input type="date" class="form-control" id="schedule_date"
+							   value="<?= !empty($post['scheduled_at']) ? date('Y-m-d', strtotime($post['scheduled_at'])) : ''; ?>"
+							   min="<?= date('Y-m-d'); ?>">
+					</div>
+					<div class="col-5">
+						<label for="schedule_time" class="form-label">Time</label>
+						<input type="time" class="form-control" id="schedule_time" step="60"
+							   value="<?= !empty($post['scheduled_at']) ? date('H:i', strtotime($post['scheduled_at'])) : ''; ?>">
+					</div>
+				</div>
+				<!-- Quick time buttons -->
+				<div class="mt-3">
+					<label class="form-label text-muted small mb-1">Quick select</label>
+					<div class="d-flex flex-wrap gap-1">
+						<button type="button" class="btn btn-outline-secondary btn-sm schedule-quick" data-minutes="5">In 5 min</button>
+						<button type="button" class="btn btn-outline-secondary btn-sm schedule-quick" data-minutes="30">In 30 min</button>
+						<button type="button" class="btn btn-outline-secondary btn-sm schedule-quick" data-minutes="60">In 1 hr</button>
+						<button type="button" class="btn btn-outline-secondary btn-sm schedule-quick" data-hours="3">In 3 hrs</button>
+						<button type="button" class="btn btn-outline-secondary btn-sm schedule-quick" data-time="09:00">Tomorrow 9 AM</button>
+						<button type="button" class="btn btn-outline-secondary btn-sm schedule-quick" data-time="12:00">Tomorrow 12 PM</button>
+						<button type="button" class="btn btn-outline-secondary btn-sm schedule-quick" data-time="18:00">Tomorrow 6 PM</button>
+					</div>
+				</div>
+				<div class="mt-3 small text-muted">
+					<i class="fa-solid fa-globe me-1"></i>Timezone: <strong>East Africa Time (EAT, UTC+3)</strong>
+					<br><span id="schedulePreview" class="text-info fw-semibold"></span>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -283,11 +307,66 @@ document.addEventListener('DOMContentLoaded', function() {
 		form.submit();
 	});
 
+	// Schedule modal: default to 5 min from now when opened
+	document.getElementById('scheduleModal')?.addEventListener('show.bs.modal', function() {
+		const dateInput = document.getElementById('schedule_date');
+		const timeInput = document.getElementById('schedule_time');
+		if (!dateInput.value && !timeInput.value) {
+			const now = new Date(Date.now() + 5 * 60000); // 5 min ahead
+			dateInput.value = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+			timeInput.value = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+		}
+		updateSchedulePreview();
+	});
+
+	// Quick select buttons
+	document.querySelectorAll('.schedule-quick').forEach(btn => {
+		btn.addEventListener('click', function() {
+			const dateInput = document.getElementById('schedule_date');
+			const timeInput = document.getElementById('schedule_time');
+			let target;
+
+			if (this.dataset.minutes) {
+				target = new Date(Date.now() + parseInt(this.dataset.minutes) * 60000);
+			} else if (this.dataset.hours) {
+				target = new Date(Date.now() + parseInt(this.dataset.hours) * 3600000);
+			} else if (this.dataset.time) {
+				target = new Date();
+				target.setDate(target.getDate() + 1); // tomorrow
+				const [h, m] = this.dataset.time.split(':');
+				target.setHours(parseInt(h), parseInt(m), 0, 0);
+			}
+
+			if (target) {
+				dateInput.value = target.getFullYear() + '-' + String(target.getMonth()+1).padStart(2,'0') + '-' + String(target.getDate()).padStart(2,'0');
+				timeInput.value = String(target.getHours()).padStart(2,'0') + ':' + String(target.getMinutes()).padStart(2,'0');
+			}
+			updateSchedulePreview();
+		});
+	});
+
+	// Live preview of scheduled time
+	function updateSchedulePreview() {
+		const d = document.getElementById('schedule_date').value;
+		const t = document.getElementById('schedule_time').value;
+		const el = document.getElementById('schedulePreview');
+		if (d && t) {
+			const dt = new Date(d + 'T' + t);
+			const opts = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
+			el.textContent = 'Will publish: ' + dt.toLocaleString('en-KE', opts);
+		} else {
+			el.textContent = '';
+		}
+	}
+	document.getElementById('schedule_date')?.addEventListener('change', updateSchedulePreview);
+	document.getElementById('schedule_time')?.addEventListener('change', updateSchedulePreview);
+
 	document.getElementById('btnConfirmSchedule')?.addEventListener('click', function() {
-		const dt = document.getElementById('schedule_datetime').value;
-		if (!dt) { alert('Please select a date and time.'); return; }
+		const d = document.getElementById('schedule_date').value;
+		const t = document.getElementById('schedule_time').value;
+		if (!d || !t) { alert('Please select both a date and time.'); return; }
 		actionInput.value = 'schedule';
-		scheduledAtInput.value = dt.replace('T', ' ') + ':00';
+		scheduledAtInput.value = d + ' ' + t + ':00';
 		bootstrap.Modal.getInstance(document.getElementById('scheduleModal')).hide();
 		form.submit();
 	});

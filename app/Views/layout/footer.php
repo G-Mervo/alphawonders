@@ -43,7 +43,7 @@
 						<!-- Social icons -->
 						<div class="d-flex gap-2 mb-4">
 							<a href="https://facebook.com/alphawonders" target="_blank" rel="noopener" class="d-flex align-items-center justify-content-center rounded-circle text-white text-decoration-none" style="width: 38px; height: 38px; background: rgba(255,255,255,0.08); transition: all 0.3s;" onmouseover="this.style.background='#1877F2';this.style.transform='translateY(-3px)'" onmouseout="this.style.background='rgba(255,255,255,0.08)';this.style.transform='none'" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-							<a href="https://twitter.com/alphawondersltd" target="_blank" rel="noopener" class="d-flex align-items-center justify-content-center rounded-circle text-white text-decoration-none" style="width: 38px; height: 38px; background: rgba(255,255,255,0.08); transition: all 0.3s;" onmouseover="this.style.background='#000';this.style.transform='translateY(-3px)'" onmouseout="this.style.background='rgba(255,255,255,0.08)';this.style.transform='none'" aria-label="X / Twitter"><i class="fab fa-x-twitter"></i></a>
+							<a href="https://x.com/alphawondersltd" target="_blank" rel="noopener" class="d-flex align-items-center justify-content-center rounded-circle text-white text-decoration-none" style="width: 38px; height: 38px; background: rgba(255,255,255,0.08); transition: all 0.3s;" onmouseover="this.style.background='#000';this.style.transform='translateY(-3px)'" onmouseout="this.style.background='rgba(255,255,255,0.08)';this.style.transform='none'" aria-label="X"><i class="fab fa-x-twitter"></i></a>
 							<a href="https://ke.linkedin.com/company/alphawonders" target="_blank" rel="noopener" class="d-flex align-items-center justify-content-center rounded-circle text-white text-decoration-none" style="width: 38px; height: 38px; background: rgba(255,255,255,0.08); transition: all 0.3s;" onmouseover="this.style.background='#0A66C2';this.style.transform='translateY(-3px)'" onmouseout="this.style.background='rgba(255,255,255,0.08)';this.style.transform='none'" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
 							<a href="https://instagram.com/alphawonders" target="_blank" rel="noopener" class="d-flex align-items-center justify-content-center rounded-circle text-white text-decoration-none" style="width: 38px; height: 38px; background: rgba(255,255,255,0.08); transition: all 0.3s;" onmouseover="this.style.background='linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)';this.style.transform='translateY(-3px)'" onmouseout="this.style.background='rgba(255,255,255,0.08)';this.style.transform='none'" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
 							<a href="https://tiktok.com/@alphawonders" target="_blank" rel="noopener" class="d-flex align-items-center justify-content-center rounded-circle text-white text-decoration-none" style="width: 38px; height: 38px; background: rgba(255,255,255,0.08); transition: all 0.3s;" onmouseover="this.style.background='#000';this.style.transform='translateY(-3px)'" onmouseout="this.style.background='rgba(255,255,255,0.08)';this.style.transform='none'" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
@@ -258,7 +258,7 @@
 	  ],
 	  "sameAs": [
 	    "https://facebook.com/alphawonders",
-	    "https://twitter.com/alphawondersltd",
+	    "https://x.com/alphawondersltd",
 	    "https://ke.linkedin.com/company/alphawonders",
 	    "https://instagram.com/alphawonders",
 	    "https://tiktok.com/@alphawonders"

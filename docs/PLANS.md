@@ -20,10 +20,10 @@
 
 ### Social Media Hub
 - [x] Create/edit/delete social posts
-- [x] Generate posts for all platforms (Twitter, LinkedIn, Facebook, Instagram, TikTok)
+- [x] Generate posts for all platforms (X, LinkedIn, Facebook, Instagram, TikTok)
 - [x] Video script generation
 - [x] Hashtag suggestions
-- [ ] Direct publishing to social platforms via APIs (Twitter API, LinkedIn API, etc.)
+- [ ] Direct publishing to social platforms via APIs (X API, LinkedIn API, etc.)
 - [ ] Social media analytics dashboard (engagement tracking)
 - [ ] Auto-schedule social posts at optimal times
 
@@ -239,7 +239,7 @@ The following keys are managed from the admin settings page (`/aw-cp/settings`),
 
 ### Future Keys to Add to Settings
 - [ ] Stripe API keys (publishable + secret)
-- [ ] Social media API keys (Twitter, LinkedIn, etc.)
+- [ ] Social media API keys (X, LinkedIn, etc.)
 - [ ] SMTP credentials (currently in .env - should move to DB)
 - [ ] reCAPTCHA keys
 - [ ] Any third-party API keys
@@ -251,7 +251,7 @@ The following keys are managed from the admin settings page (`/aw-cp/settings`),
 
 ### SEO & Content Improvements (Completed March 2026)
 - [x] Per-page meta descriptions and canonical URLs
-- [x] Dynamic Open Graph and Twitter Card meta tags
+- [x] Dynamic Open Graph and X (Twitter) Card meta tags
 - [x] Enhanced JSON-LD structured data (LocalBusiness with services, hours, geo)
 - [x] Removed harmful meta refresh tag
 - [x] Localized all service page titles and descriptions for Kenya/East Africa SEO

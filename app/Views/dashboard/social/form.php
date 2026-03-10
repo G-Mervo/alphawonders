@@ -42,7 +42,7 @@ $isVideoPlatform = in_array($currentPlatform, ['tiktok', 'instagram']);
 				<div class="col-lg-4">
 					<label for="platform" class="form-label">Platform</label>
 					<select class="form-select" name="platform" id="platform">
-						<option value="twitter" <?= $currentPlatform === 'twitter' ? 'selected' : ''; ?>>Twitter / X</option>
+						<option value="twitter" <?= $currentPlatform === 'twitter' ? 'selected' : ''; ?>>X</option>
 						<option value="facebook" <?= $currentPlatform === 'facebook' ? 'selected' : ''; ?>>Facebook</option>
 						<option value="linkedin" <?= $currentPlatform === 'linkedin' ? 'selected' : ''; ?>>LinkedIn</option>
 						<option value="instagram" <?= $currentPlatform === 'instagram' ? 'selected' : ''; ?>>Instagram</option>

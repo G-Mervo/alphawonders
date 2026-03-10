@@ -42,7 +42,7 @@
 <div id="resultsSection" class="d-none">
 	<h5 class="fw-bold mb-3">Generated Posts</h5>
 	<ul class="nav nav-tabs mb-3" id="platformTabs">
-		<li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-twitter"><i class="fa-brands fa-x-twitter me-1"></i>Twitter</a></li>
+		<li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-twitter"><i class="fa-brands fa-x-twitter me-1"></i>X</a></li>
 		<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-facebook"><i class="fa-brands fa-facebook me-1"></i>Facebook</a></li>
 		<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-linkedin"><i class="fa-brands fa-linkedin me-1"></i>LinkedIn</a></li>
 		<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-instagram"><i class="fa-brands fa-instagram me-1"></i>Instagram</a></li>

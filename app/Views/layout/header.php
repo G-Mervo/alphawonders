@@ -39,7 +39,7 @@
     <meta property="og:description" content="<?= isset($description) ? esc($description) : 'Alphawonders Solutions is a Nairobi-based ICT company providing software development, system administration, digital marketing, design, IT consultancy, IT support, and cyber security for businesses across Kenya and East Africa.' ?>">
     <meta property="og:image" content="https://alphawonders.com/assets/icons/logo.png">
 
-    <!-- Twitter -->
+    <!-- X (formerly Twitter) Cards -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://alphawonders.com<?= isset($canonical) ? esc($canonical) : '/' ?>">
     <meta property="twitter:title" content="<?= isset($og_title) ? esc($og_title) : esc($title) . ' | Alphawonders' ?>">

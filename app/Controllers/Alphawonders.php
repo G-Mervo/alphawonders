@@ -112,12 +112,19 @@ class Alphawonders extends BaseController
 
     public function index()
     {
-        $data['title'] = 'Alphawonders';
+        $data['title'] = 'ICT Solutions & Software Development in Nairobi, Kenya';
+        $data['canonical'] = '/';
+        $data['og_title'] = 'Alphawonders - ICT Solutions & Software Development in Nairobi, Kenya';
+        $data['description'] = 'Alphawonders is a Nairobi-based ICT company helping SMEs, startups, and organisations across Kenya and East Africa build secure software, manage infrastructure, and grow with digital marketing.';
 
         try {
             $data['blogs'] = $this->alphaBlogModel->retrieveBlog();
+            $data['popularTags'] = $this->blogTagModel->getAllTagsWithPostCount();
+            $data['categories'] = $this->blogCategoryModel->getCategoriesWithPostCount();
         } catch (\Exception $e) {
             $data['blogs'] = [];
+            $data['popularTags'] = [];
+            $data['categories'] = [];
         }
 
         return view('layout/header', $data) .
@@ -128,6 +135,7 @@ class Alphawonders extends BaseController
     public function home()
     {
         $data['title'] = 'Alphawonders Solutions';
+        $data['canonical'] = '/home';
 
         return view('layout/header', $data) .
                view('alphawonders', $data) .
@@ -136,7 +144,10 @@ class Alphawonders extends BaseController
 
     public function alphasoftwares()
     {
-        $data['title'] = 'software | Alphawonders';
+        $data['title'] = 'Custom Software Development in Kenya';
+        $data['description'] = 'Custom software solutions, M-Pesa integration, and enterprise systems for Kenyan and East African businesses. Alphawonders builds secure, scalable applications for SMEs and enterprises.';
+        $data['canonical'] = '/softwares';
+        $data['relatedPosts'] = $this->getRelatedBlogPosts(['software', 'software-development', 'web-development', 'technology']);
 
         return view('layout/header', $data) .
                view('services/alphasoftwares', $data) .
@@ -145,7 +156,10 @@ class Alphawonders extends BaseController
 
     public function alphasystems()
     {
-        $data['title'] = 'System';
+        $data['title'] = 'Linux & Server Administration in Kenya';
+        $data['description'] = 'Expert Linux, Unix, and Windows server administration, monitoring, and security for businesses in Kenya and East Africa. Reliable infrastructure management by Alphawonders.';
+        $data['canonical'] = '/system-administration';
+        $data['relatedPosts'] = $this->getRelatedBlogPosts(['system-administration', 'linux', 'devops', 'infrastructure']);
 
         return view('layout/header', $data) .
                view('services/alphasystems', $data) .
@@ -154,7 +168,10 @@ class Alphawonders extends BaseController
 
     public function alphadesign()
     {
-        $data['title'] = 'Design | Alphawonders';
+        $data['title'] = 'Web & Graphic Design Services in Kenya';
+        $data['description'] = 'Professional web design, graphic design, UI/UX, and prototyping services for Kenyan businesses. Alphawonders creates stunning visual experiences that convert visitors into customers.';
+        $data['canonical'] = '/design';
+        $data['relatedPosts'] = $this->getRelatedBlogPosts(['design', 'web-design', 'ui-ux', 'branding']);
 
         return view('layout/header', $data) .
                view('services/alphadesigns', $data) .
@@ -163,7 +180,10 @@ class Alphawonders extends BaseController
 
     public function alphamarketing()
     {
-        $data['title'] = 'Digital Marketing | Alphawonders';
+        $data['title'] = 'SEO & Digital Marketing Agency in Nairobi';
+        $data['description'] = 'SEO, social media, content marketing, and paid advertising for Kenyan and East African businesses. Alphawonders helps you rank higher on Google, reach more customers, and grow your brand.';
+        $data['canonical'] = '/digital-marketing';
+        $data['relatedPosts'] = $this->getRelatedBlogPosts(['digital-marketing', 'seo', 'marketing', 'social-media']);
 
         return view('layout/header', $data) .
                view('services/alphamarketing', $data) .
@@ -172,7 +192,10 @@ class Alphawonders extends BaseController
 
     public function alphaconsultancy()
     {
-        $data['title'] = 'IT Consultancy | Alphawonders';
+        $data['title'] = 'IT Consultancy Services in Kenya';
+        $data['description'] = 'Expert IT consulting to guide your digital transformation. Alphawonders helps Kenyan businesses make informed technology decisions, plan infrastructure, and adopt modern systems.';
+        $data['canonical'] = '/ict-consultancy';
+        $data['relatedPosts'] = $this->getRelatedBlogPosts(['it-consultancy', 'consulting', 'digital-transformation', 'technology']);
 
         return view('layout/header', $data) .
                view('services/alphaconsultancy', $data) .
@@ -181,7 +204,10 @@ class Alphawonders extends BaseController
 
     public function alphasupport()
     {
-        $data['title'] = 'IT Support | Alphawonders';
+        $data['title'] = 'IT Support Services in Kenya';
+        $data['description'] = 'Reliable remote and onsite IT support for businesses in Kenya and East Africa. Alphawonders provides technical support, hardware troubleshooting, and software maintenance.';
+        $data['canonical'] = '/it-support';
+        $data['relatedPosts'] = $this->getRelatedBlogPosts(['it-support', 'technical-support', 'infrastructure']);
 
         return view('layout/header', $data) .
                view('services/alphasupport', $data) .
@@ -190,7 +216,10 @@ class Alphawonders extends BaseController
 
     public function alphaiservices()
     {
-        $data['title'] = 'AI Services | Alphawonders';
+        $data['title'] = 'AI & Machine Learning Services in Kenya';
+        $data['description'] = 'AI integration, machine learning, chatbots, and intelligent automation for Kenyan businesses. Alphawonders helps you leverage artificial intelligence to streamline operations and gain insights.';
+        $data['canonical'] = '/ai-services';
+        $data['relatedPosts'] = $this->getRelatedBlogPosts(['ai', 'artificial-intelligence', 'machine-learning', 'data-science']);
 
         return view('layout/header', $data) .
                view('services/alphaiservices', $data) .
@@ -199,7 +228,9 @@ class Alphawonders extends BaseController
 
     public function alphahires()
     {
-        $data['title'] = 'Hire | Alphawonders';
+        $data['title'] = 'Hire ICT Professionals in Kenya';
+        $data['description'] = 'Hire skilled software developers, system administrators, designers, and IT professionals from Alphawonders. Submit your project request and get a response within 24 hours.';
+        $data['canonical'] = '/hire';
 
         return view('layout/header', $data) .
                view('hires', $data) .
@@ -208,7 +239,9 @@ class Alphawonders extends BaseController
 
     public function contact()
     {
-        $data['title'] = 'Contact us | Alphawonders';
+        $data['title'] = 'Contact Us';
+        $data['description'] = 'Get in touch with Alphawonders Solutions in Nairobi, Kenya. Call +254 736 099 643 or send us a message. We respond within 24 hours.';
+        $data['canonical'] = '/contact-us';
 
         return view('layout/header', $data) .
                view('contacts', $data) .
@@ -217,7 +250,8 @@ class Alphawonders extends BaseController
 
     public function privacyPolicy()
     {
-        $data['title'] = 'Privacy Policy | Alphawonders';
+        $data['title'] = 'Privacy Policy';
+        $data['canonical'] = '/privacy-policy';
 
         return view('layout/header', $data) .
                view('legal/privacy', $data) .
@@ -226,11 +260,48 @@ class Alphawonders extends BaseController
 
     public function termsOfService()
     {
-        $data['title'] = 'Terms of Service | Alphawonders';
+        $data['title'] = 'Terms of Service';
+        $data['canonical'] = '/terms-of-service';
 
         return view('layout/header', $data) .
                view('legal/terms', $data) .
                view('layout/footer');
+    }
+
+    /**
+     * Fetch related blog posts for a service page by matching blog category slugs.
+     * This is CMS-managed: admin assigns categories to blog posts via the dashboard,
+     * and posts automatically appear on the relevant service page.
+     */
+    private function getRelatedBlogPosts(array $categorySlugs, int $limit = 3): array
+    {
+        try {
+            $categories = $this->blogCategoryModel->whereIn('slug', $categorySlugs)->findAll();
+            if (empty($categories)) {
+                // Fallback: try matching by category name keywords
+                $builder = $this->alphaBlogModel->where('status', 'published');
+                $builder->groupStart();
+                foreach ($categorySlugs as $i => $slug) {
+                    $keyword = str_replace('-', ' ', $slug);
+                    if ($i === 0) {
+                        $builder->like('blog_category', $keyword, 'both', null, true);
+                    } else {
+                        $builder->orLike('blog_category', $keyword, 'both', null, true);
+                    }
+                }
+                $builder->groupEnd();
+                return $builder->orderBy('published_at', 'DESC')->limit($limit)->findAll();
+            }
+
+            $categoryIds = array_column($categories, 'id');
+            return $this->alphaBlogModel->where('status', 'published')
+                ->whereIn('category_id', $categoryIds)
+                ->orderBy('published_at', 'DESC')
+                ->limit($limit)
+                ->findAll();
+        } catch (\Exception $e) {
+            return [];
+        }
     }
 
     public function send_contact_data()
@@ -478,7 +549,9 @@ class Alphawonders extends BaseController
 
     public function alphablog()
     {
-        $data['title'] = 'Blog | Alphawonders';
+        $data['title'] = 'Tech Blog - Insights for Kenyan Businesses';
+        $data['description'] = 'Latest insights on software development, digital marketing, AI, and ICT for Kenyan and East African businesses. Expert articles from Alphawonders Solutions.';
+        $data['canonical'] = '/blog';
 
         try {
             $data['blogs'] = $this->alphaBlogModel->getPublishedPosts(6);
@@ -507,7 +580,10 @@ class Alphawonders extends BaseController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Blog post not found.');
         }
 
-        $data['title'] = esc($post['blog_title']) . ' | Alphawonders Blog';
+        $data['title'] = esc($post['blog_title']);
+        $data['description'] = !empty($post['meta_description']) ? $post['meta_description'] : substr(strip_tags($post['blog_description'] ?? ''), 0, 160);
+        $data['canonical'] = '/blog/' . $post['blog_url'];
+        $data['og_title'] = esc($post['blog_title']) . ' | Alphawonders Blog';
         $data['post'] = $post;
         $data['comments'] = $this->alphaBlogModel->getCommentsByPostId((int) $post['id']);
         $data['recentPosts'] = $this->alphaBlogModel->where('status', 'published')->orderBy('published_at', 'DESC')->limit(4)->findAll();

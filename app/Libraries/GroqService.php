@@ -251,7 +251,7 @@ class GroqService
     {
         $formatInstructions = [
             'newsletter' => 'Convert into a concise email newsletter format with a greeting, key points, and call-to-action. Use a professional but friendly tone.',
-            'thread' => 'Convert into a Twitter/X thread format. Number each tweet (1/, 2/, etc.). Each tweet should be under 280 characters. Include a hook in tweet 1 and CTA in the last tweet.',
+            'thread' => 'Convert into an X (formerly Twitter) thread format. Number each post (1/, 2/, etc.). Each post should be under 280 characters. Include a hook in post 1 and CTA in the last post.',
             'carousel' => 'Create an Instagram/LinkedIn carousel outline. Provide slide-by-slide content (8-10 slides). Slide 1 = hook title, last slide = CTA. Each slide should have a headline and 1-2 bullet points.',
             'infographic' => 'Create an infographic outline with sections, key statistics/data points, and visual layout suggestions. Include a title, 4-6 key sections with brief text for each.',
         ];
@@ -271,7 +271,7 @@ class GroqService
     private function getPlatformInstructions(string $platform): string
     {
         return match ($platform) {
-            'twitter'   => 'Keep under 280 characters. Be punchy and engaging. Use 2-3 hashtags max. Include a hook in the first line.',
+            'twitter'   => 'This is for X (formerly Twitter). Keep under 280 characters. Be punchy and engaging. Use 2-3 hashtags max. Include a hook in the first line.',
             'facebook'  => 'Write 2-3 engaging paragraphs. Use emojis sparingly. Ask a question to drive engagement. Can be 300-500 characters.',
             'linkedin'  => 'Professional tone. Lead with a thought-provoking statement. Use line breaks for readability. 500-700 characters. Add relevant industry hashtags.',
             'instagram' => 'Engaging caption under 2200 characters. Start with a hook. Use line breaks. Include CTA. Suggest 15-20 hashtags in a separate block.',

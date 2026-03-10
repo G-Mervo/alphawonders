@@ -7,7 +7,7 @@
 			<div class="col-lg-8">
 				<span class="badge bg-warning text-dark px-3 py-2 mb-3 d-inline-block rounded-pill fw-bold">Get In Touch</span>
 				<h1 class="display-4 fw-bold mb-3">Contact Us</h1>
-				<p class="lead mb-0">Send us a message today and let's discuss how we can help your business grow</p>
+				<p class="lead mb-0">Send us a message today and let's discuss how we can help your business grow. We respond within 24 hours.</p>
 			</div>
 		</div>
 	</div>
@@ -20,8 +20,9 @@
 			<!-- Contact Form -->
 			<div class="col-lg-8">
 				<div class="card border-0 shadow-lg rounded-4 p-4 p-md-5">
-					<h2 class="fw-bold mb-4">Send Us a Message</h2>
-					<form action="<?php echo base_url('/send'); ?>" method="POST" class="row g-4">
+					<h2 class="fw-bold mb-3">Send Us a Message</h2>
+					<p class="small text-success fw-semibold mb-4"><i class="fas fa-clock me-1"></i>We respond within 24 hours. No spam, no obligation.</p>
+					<form action="<?php echo base_url('/contact-us'); ?>" method="POST" class="row g-4">
 						<div class="col-md-6">
 							<label for="fullname" class="form-label fw-bold">
 								<i class="fas fa-user text-primary me-2"></i>Full Name <span class="text-danger">*</span>
@@ -108,8 +109,8 @@
 							<a href="https://www.facebook.com/pg/alphawonders" target="_blank" class="btn btn-outline-primary btn-lg w-100 mb-3 rounded-pill">
 								<i class="fab fa-facebook me-2"></i>Facebook
 							</a>
-							<a href="https://twitter.com/Alphawondersltd" target="_blank" class="btn btn-outline-info btn-lg w-100 mb-3 rounded-pill">
-								<i class="fab fa-twitter me-2"></i>Twitter
+							<a href="https://x.com/Alphawondersltd" target="_blank" class="btn btn-outline-dark btn-lg w-100 mb-3 rounded-pill">
+								<i class="fab fa-x-twitter me-2"></i>X
 							</a>
 							<a href="https://ke.linkedin.com/company/alphawonders" target="_blank" class="btn btn-outline-primary btn-lg w-100 rounded-pill">
 								<i class="fab fa-linkedin me-2"></i>LinkedIn

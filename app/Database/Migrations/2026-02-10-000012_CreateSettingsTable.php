@@ -39,7 +39,7 @@ class CreateSettingsTable extends Migration
             ['setting_key' => 'site_description', 'setting_value' => 'Providing ICT Expertise & Services', 'updated_at' => date('Y-m-d H:i:s')],
             ['setting_key' => 'contact_email', 'setting_value' => 'mervin@alphawonders.com', 'updated_at' => date('Y-m-d H:i:s')],
             ['setting_key' => 'social_facebook', 'setting_value' => 'https://www.facebook.com/pg/alphawonders', 'updated_at' => date('Y-m-d H:i:s')],
-            ['setting_key' => 'social_twitter', 'setting_value' => 'https://twitter.com/Alphawondersltd', 'updated_at' => date('Y-m-d H:i:s')],
+            ['setting_key' => 'social_twitter', 'setting_value' => 'https://x.com/Alphawondersltd', 'updated_at' => date('Y-m-d H:i:s')],
             ['setting_key' => 'social_linkedin', 'setting_value' => 'https://ke.linkedin.com/company/alphawonders', 'updated_at' => date('Y-m-d H:i:s')],
         ];
 

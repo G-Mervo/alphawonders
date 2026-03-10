@@ -49,7 +49,10 @@ services:
     image: ghcr.io/g-mervo/alphawonders:latest
     container_name: alphawonders-scheduler
     restart: unless-stopped
-    entrypoint: ["sh", "-c", "while true; do php /var/www/html/spark content:publish-scheduled; sleep 60; done"]
+    depends_on:
+      app:
+        condition: service_healthy
+    entrypoint: ["sh", "-c", "mkdir -p /var/www/html/writable/{cache,logs,session,uploads,debugbar} && chmod -R 775 /var/www/html/writable && while true; do php /var/www/html/spark content:publish-scheduled 2>&1; sleep 60; done"]
     environment:
       - CI_ENVIRONMENT=production
       - database.default.hostname=postgres
@@ -62,6 +65,9 @@ services:
       - database.default.charset=utf8
       - app.baseURL=${APP_BASE_URL}
       - app.appTimezone=Africa/Nairobi
+      - app.forceGlobalSecureRequests=false
+      - app.defaultLocale=en
+      - app.charset=UTF-8
     volumes:
       - app-writable:/var/www/html/writable
     networks:
