@@ -210,4 +210,5 @@ The following keys are managed from the admin settings page (`/aw-cp/settings`),
 
 ---
 
-*Last updated: March 2026*
+*Last updated: March 10, 2026*
+
