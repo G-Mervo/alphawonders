@@ -255,72 +255,77 @@ class Dashboard extends BaseController
             return redirect()->to(base_url('aw-cp/blog/create'))->withInput()->with('errors', $validation->getErrors());
         }
 
-        $slug = url_title($this->request->getPost('blog_url'), '-', true);
+        try {
+            $slug = url_title($this->request->getPost('blog_url'), '-', true);
 
-        $imageFile = $this->request->getFile('blog_image');
-        $imagePath = 'assets/img/blog/default.jpg';
+            $imageFile = $this->request->getFile('blog_image');
+            $imagePath = 'assets/img/blog/default.jpg';
 
-        if ($imageFile && $imageFile->isValid() && !$imageFile->hasMoved()) {
-            $newName = $slug . '-' . time() . '.' . $imageFile->getExtension();
-            $uploadPath = FCPATH . 'assets/img/blog';
-            if (!is_dir($uploadPath)) {
-                mkdir($uploadPath, 0755, true);
+            if ($imageFile && $imageFile->isValid() && !$imageFile->hasMoved()) {
+                $newName = $slug . '-' . time() . '.' . $imageFile->getExtension();
+                $uploadPath = FCPATH . 'assets/img/blog';
+                if (!is_dir($uploadPath)) {
+                    mkdir($uploadPath, 0755, true);
+                }
+                $imageFile->move($uploadPath, $newName);
+                $imagePath = 'assets/img/blog/' . $newName;
             }
-            $imageFile->move($uploadPath, $newName);
-            $imagePath = 'assets/img/blog/' . $newName;
+
+            // Resolve category
+            $categoryId = $this->request->getPost('category_id') ?: null;
+            $blogCategory = null;
+            if ($categoryId) {
+                $cat = $this->blogCategoryModel->find($categoryId);
+                $blogCategory = $cat ? $cat['slug'] : null;
+            }
+
+            // Determine status from action
+            $action = $this->request->getPost('action') ?? 'publish';
+            $status = 'published';
+            $scheduledAt = null;
+            $publishedAt = null;
+
+            if ($action === 'draft') {
+                $status = 'draft';
+            } elseif ($action === 'schedule') {
+                $status = 'scheduled';
+                $scheduledAt = $this->request->getPost('scheduled_at');
+            } else {
+                $publishedAt = date('Y-m-d H:i:s');
+            }
+
+            $data = [
+                'blog_author'      => $this->request->getPost('blog_author'),
+                'blog_title'       => $this->request->getPost('blog_title'),
+                'blog_url'         => $slug,
+                'blog_description' => HtmlSanitizer::sanitizeHtml($this->request->getPost('blogtxtarea')),
+                'blog_image'       => $imagePath,
+                'blog_category'    => $blogCategory,
+                'category_id'      => $categoryId,
+                'blog_id'          => time(),
+                'date_created'     => date('Y-m-d H:i:s'),
+                'status'           => $status,
+                'scheduled_at'     => $scheduledAt,
+                'published_at'     => $publishedAt,
+                'meta_description' => $this->request->getPost('meta_description') ?: null,
+            ];
+
+            if ($this->alphaBlogModel->insert($data)) {
+                $newPostId = $this->alphaBlogModel->getInsertID();
+
+                // Sync tags
+                $tagsInput = $this->request->getPost('blog_tags') ?? '';
+                $this->blogTagModel->syncTagsForPost($newPostId, $tagsInput);
+
+                $messages = ['draft' => 'Blog post saved as draft!', 'schedule' => 'Blog post scheduled!', 'publish' => 'Blog post published!'];
+                return redirect()->to(base_url('aw-cp/blog'))->with('success', $messages[$action] ?? 'Blog post created!');
+            }
+
+            return redirect()->to(base_url('aw-cp/blog/create'))->withInput()->with('error', 'Failed to create blog post. Please check your input and try again.');
+        } catch (\Throwable $e) {
+            log_message('error', 'Blog save failed: ' . $e->getMessage());
+            return redirect()->to(base_url('aw-cp/blog/create'))->withInput()->with('error', 'Something went wrong while saving the blog post. Please try again or contact support if the issue persists.');
         }
-
-        // Resolve category
-        $categoryId = $this->request->getPost('category_id') ?: null;
-        $blogCategory = null;
-        if ($categoryId) {
-            $cat = $this->blogCategoryModel->find($categoryId);
-            $blogCategory = $cat ? $cat['slug'] : null;
-        }
-
-        // Determine status from action
-        $action = $this->request->getPost('action') ?? 'publish';
-        $status = 'published';
-        $scheduledAt = null;
-        $publishedAt = null;
-
-        if ($action === 'draft') {
-            $status = 'draft';
-        } elseif ($action === 'schedule') {
-            $status = 'scheduled';
-            $scheduledAt = $this->request->getPost('scheduled_at');
-        } else {
-            $publishedAt = date('Y-m-d H:i:s');
-        }
-
-        $data = [
-            'blog_author'      => $this->request->getPost('blog_author'),
-            'blog_title'       => $this->request->getPost('blog_title'),
-            'blog_url'         => $slug,
-            'blog_description' => HtmlSanitizer::sanitizeHtml($this->request->getPost('blogtxtarea')),
-            'blog_image'       => $imagePath,
-            'blog_category'    => $blogCategory,
-            'category_id'      => $categoryId,
-            'blog_id'          => time(),
-            'date_created'     => date('Y-m-d H:i:s'),
-            'status'           => $status,
-            'scheduled_at'     => $scheduledAt,
-            'published_at'     => $publishedAt,
-            'meta_description' => $this->request->getPost('meta_description') ?: null,
-        ];
-
-        if ($this->alphaBlogModel->insert($data)) {
-            $newPostId = $this->alphaBlogModel->getInsertID();
-
-            // Sync tags
-            $tagsInput = $this->request->getPost('blog_tags') ?? '';
-            $this->blogTagModel->syncTagsForPost($newPostId, $tagsInput);
-
-            $messages = ['draft' => 'Blog post saved as draft!', 'schedule' => 'Blog post scheduled!', 'publish' => 'Blog post published!'];
-            return redirect()->to(base_url('aw-cp/blog'))->with('success', $messages[$action] ?? 'Blog post created!');
-        }
-
-        return redirect()->to(base_url('aw-cp/blog/create'))->with('error', 'Failed to create blog post.');
     }
 
     public function blogEdit(int $id)
@@ -360,66 +365,71 @@ class Dashboard extends BaseController
             return redirect()->to(base_url('aw-cp/blog/edit/' . $id))->withInput()->with('errors', $validation->getErrors());
         }
 
-        $slug = url_title($this->request->getPost('blog_url'), '-', true);
+        try {
+            $slug = url_title($this->request->getPost('blog_url'), '-', true);
 
-        // Resolve category
-        $categoryId = $this->request->getPost('category_id') ?: null;
-        $blogCategory = null;
-        if ($categoryId) {
-            $cat = $this->blogCategoryModel->find($categoryId);
-            $blogCategory = $cat ? $cat['slug'] : null;
-        }
-
-        // Determine status from action
-        $action = $this->request->getPost('action') ?? 'publish';
-        $statusData = [];
-
-        if ($action === 'draft') {
-            $statusData['status'] = 'draft';
-            $statusData['scheduled_at'] = null;
-        } elseif ($action === 'schedule') {
-            $statusData['status'] = 'scheduled';
-            $statusData['scheduled_at'] = $this->request->getPost('scheduled_at');
-        } else {
-            $statusData['status'] = 'published';
-            if (empty($post['published_at'])) {
-                $statusData['published_at'] = date('Y-m-d H:i:s');
+            // Resolve category
+            $categoryId = $this->request->getPost('category_id') ?: null;
+            $blogCategory = null;
+            if ($categoryId) {
+                $cat = $this->blogCategoryModel->find($categoryId);
+                $blogCategory = $cat ? $cat['slug'] : null;
             }
-            $statusData['scheduled_at'] = null;
-        }
 
-        $data = array_merge([
-            'blog_author'      => $this->request->getPost('blog_author'),
-            'blog_title'       => $this->request->getPost('blog_title'),
-            'blog_url'         => $slug,
-            'blog_description' => HtmlSanitizer::sanitizeHtml($this->request->getPost('blogtxtarea')),
-            'blog_category'    => $blogCategory,
-            'category_id'      => $categoryId,
-            'date_modified'    => date('Y-m-d H:i:s'),
-            'meta_description' => $this->request->getPost('meta_description') ?: null,
-        ], $statusData);
+            // Determine status from action
+            $action = $this->request->getPost('action') ?? 'publish';
+            $statusData = [];
 
-        $imageFile = $this->request->getFile('blog_image');
-        if ($imageFile && $imageFile->isValid() && !$imageFile->hasMoved()) {
-            $newName = $slug . '-' . time() . '.' . $imageFile->getExtension();
-            $uploadPath = FCPATH . 'assets/img/blog';
-            if (!is_dir($uploadPath)) {
-                mkdir($uploadPath, 0755, true);
+            if ($action === 'draft') {
+                $statusData['status'] = 'draft';
+                $statusData['scheduled_at'] = null;
+            } elseif ($action === 'schedule') {
+                $statusData['status'] = 'scheduled';
+                $statusData['scheduled_at'] = $this->request->getPost('scheduled_at');
+            } else {
+                $statusData['status'] = 'published';
+                if (empty($post['published_at'])) {
+                    $statusData['published_at'] = date('Y-m-d H:i:s');
+                }
+                $statusData['scheduled_at'] = null;
             }
-            $imageFile->move($uploadPath, $newName);
-            $data['blog_image'] = 'assets/img/blog/' . $newName;
+
+            $data = array_merge([
+                'blog_author'      => $this->request->getPost('blog_author'),
+                'blog_title'       => $this->request->getPost('blog_title'),
+                'blog_url'         => $slug,
+                'blog_description' => HtmlSanitizer::sanitizeHtml($this->request->getPost('blogtxtarea')),
+                'blog_category'    => $blogCategory,
+                'category_id'      => $categoryId,
+                'date_modified'    => date('Y-m-d H:i:s'),
+                'meta_description' => $this->request->getPost('meta_description') ?: null,
+            ], $statusData);
+
+            $imageFile = $this->request->getFile('blog_image');
+            if ($imageFile && $imageFile->isValid() && !$imageFile->hasMoved()) {
+                $newName = $slug . '-' . time() . '.' . $imageFile->getExtension();
+                $uploadPath = FCPATH . 'assets/img/blog';
+                if (!is_dir($uploadPath)) {
+                    mkdir($uploadPath, 0755, true);
+                }
+                $imageFile->move($uploadPath, $newName);
+                $data['blog_image'] = 'assets/img/blog/' . $newName;
+            }
+
+            if ($this->alphaBlogModel->update($id, $data)) {
+                // Sync tags
+                $tagsInput = $this->request->getPost('blog_tags') ?? '';
+                $this->blogTagModel->syncTagsForPost($id, $tagsInput);
+
+                $messages = ['draft' => 'Blog post saved as draft!', 'schedule' => 'Blog post scheduled!', 'publish' => 'Blog post published!'];
+                return redirect()->to(base_url('aw-cp/blog'))->with('success', $messages[$action] ?? 'Blog post updated!');
+            }
+
+            return redirect()->to(base_url('aw-cp/blog/edit/' . $id))->with('error', 'Failed to update blog post. Please check your input and try again.');
+        } catch (\Throwable $e) {
+            log_message('error', 'Blog update failed for post #' . $id . ': ' . $e->getMessage());
+            return redirect()->to(base_url('aw-cp/blog/edit/' . $id))->withInput()->with('error', 'Something went wrong while updating the blog post. Please try again or contact support if the issue persists.');
         }
-
-        if ($this->alphaBlogModel->update($id, $data)) {
-            // Sync tags
-            $tagsInput = $this->request->getPost('blog_tags') ?? '';
-            $this->blogTagModel->syncTagsForPost($id, $tagsInput);
-
-            $messages = ['draft' => 'Blog post saved as draft!', 'schedule' => 'Blog post scheduled!', 'publish' => 'Blog post published!'];
-            return redirect()->to(base_url('aw-cp/blog'))->with('success', $messages[$action] ?? 'Blog post updated!');
-        }
-
-        return redirect()->to(base_url('aw-cp/blog/edit/' . $id))->with('error', 'Failed to update blog post.');
     }
 
     public function blogDelete(int $id)
@@ -429,11 +439,16 @@ class Dashboard extends BaseController
             return redirect()->to(base_url('aw-cp/blog'))->with('error', 'Post not found.');
         }
 
-        if ($this->alphaBlogModel->delete($id)) {
-            return redirect()->to(base_url('aw-cp/blog'))->with('success', 'Blog post deleted successfully!');
-        }
+        try {
+            if ($this->alphaBlogModel->delete($id)) {
+                return redirect()->to(base_url('aw-cp/blog'))->with('success', 'Blog post deleted successfully!');
+            }
 
-        return redirect()->to(base_url('aw-cp/blog'))->with('error', 'Failed to delete blog post.');
+            return redirect()->to(base_url('aw-cp/blog'))->with('error', 'Failed to delete blog post.');
+        } catch (\Throwable $e) {
+            log_message('error', 'Blog delete failed for post #' . $id . ': ' . $e->getMessage());
+            return redirect()->to(base_url('aw-cp/blog'))->with('error', 'Something went wrong while deleting the blog post. Please try again.');
+        }
     }
 
     // Blog Preview
