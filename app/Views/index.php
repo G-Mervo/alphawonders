@@ -709,7 +709,7 @@
 		{ cmd: 'alphawonders --deploy webapp', out: '\u2713 Deployed to production \u2014 0 downtime' },
 		{ cmd: 'alphawonders --build mobile-app', out: '\u2713 iOS & Android builds ready' },
 		{ cmd: 'alphawonders --seo audit site.co.ke', out: '\u2713 Score: 94/100 \u2014 3 fixes suggested' },
-		{ cmd: 'alphawonders --ai train model', out: '\u2713 Model accuracy: 97.2% \u2014 deployed' },
+		{ cmd: 'alphawonders --ai integrate chatbot', out: '\u2713 AI assistant live \u2014 handling 89% of queries' },
 		{ cmd: 'alphawonders --server health', out: '\u2713 All systems operational \u2014 99.9% uptime' }
 	];
 	var cursor = el.nextElementSibling;
