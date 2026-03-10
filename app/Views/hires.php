@@ -1,13 +1,61 @@
 <?php defined('FCPATH') OR exit('No direct script access allowed'); ?>
 
 <!-- Hire Hero Section -->
-<section class="py-5 bg-primary text-white" style="background: linear-gradient(135deg, #041640 0%, #0a2a5a 100%); margin-top: 0; padding: 5rem 0;">
+<section class="py-5 bg-primary text-white" style="background: linear-gradient(135deg, #041640 0%, #0a2a5a 100%); margin-top: 0; padding: 4rem 0;">
 	<div class="container">
-		<div class="row justify-content-center text-center">
-			<div class="col-lg-8">
+		<div class="row align-items-center">
+			<div class="col-lg-7 mb-4 mb-lg-0">
 				<span class="badge bg-warning text-dark px-3 py-2 mb-3 d-inline-block rounded-pill fw-bold">Hire Us</span>
 				<h1 class="display-4 fw-bold mb-3">Hire Skilled ICT Professionals</h1>
-				<p class="lead mb-0">Need developers, system administrators, designers, or marketing experts for your project? Tell us what you need and we'll respond within 24 hours.</p>
+				<p class="lead mb-4" style="color: #ccd6e0;">Need developers, system administrators, designers, or marketing experts? Tell us what you need and we'll respond within 24 hours.</p>
+				<div class="d-flex flex-wrap gap-4">
+					<div class="d-flex align-items-center gap-2">
+						<div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: rgba(255,176,0,0.2);">
+							<i class="fas fa-clock text-warning" style="font-size: 0.85rem;"></i>
+						</div>
+						<span class="small">24-hour response</span>
+					</div>
+					<div class="d-flex align-items-center gap-2">
+						<div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: rgba(40,167,69,0.2);">
+							<i class="fas fa-check text-success" style="font-size: 0.85rem;"></i>
+						</div>
+						<span class="small">No obligation</span>
+					</div>
+					<div class="d-flex align-items-center gap-2">
+						<div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: rgba(13,202,240,0.2);">
+							<i class="fas fa-shield-alt text-info" style="font-size: 0.85rem;"></i>
+						</div>
+						<span class="small">NDA available</span>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-5 d-none d-lg-block">
+				<div class="row g-2 justify-content-center">
+					<div class="col-6">
+						<div class="rounded-3 p-3 text-center" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);">
+							<i class="fas fa-code fa-lg text-warning mb-2 d-block"></i>
+							<div class="small fw-semibold">Developers</div>
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="rounded-3 p-3 text-center" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);">
+							<i class="fas fa-server fa-lg text-info mb-2 d-block"></i>
+							<div class="small fw-semibold">Sysadmins</div>
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="rounded-3 p-3 text-center" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);">
+							<i class="fas fa-palette fa-lg text-danger mb-2 d-block"></i>
+							<div class="small fw-semibold">Designers</div>
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="rounded-3 p-3 text-center" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);">
+							<i class="fas fa-bullhorn fa-lg text-success mb-2 d-block"></i>
+							<div class="small fw-semibold">Marketers</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -48,10 +96,14 @@
 						</div>
 
 						<div class="col-md-4">
-							<label for="country" class="form-label fw-bold">
+							<label for="countrySearch" class="form-label fw-bold">
 								<i class="fas fa-globe-africa text-primary me-2"></i>Country <span class="text-danger">*</span>
 							</label>
-							<select class="form-select form-select-lg" id="country" name="country" required style="border-radius: 10px;"></select>
+							<div class="position-relative" id="countryWrapper">
+								<input type="text" class="form-control form-control-lg" id="countrySearch" placeholder="Type to search country..." autocomplete="off" style="border-radius: 10px;">
+								<input type="hidden" id="country" name="country" required>
+								<div class="country-dropdown" id="countryDropdown"></div>
+							</div>
 							<small class="text-muted"><i class="fas fa-info-circle me-1"></i>Sets phone code, city &amp; currency</small>
 						</div>
 
@@ -322,6 +374,62 @@ h5.text-primary {
 	letter-spacing: 0.5px;
 	cursor: default;
 }
+
+.country-dropdown {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	max-height: 280px;
+	overflow-y: auto;
+	background: #fff;
+	border: 1px solid #dee2e6;
+	border-top: none;
+	border-radius: 0 0 10px 10px;
+	z-index: 1050;
+	box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+}
+
+.country-dropdown.show {
+	display: block;
+}
+
+.country-dropdown .cd-group {
+	padding: 6px 12px;
+	font-size: 0.7rem;
+	font-weight: 700;
+	color: #6c757d;
+	background: #f8f9fa;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	position: sticky;
+	top: 0;
+	z-index: 1;
+}
+
+.country-dropdown .cd-item {
+	padding: 8px 14px;
+	cursor: pointer;
+	font-size: 0.95rem;
+	transition: background 0.15s;
+}
+
+.country-dropdown .cd-item:hover,
+.country-dropdown .cd-item.cd-active {
+	background: #e8f0fe;
+}
+
+.country-dropdown .cd-empty {
+	padding: 12px 14px;
+	color: #999;
+	font-size: 0.9rem;
+	text-align: center;
+}
+
+#countrySearch.country-selected {
+	background-color: #f8f9fa;
+}
 </style>
 
 <script>
@@ -535,23 +643,122 @@ const countries = [
 const countryMap = {};
 countries.forEach(c => { countryMap[c[0]] = { flag: c[1], name: c[2], phone: c[3], region: c[4], currSym: c[5], currCode: c[6] }; });
 
-// Build country dropdown grouped by region
-(function buildCountrySelect() {
-	const sel = document.getElementById('country');
-	sel.innerHTML = '<option value="">Select country</option>';
-	const regions = {};
-	countries.forEach(c => { (regions[c[4]] = regions[c[4]] || []).push(c); });
-	for (const region in regions) {
-		const grp = document.createElement('optgroup');
-		grp.label = region;
-		regions[region].forEach(c => {
-			const opt = document.createElement('option');
-			opt.value = c[0];
-			opt.textContent = c[1] + ' ' + c[2];
-			grp.appendChild(opt);
-		});
-		sel.appendChild(grp);
+// Searchable country dropdown
+(function initCountrySearch() {
+	const search = document.getElementById('countrySearch');
+	const hidden = document.getElementById('country');
+	const dropdown = document.getElementById('countryDropdown');
+	let activeIdx = -1;
+
+	function renderDropdown(filter) {
+		dropdown.innerHTML = '';
+		const q = (filter || '').toLowerCase().trim();
+		const regions = {};
+		countries.forEach(c => { (regions[c[4]] = regions[c[4]] || []).push(c); });
+
+		let items = [];
+		for (const region in regions) {
+			const matches = regions[region].filter(c =>
+				!q || c[2].toLowerCase().includes(q) || c[0].toLowerCase() === q || c[3].includes(q)
+			);
+			if (matches.length === 0) continue;
+			const grp = document.createElement('div');
+			grp.className = 'cd-group';
+			grp.textContent = region;
+			dropdown.appendChild(grp);
+			matches.forEach(c => {
+				const item = document.createElement('div');
+				item.className = 'cd-item';
+				item.dataset.code = c[0];
+				item.textContent = c[1] + ' ' + c[2] + '  ' + c[3];
+				item.addEventListener('mousedown', e => {
+					e.preventDefault();
+					selectCountry(c[0]);
+				});
+				dropdown.appendChild(item);
+				items.push(item);
+			});
+		}
+		if (items.length === 0) {
+			const empty = document.createElement('div');
+			empty.className = 'cd-empty';
+			empty.textContent = 'No countries found';
+			dropdown.appendChild(empty);
+		}
+		activeIdx = -1;
+		return items;
 	}
+
+	function selectCountry(code) {
+		const c = countryMap[code];
+		if (!c) return;
+		hidden.value = code;
+		search.value = c.flag + ' ' + c.name;
+		search.classList.add('country-selected');
+		dropdown.classList.remove('show');
+		onCountryChange();
+	}
+
+	search.addEventListener('focus', function() {
+		if (hidden.value) {
+			// Clear to show all options, let user re-search
+			this.select();
+		}
+		renderDropdown(this.value === (countryMap[hidden.value]?.flag + ' ' + countryMap[hidden.value]?.name) ? '' : this.value);
+		dropdown.classList.add('show');
+	});
+
+	search.addEventListener('input', function() {
+		search.classList.remove('country-selected');
+		hidden.value = '';
+		renderDropdown(this.value);
+		dropdown.classList.add('show');
+	});
+
+	search.addEventListener('blur', function() {
+		setTimeout(() => {
+			dropdown.classList.remove('show');
+			// Restore selection if user blurred without picking
+			if (!hidden.value && search.value) {
+				// Try exact match
+				const q = search.value.toLowerCase().trim();
+				const match = countries.find(c => c[2].toLowerCase() === q);
+				if (match) {
+					selectCountry(match[0]);
+				} else {
+					search.value = '';
+				}
+			}
+		}, 200);
+	});
+
+	search.addEventListener('keydown', function(e) {
+		const items = dropdown.querySelectorAll('.cd-item');
+		if (!items.length) return;
+
+		if (e.key === 'ArrowDown') {
+			e.preventDefault();
+			activeIdx = Math.min(activeIdx + 1, items.length - 1);
+			items.forEach((el, i) => el.classList.toggle('cd-active', i === activeIdx));
+			items[activeIdx]?.scrollIntoView({ block: 'nearest' });
+		} else if (e.key === 'ArrowUp') {
+			e.preventDefault();
+			activeIdx = Math.max(activeIdx - 1, 0);
+			items.forEach((el, i) => el.classList.toggle('cd-active', i === activeIdx));
+			items[activeIdx]?.scrollIntoView({ block: 'nearest' });
+		} else if (e.key === 'Enter') {
+			e.preventDefault();
+			if (activeIdx >= 0 && items[activeIdx]) {
+				selectCountry(items[activeIdx].dataset.code);
+			}
+		} else if (e.key === 'Escape') {
+			dropdown.classList.remove('show');
+			search.blur();
+		}
+	});
+
+	// Expose for programmatic selection
+	window.selectCountry = selectCountry;
 })();
 
 // Major cities per country (datalist suggestions — user can always type their own)
@@ -809,8 +1016,16 @@ function toggleCompanyFields() {
 	}
 }
 
-// Default to Kenya and wire up country change
-document.getElementById('country').value = 'KE';
-onCountryChange();
-document.getElementById('country').addEventListener('change', onCountryChange);
+// Default to Kenya
+selectCountry('KE');
+
+// Validate country is selected before submit
+document.getElementById('hireForm').addEventListener('submit', function(e) {
+	if (!document.getElementById('country').value) {
+		e.preventDefault();
+		document.getElementById('countrySearch').focus();
+		document.getElementById('countrySearch').classList.add('is-invalid');
+		return false;
+	}
+});
 </script>
