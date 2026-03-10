@@ -43,109 +43,44 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-6 text-center">
+			<div class="col-lg-6 d-none d-lg-block">
 				<div class="hero-visual position-relative">
-					<!-- Floating accent shapes -->
-					<div class="floating-shapes">
-						<div class="shape shape-1"></div>
-						<div class="shape shape-2"></div>
-						<div class="shape shape-3"></div>
-					</div>
-					<!-- Dashboard preview card -->
-					<div class="dashboard-preview position-relative" style="background: rgba(255,255,255,0.07); backdrop-filter: blur(16px); border-radius: 20px; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 24px 64px rgba(0,0,0,0.35);">
-						<div class="d-flex justify-content-between align-items-center mb-3">
-							<span class="fw-bold text-white" style="font-size: 0.95rem;"><i class="fas fa-chart-line text-warning me-2"></i>Business Overview</span>
-							<span class="badge bg-success bg-opacity-25 text-success px-2 py-1" style="font-size: 0.7rem;"><i class="fas fa-circle me-1" style="font-size: 0.4rem; vertical-align: middle;"></i>Live</span>
+					<!-- Terminal-style card -->
+					<div class="position-relative" style="background: #0d1117; border-radius: 16px; padding: 0; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 24px 64px rgba(0,0,0,0.4); overflow: hidden;">
+						<!-- Terminal header -->
+						<div class="d-flex align-items-center gap-2 px-3 py-2" style="background: #161b22; border-bottom: 1px solid rgba(255,255,255,0.06);">
+							<div class="d-flex gap-1">
+								<span style="width: 10px; height: 10px; border-radius: 50%; background: #ff5f57;"></span>
+								<span style="width: 10px; height: 10px; border-radius: 50%; background: #febc2e;"></span>
+								<span style="width: 10px; height: 10px; border-radius: 50%; background: #28c840;"></span>
+							</div>
+							<span class="text-white-50 ms-2" style="font-size: 0.7rem; font-family: monospace;">alphawonders ~ project</span>
 						</div>
-						<!-- Metric cards row -->
-						<div class="row g-2 mb-3">
-							<div class="col-4">
-								<div class="text-center p-2 rounded-3" style="background: rgba(40,167,69,0.12);">
-									<div class="fw-bold text-success" style="font-size: 1.2rem;">+47%</div>
-									<div class="text-white-50" style="font-size: 0.65rem;">Web Traffic</div>
-								</div>
+						<!-- Terminal content -->
+						<div class="p-3" style="font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.78rem; line-height: 1.7;">
+							<div><span style="color: #7ee787;">$</span> <span style="color: #e6edf3;">alphawonders</span> <span style="color: #79c0ff;">--services</span></div>
+							<div class="mt-1" style="color: #8b949e;">Loading services...</div>
+							<div class="mt-2">
+								<span style="color: #7ee787;">&#10004;</span> <span style="color: #e6edf3;">Software Development</span> <span style="color: #8b949e;">- Web, Mobile, APIs</span>
 							</div>
-							<div class="col-4">
-								<div class="text-center p-2 rounded-3" style="background: rgba(13,202,240,0.12);">
-									<div class="fw-bold text-info" style="font-size: 1.2rem;">99.9%</div>
-									<div class="text-white-50" style="font-size: 0.65rem;">Uptime</div>
-								</div>
+							<div><span style="color: #7ee787;">&#10004;</span> <span style="color: #e6edf3;">System Administration</span> <span style="color: #8b949e;">- Linux, Cloud, DevOps</span></div>
+							<div><span style="color: #7ee787;">&#10004;</span> <span style="color: #e6edf3;">Cyber Security</span> <span style="color: #8b949e;">- Audits, Pen-testing</span></div>
+							<div><span style="color: #7ee787;">&#10004;</span> <span style="color: #e6edf3;">Digital Marketing</span> <span style="color: #8b949e;">- SEO, Social, PPC</span></div>
+							<div><span style="color: #7ee787;">&#10004;</span> <span style="color: #e6edf3;">AI &amp; Automation</span> <span style="color: #8b949e;">- ML, Chatbots, Data</span></div>
+							<div><span style="color: #7ee787;">&#10004;</span> <span style="color: #e6edf3;">Design</span> <span style="color: #8b949e;">- UI/UX, Branding</span></div>
+							<div><span style="color: #7ee787;">&#10004;</span> <span style="color: #e6edf3;">IT Support</span> <span style="color: #8b949e;">- Remote &amp; Onsite</span></div>
+							<div class="mt-2"><span style="color: #7ee787;">$</span> <span style="color: #e6edf3;">alphawonders</span> <span style="color: #79c0ff;">--status</span></div>
+							<div class="mt-1">
+								<span style="color: #ffa657;">Region:</span> <span style="color: #e6edf3;">Kenya &amp; East Africa</span>
 							</div>
-							<div class="col-4">
-								<div class="text-center p-2 rounded-3" style="background: rgba(255,176,0,0.12);">
-									<div class="fw-bold text-warning" style="font-size: 1.2rem;">3x</div>
-									<div class="text-white-50" style="font-size: 0.65rem;">ROI</div>
-								</div>
+							<div>
+								<span style="color: #ffa657;">Uptime:</span> <span style="color: #7ee787;">99.9%</span> <span style="color: #8b949e;">| 24/7 support</span>
 							</div>
+							<div>
+								<span style="color: #ffa657;">Projects:</span> <span style="color: #e6edf3;">150+ delivered</span>
+							</div>
+							<div class="mt-2"><span style="color: #7ee787;">$</span> <span class="terminal-cursor" style="color: #e6edf3;">_</span></div>
 						</div>
-						<!-- Mini service tiles -->
-						<div class="row g-2 mb-3">
-							<div class="col-6">
-								<div class="d-flex align-items-center gap-2 p-2 rounded-3" style="background: rgba(255,255,255,0.06);">
-									<div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 32px; height: 32px; background: rgba(13,110,253,0.15);">
-										<i class="fas fa-code text-primary" style="font-size: 0.7rem;"></i>
-									</div>
-									<div>
-										<div class="text-white fw-semibold" style="font-size: 0.75rem;">Software</div>
-										<div class="text-white-50" style="font-size: 0.6rem;">Custom apps & APIs</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-6">
-								<div class="d-flex align-items-center gap-2 p-2 rounded-3" style="background: rgba(255,255,255,0.06);">
-									<div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 32px; height: 32px; background: rgba(40,167,69,0.15);">
-										<i class="fas fa-server text-success" style="font-size: 0.7rem;"></i>
-									</div>
-									<div>
-										<div class="text-white fw-semibold" style="font-size: 0.75rem;">Infrastructure</div>
-										<div class="text-white-50" style="font-size: 0.6rem;">Servers & cloud</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-6">
-								<div class="d-flex align-items-center gap-2 p-2 rounded-3" style="background: rgba(255,255,255,0.06);">
-									<div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 32px; height: 32px; background: rgba(255,176,0,0.15);">
-										<i class="fas fa-bullhorn" style="font-size: 0.7rem; color: #ffb000;"></i>
-									</div>
-									<div>
-										<div class="text-white fw-semibold" style="font-size: 0.75rem;">Marketing</div>
-										<div class="text-white-50" style="font-size: 0.6rem;">SEO & growth</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-6">
-								<div class="d-flex align-items-center gap-2 p-2 rounded-3" style="background: rgba(255,255,255,0.06);">
-									<div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 32px; height: 32px; background: rgba(138,43,226,0.15);">
-										<i class="fas fa-robot" style="font-size: 0.7rem; color: #8a2be2;"></i>
-									</div>
-									<div>
-										<div class="text-white fw-semibold" style="font-size: 0.75rem;">AI & Automation</div>
-										<div class="text-white-50" style="font-size: 0.6rem;">Smart systems</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- Mini chart bar -->
-						<div class="d-flex align-items-end gap-1 justify-content-center" style="height: 40px;">
-							<div class="hero-bar" style="width: 14%; height: 45%; background: rgba(255,176,0,0.4); border-radius: 3px 3px 0 0;"></div>
-							<div class="hero-bar" style="width: 14%; height: 60%; background: rgba(255,176,0,0.5); border-radius: 3px 3px 0 0;"></div>
-							<div class="hero-bar" style="width: 14%; height: 40%; background: rgba(255,176,0,0.4); border-radius: 3px 3px 0 0;"></div>
-							<div class="hero-bar" style="width: 14%; height: 75%; background: rgba(255,176,0,0.6); border-radius: 3px 3px 0 0;"></div>
-							<div class="hero-bar" style="width: 14%; height: 55%; background: rgba(255,176,0,0.5); border-radius: 3px 3px 0 0;"></div>
-							<div class="hero-bar" style="width: 14%; height: 90%; background: linear-gradient(to top, #ffb000, #ffc733); border-radius: 3px 3px 0 0;"></div>
-						</div>
-						<div class="text-center mt-1">
-							<span class="text-white-50" style="font-size: 0.6rem;">Growth over 6 months</span>
-						</div>
-					</div>
-					<!-- Floating notification cards -->
-					<div class="hero-float-card d-none d-lg-flex position-absolute align-items-center gap-2 px-3 py-2 rounded-pill shadow-lg" style="background: rgba(40,167,69,0.9); top: -10px; right: -20px; animation: floatCard 4s ease-in-out infinite;">
-						<i class="fas fa-check-circle text-white"></i>
-						<span class="text-white fw-semibold" style="font-size: 0.75rem;">Deploy successful</span>
-					</div>
-					<div class="hero-float-card d-none d-lg-flex position-absolute align-items-center gap-2 px-3 py-2 rounded-pill shadow-lg" style="background: rgba(13,110,253,0.9); bottom: 30px; left: -30px; animation: floatCard 5s ease-in-out infinite 1s;">
-						<i class="fas fa-shield-alt text-white"></i>
-						<span class="text-white fw-semibold" style="font-size: 0.75rem;">Systems secured</span>
 					</div>
 				</div>
 			</div>
@@ -153,14 +88,21 @@
 	</div>
 </section>
 
-<!-- Introduction Section -->
-<section class="py-5 bg-white">
+<!-- Trust Bar -->
+<section class="py-4 bg-white border-bottom">
 	<div class="container">
-		<div class="row justify-content-center">
-			<div class="col-lg-10 text-center">
-				<p class="fs-4 text-muted mb-0" style="line-height: 1.8;">
-					Whether it's <strong>social media</strong>, <strong>e-commerce</strong>, <strong>websites</strong>, search engines like <a href="https://google.com" target="_blank" class="text-decoration-none fw-bold">Google</a>, <strong>games</strong>, <strong>payment gateways</strong>, or any other <strong>mobile application</strong> &mdash; modern Kenyan and East African businesses run on software and reliable ICT systems.
-				</p>
+		<div class="row align-items-center justify-content-center text-center g-3">
+			<div class="col-6 col-md-3">
+				<div class="text-muted small fw-semibold"><i class="fas fa-laptop-code text-primary me-2"></i>Custom Software</div>
+			</div>
+			<div class="col-6 col-md-3">
+				<div class="text-muted small fw-semibold"><i class="fas fa-cloud text-primary me-2"></i>Cloud & DevOps</div>
+			</div>
+			<div class="col-6 col-md-3">
+				<div class="text-muted small fw-semibold"><i class="fas fa-shield-alt text-primary me-2"></i>Cyber Security</div>
+			</div>
+			<div class="col-6 col-md-3">
+				<div class="text-muted small fw-semibold"><i class="fas fa-chart-line text-primary me-2"></i>Digital Marketing</div>
 			</div>
 		</div>
 	</div>
@@ -698,62 +640,12 @@
 	box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
 }
 
-.floating-shapes {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	pointer-events: none;
+.terminal-cursor {
+	animation: blink 1s step-end infinite;
 }
 
-.shape {
-	position: absolute;
-	border-radius: 50%;
-	background: rgba(255, 176, 0, 0.1);
-	animation: float 6s ease-in-out infinite;
-}
-
-.shape-1 {
-	width: 100px;
-	height: 100px;
-	top: 10%;
-	left: 10%;
-	animation-delay: 0s;
-}
-
-.shape-2 {
-	width: 150px;
-	height: 150px;
-	top: 60%;
-	right: 10%;
-	animation-delay: 2s;
-}
-
-.shape-3 {
-	width: 80px;
-	height: 80px;
-	bottom: 20%;
-	left: 20%;
-	animation-delay: 4s;
-}
-
-@keyframes float {
-	0%, 100% { transform: translateY(0) rotate(0deg); }
-	50% { transform: translateY(-20px) rotate(180deg); }
-}
-
-@keyframes floatCard {
-	0%, 100% { transform: translateY(0); }
-	50% { transform: translateY(-8px); }
-}
-
-.hero-bar {
-	transition: height 1s ease;
-}
-
-.dashboard-preview {
-	animation: fadeInUp 0.8s ease forwards;
+@keyframes blink {
+	50% { opacity: 0; }
 }
 
 .min-vh-75 {
