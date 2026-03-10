@@ -65,6 +65,9 @@
 - [ ] **Contact form spam protection** - reCAPTCHA or honeypot on public forms
 - [ ] **Dashboard analytics** - charts for traffic trends, popular posts, subscriber growth
 - [ ] **Multi-user admin** - role-based access (editor, author, admin)
+- [ ] **Testimonials manager** - CRUD for client testimonials and social proof
+- [ ] **Case studies manager** - CRUD for portfolio/case study pages
+- [ ] **Homepage content manager** - manage popular topics, featured blog posts from admin
 
 ---
 
@@ -84,6 +87,42 @@ A public-facing careers/jobs page for prospective team members.
 - Application form (name, email, CV upload, cover letter)
 - Admin view to manage applications (view, shortlist, reject)
 - Route: /careers or /join-us
+
+### Client Testimonials & Social Proof (Target: April 2026)
+Add a social proof section to the homepage and key service pages:
+- [ ] 3-5 short testimonials with name, role, and company
+- [ ] Client logos section (even small/local clients)
+- [ ] Outcome metrics: "45% traffic increase for [client]", "12+ fintech apps delivered", etc.
+- [ ] Admin UI to manage testimonials (CRUD from dashboard)
+- [ ] Database table: `testimonials` (id, client_name, client_role, company, quote, rating, image, is_featured, display_order, created_at)
+- [ ] Display on: homepage, relevant service pages
+- [ ] Consider: star ratings, video testimonials
+
+### Case Studies & Portfolio (Target: after mvacant + somanai pilot)
+Add a portfolio/case studies page showcasing completed projects:
+- [ ] Route: `/portfolio` or `/case-studies`
+- [ ] Individual case study pages: challenge, solution, results, technologies used
+- [ ] Admin UI to manage case studies (CRUD from dashboard)
+- [ ] Database table: `case_studies` (id, title, slug, client_name, industry, challenge, solution, results, technologies, images, is_featured, display_order, created_at)
+- [ ] First case studies: mvacant (real estate), somanai (AI platform)
+- [ ] Link from service pages to relevant case studies
+- [ ] Before/after metrics where possible
+- [ ] Add to nav: Services, **Portfolio**, Blog, Contact
+
+### Lead Magnets & Downloadable Resources (Target: May 2026)
+Create gated content for email capture and lead nurturing:
+- [ ] "Digital Transformation Guide for Kenyan SMEs (2026)" — PDF download
+- [ ] "Checklist: Is Your Business Ready for E-commerce?" — PDF download
+- [ ] Admin UI to manage downloadable resources
+- [ ] Email gate: capture email before download
+- [ ] 3-5 email nurture sequence after download (about services and case studies)
+- [ ] Inline CTAs in blog posts: "Download our free guide on [topic]"
+
+### Interactive Engagement Tools (Target: May-June 2026)
+Add small interactive tools for lead capture:
+- [ ] "Project Budget Estimator" — multi-step form that calculates estimated cost
+- [ ] "Website/SEO Audit Checker" — simple form that captures lead info
+- [ ] Live chat / chatbot widget for quick questions (initially manual)
 
 ### Disabled Service Pages
 The following service pages exist in views but are not currently routed. Can be re-enabled from admin when ready:
@@ -209,6 +248,21 @@ The following keys are managed from the admin settings page (`/aw-cp/settings`),
 **All API keys that may change should be stored in the database and managed from the admin UI.** Only infrastructure-level config (database host, app URL) stays in .env.
 
 ---
+
+### SEO & Content Improvements (Completed March 2026)
+- [x] Per-page meta descriptions and canonical URLs
+- [x] Dynamic Open Graph and Twitter Card meta tags
+- [x] Enhanced JSON-LD structured data (LocalBusiness with services, hours, geo)
+- [x] Removed harmful meta refresh tag
+- [x] Localized all service page titles and descriptions for Kenya/East Africa SEO
+- [x] Dynamic "Related Reading" sections on service pages (CMS-managed via blog categories)
+- [x] "How We Work" process section on homepage
+- [x] "Industries We Serve" section on homepage
+- [x] Newsletter signup on homepage blog sidebar
+- [x] Consistent CTAs across all pages ("Book a Free 30-Min Call")
+- [x] Simplified hire form (removed Skype field, added assurance copy)
+- [x] Fixed contact form action URL
+- [x] Redesigned hero section (dashboard preview instead of code snippet)
 
 *Last updated: March 10, 2026*
 

@@ -5,13 +5,13 @@
 <head>
 	<meta charset = "utf-8" >
 	<meta http-equiv = "X-UA-Compatible" content = "IE-Edge">
-	<title><?= $title ?> - Providing ICT Expertise & Services </title>
-	<meta name = "description" content = "Alphawonders Solutions provides ICT expertise and services such as software development, system administration, design(web & graphic), marketing, IT consultancy, IT support, cyber security to help businesses and individuals in different industries and sectors to leverage ICT in their day-to-day activities.">
-	<meta name = "keywords" content= "software development, system administration, digital marketing, IT consultancy, IT support, alphawonders, alpha, wonders, technology, web design, website development, web applications, mobile applications, data analytics, cyber security">
-	<meta name = "viewport" content = "width=device-width, initial-scale=1.0">
-	<meta name = "robots" content = "Index, Follow">
-	<meta name = "author" content = "alphawonders">
-	<meta http-equiv="refresh" content="1800">
+	<title><?= $title ?> | Alphawonders</title>
+	<meta name="description" content="<?= isset($description) ? esc($description) : 'Alphawonders Solutions is a Nairobi-based ICT company providing software development, system administration, digital marketing, design, IT consultancy, IT support, and cyber security services to help businesses and organisations across Kenya and East Africa leverage technology.' ?>">
+	<meta name="keywords" content="<?= isset($keywords) ? esc($keywords) : 'software development kenya, system administration kenya, digital marketing agency nairobi, IT consultancy kenya, IT support kenya, alphawonders, technology company nairobi, web design kenya, website development nairobi, web applications, mobile applications, data analytics, cyber security kenya' ?>">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="robots" content="Index, Follow">
+	<meta name="author" content="alphawonders">
+	<link rel="canonical" href="https://alphawonders.com<?= isset($canonical) ? esc($canonical) : '/' ?>">
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<!-- disable local google analytics and track now real online traffic -->
 	<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135474915-2"></script>
@@ -34,16 +34,16 @@
 	
 	<!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://alphawonders.com/">
-    <meta property="og:title" content="Alphawonders Solutions - Providing ICT Expertise & Services">
-    <meta property="og:description" content="Alphawonders Solutions provides ICT expertise and services such as software development, system administration, design(web & graphic), marketing, IT consultancy, IT support, cyber security to help businesses and individuals in different industries and sectors to leverage ICT in their day-to-day activities.">
+    <meta property="og:url" content="https://alphawonders.com<?= isset($canonical) ? esc($canonical) : '/' ?>">
+    <meta property="og:title" content="<?= isset($og_title) ? esc($og_title) : esc($title) . ' | Alphawonders' ?>">
+    <meta property="og:description" content="<?= isset($description) ? esc($description) : 'Alphawonders Solutions is a Nairobi-based ICT company providing software development, system administration, digital marketing, design, IT consultancy, IT support, and cyber security for businesses across Kenya and East Africa.' ?>">
     <meta property="og:image" content="https://alphawonders.com/assets/icons/logo.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://alphawonders.com/">
-    <meta property="twitter:title" content="Alphawonders Solutions - Providing ICT Expertise & Services">
-    <meta property="twitter:description" content="Alphawonders Solutions provides ICT expertise and services such as software development, system administration, design(web & graphic), marketing, IT consultancy, IT support, cyber security to help businesses and individuals in different industries and sectors to leverage ICT in their day-to-day activities.">
+    <meta property="twitter:url" content="https://alphawonders.com<?= isset($canonical) ? esc($canonical) : '/' ?>">
+    <meta property="twitter:title" content="<?= isset($og_title) ? esc($og_title) : esc($title) . ' | Alphawonders' ?>">
+    <meta property="twitter:description" content="<?= isset($description) ? esc($description) : 'Alphawonders Solutions is a Nairobi-based ICT company providing software development, system administration, digital marketing, design, IT consultancy, IT support, and cyber security for businesses across Kenya and East Africa.' ?>">
     <meta property="twitter:image" content="https://alphawonders.com/assets/icons/logo.png">
 
 	<!-- Stylesheets -->

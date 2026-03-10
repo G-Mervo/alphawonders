@@ -197,44 +197,95 @@
 	</script>
 	<script>
 		$(document).ready(function(){
+			// Footer newsletter form
 			$("#newsletterForm").on('submit', function(e){
 				e.preventDefault();
 				var form = $(this);
 				var email = $("#sub").val();
-				
-				$.post("<?php echo base_url("/subscribe"); ?>",
-				{
-					email_sub: email
-				},
-				function(data, status){
-					if(status === "success") {
-						alert("Thank you for subscribing!");
-						form[0].reset();
-					} else {
-						alert("Something went wrong. Please try again.");
-					}
-				}).fail(function(){
-					alert("Unable to subscribe. Please try again later.");
-				});
+				submitNewsletter(email, form);
 			});
+			// Homepage blog sidebar newsletter form
+			$("#homepageNewsletterForm").on('submit', function(e){
+				e.preventDefault();
+				var form = $(this);
+				var email = form.find("input[name='email_sub']").val();
+				submitNewsletter(email, form);
+			});
+			function submitNewsletter(email, form) {
+				$.post("<?php echo base_url("/subscribe"); ?>", { email_sub: email })
+					.done(function() { alert("Thank you for subscribing!"); if (form && form[0]) form[0].reset(); })
+					.fail(function() { alert("Unable to subscribe. Please try again later."); });
+			}
 		});
 	</script>
 
-	<!-- JSON-LD Structured Data -->
+	<!-- JSON-LD Structured Data: Organization -->
 	<script type="application/ld+json">
 	{
-	  "@context" : "https://schema.org",
-	  "@type" : "LocalBusiness",
-	  "name" : "Alphawonders Solutions",
-	  "image" : "https://alphawonders.com/assets/icon/logo.png",
-	  "telephone" : "+254 736 099 643",
-	  "email" : "info@alphawonders.com",
-	  "address" : {
-	    "@type" : "PostalAddress",
-	    "addressCountry" : "KE"
+	  "@context": "https://schema.org",
+	  "@type": "LocalBusiness",
+	  "name": "Alphawonders Solutions",
+	  "alternateName": "Alphawonders",
+	  "image": "https://alphawonders.com/assets/icon/logo.png",
+	  "logo": "https://alphawonders.com/assets/icon/logo.png",
+	  "telephone": "+254736099643",
+	  "email": "info@alphawonders.com",
+	  "url": "https://alphawonders.com",
+	  "description": "Nairobi-based ICT company providing software development, system administration, digital marketing, IT consultancy, AI services, and IT support for businesses across Kenya and East Africa.",
+	  "address": {
+	    "@type": "PostalAddress",
+	    "addressLocality": "Nairobi",
+	    "addressCountry": "KE"
 	  },
-	  "url" : "https://alphawonders.com",
-	  "description" : "Alphawonders Solutions provides ICT expertise and services such as software development, system administration, design, marketing, IT consultancy, and IT support."
+	  "geo": {
+	    "@type": "GeoCoordinates",
+	    "latitude": "-1.2921",
+	    "longitude": "36.8219"
+	  },
+	  "openingHoursSpecification": [
+	    {
+	      "@type": "OpeningHoursSpecification",
+	      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+	      "opens": "09:00",
+	      "closes": "18:00"
+	    },
+	    {
+	      "@type": "OpeningHoursSpecification",
+	      "dayOfWeek": "Saturday",
+	      "opens": "10:00",
+	      "closes": "14:00"
+	    }
+	  ],
+	  "sameAs": [
+	    "https://facebook.com/alphawonders",
+	    "https://twitter.com/alphawondersltd",
+	    "https://ke.linkedin.com/company/alphawonders",
+	    "https://instagram.com/alphawonders",
+	    "https://tiktok.com/@alphawonders"
+	  ],
+	  "priceRange": "$$",
+	  "areaServed": {
+	    "@type": "GeoCircle",
+	    "geoMidpoint": {
+	      "@type": "GeoCoordinates",
+	      "latitude": "-1.2921",
+	      "longitude": "36.8219"
+	    },
+	    "geoRadius": "2000 km"
+	  },
+	  "hasOfferCatalog": {
+	    "@type": "OfferCatalog",
+	    "name": "ICT Services",
+	    "itemListElement": [
+	      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Software Development", "url": "https://alphawonders.com/softwares"}},
+	      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "System Administration", "url": "https://alphawonders.com/system-administration"}},
+	      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Digital Marketing", "url": "https://alphawonders.com/digital-marketing"}},
+	      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Web & Graphic Design", "url": "https://alphawonders.com/design"}},
+	      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "IT Consultancy", "url": "https://alphawonders.com/ict-consultancy"}},
+	      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "IT Support", "url": "https://alphawonders.com/it-support"}},
+	      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "AI & Machine Learning", "url": "https://alphawonders.com/ai-services"}}
+	    ]
+	  }
 	}
 	</script>
 
