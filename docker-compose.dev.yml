@@ -21,7 +21,7 @@ services:
       - database.default.hostname=postgres
       - database.default.database=alphaw
       - database.default.username=mervo
-      - database.default.password=$Tpr09!dKQ-2.0/4(UwZC*7
+      - database.default.password=$$Tpr09!dKQ-2.0/4(UwZC*7
       - database.default.DBDriver=Postgre
       - database.default.port=5432
       - database.default.DBPrefix=
@@ -55,12 +55,12 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: mervo
-      POSTGRES_PASSWORD: "$Tpr09!dKQ-2.0/4(UwZC*7"
+      POSTGRES_PASSWORD: "$$Tpr09!dKQ-2.0/4(UwZC*7"
       POSTGRES_DB: alphaw
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql
     networks:
       - shared-services
 
