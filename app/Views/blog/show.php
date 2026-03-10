@@ -50,7 +50,7 @@
 				<div class="card border-0 shadow-sm mt-4">
 					<div class="card-body p-4">
 						<h4 class="fw-bold mb-4">
-							<i class="fas fa-comments text-primary me-2"></i>Comments (<?= count($comments); ?>)
+							<i class="fas fa-comments text-primary me-2"></i>Comments (<?= count(array_filter($comments, fn($c) => empty($c['is_spam']))); ?>)
 						</h4>
 
 						<!-- Comment Form -->
@@ -73,8 +73,9 @@
 						<hr>
 
 						<!-- Display Comments -->
-						<?php if (!empty($comments)): ?>
-							<?php foreach ($comments as $comment): ?>
+						<?php $visibleComments = array_filter($comments, fn($c) => empty($c['is_spam'])); ?>
+						<?php if (!empty($visibleComments)): ?>
+							<?php foreach ($visibleComments as $comment): ?>
 								<div class="d-flex mb-3 pb-3 border-bottom">
 									<div class="flex-shrink-0">
 										<div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
@@ -87,6 +88,14 @@
 											<small class="text-muted fw-normal ms-2"><?= date('M d, Y \a\t h:i A', strtotime($comment['created_at'])); ?></small>
 										</h6>
 										<p class="mb-0"><?= esc($comment['comment']); ?></p>
+
+										<?php if (!empty($comment['admin_reply'])): ?>
+											<div class="mt-2 ms-2 p-3 bg-light rounded border-start border-primary border-3">
+												<small class="fw-bold text-primary"><i class="fas fa-reply me-1"></i> Alphawonders</small>
+												<small class="text-muted ms-2"><?= date('M d, Y \a\t h:i A', strtotime($comment['replied_at'])); ?></small>
+												<p class="mb-0 mt-1"><?= esc($comment['admin_reply']); ?></p>
+											</div>
+										<?php endif; ?>
 									</div>
 								</div>
 							<?php endforeach; ?>

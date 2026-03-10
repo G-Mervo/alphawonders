@@ -239,6 +239,11 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link <?= str_starts_with($currentUri, 'aw-cp/comments') ? 'active' : ''; ?>" href="<?= base_url('aw-cp/comments'); ?>">
+                <i class="fa-solid fa-comments"></i> Comments
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link <?= str_starts_with($currentUri, 'aw-cp/social') ? 'active' : ''; ?>" href="<?= base_url('aw-cp/social'); ?>">
                 <i class="fa-solid fa-share-nodes"></i> Social Media
             </a>

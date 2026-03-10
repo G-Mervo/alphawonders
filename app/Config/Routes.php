@@ -89,6 +89,15 @@ $routes->get('/aw-cp/messages/delete/(:num)', 'Dashboard::messageDelete/$1');
 
 // Subscribers
 $routes->get('/aw-cp/subscribers', 'Dashboard::subscribers');
+$routes->get('/aw-cp/subscribers/view/(:num)', 'Dashboard::subscriberView/$1');
+$routes->get('/aw-cp/subscribers/spam/(:num)', 'Dashboard::subscriberToggleSpam/$1');
+$routes->get('/aw-cp/subscribers/delete/(:num)', 'Dashboard::subscriberDelete/$1');
+
+// Comments Management
+$routes->get('/aw-cp/comments', 'Dashboard::comments');
+$routes->get('/aw-cp/comments/spam/(:num)', 'Dashboard::commentToggleSpam/$1');
+$routes->get('/aw-cp/comments/delete/(:num)', 'Dashboard::commentDelete/$1');
+$routes->post('/aw-cp/comments/reply/(:num)', 'Dashboard::commentReply/$1');
 
 // AI endpoints (Groq)
 $routes->post('/aw-cp/ai/generate-blog', 'Dashboard::aiGenerateBlog');

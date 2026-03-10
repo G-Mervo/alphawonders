@@ -508,11 +508,129 @@ class Dashboard extends BaseController
     public function subscribers()
     {
         $data['title'] = 'Subscribers | Alphawonders';
-        $data['subscribers'] = $this->db->table('subscriptions')->orderBy('id', 'DESC')->get()->getResultArray();
+        $filter = $this->request->getGet('filter') ?? 'all';
+
+        $builder = $this->db->table('subscriptions');
+        if ($filter === 'spam') {
+            $builder->where('is_spam', true);
+        } elseif ($filter === 'active') {
+            $builder->where('is_spam', false);
+        }
+
+        $data['subscribers'] = $builder->orderBy('id', 'DESC')->get()->getResultArray();
+        $data['currentFilter'] = $filter;
+        $data['totalAll'] = $this->db->table('subscriptions')->countAllResults();
+        $data['totalActive'] = $this->db->table('subscriptions')->where('is_spam', false)->countAllResults();
+        $data['totalSpam'] = $this->db->table('subscriptions')->where('is_spam', true)->countAllResults();
 
         return view('dashboard/inc/header', $data) .
                view('dashboard/subscribers', $data) .
                view('dashboard/inc/footer');
+    }
+
+    public function subscriberView(int $id)
+    {
+        $data['title'] = 'Subscriber Details | Alphawonders';
+        $data['subscriber'] = $this->db->table('subscriptions')->where('id', $id)->get()->getRowArray();
+
+        if (!$data['subscriber']) {
+            return redirect()->to(base_url('aw-cp/subscribers'))->with('error', 'Subscriber not found.');
+        }
+
+        return view('dashboard/inc/header', $data) .
+               view('dashboard/subscriber_detail', $data) .
+               view('dashboard/inc/footer');
+    }
+
+    public function subscriberToggleSpam(int $id)
+    {
+        $sub = $this->db->table('subscriptions')->where('id', $id)->get()->getRowArray();
+        if (!$sub) {
+            return redirect()->to(base_url('aw-cp/subscribers'))->with('error', 'Subscriber not found.');
+        }
+
+        $newStatus = !$sub['is_spam'];
+        $this->db->table('subscriptions')->where('id', $id)->update(['is_spam' => $newStatus]);
+
+        $msg = $newStatus ? 'Subscriber marked as spam.' : 'Subscriber removed from spam.';
+        return redirect()->to(base_url('aw-cp/subscribers'))->with('success', $msg);
+    }
+
+    public function subscriberDelete(int $id)
+    {
+        $this->db->table('subscriptions')->where('id', $id)->delete();
+        return redirect()->to(base_url('aw-cp/subscribers'))->with('success', 'Subscriber deleted.');
+    }
+
+    // Comments Management
+    public function comments()
+    {
+        $data['title'] = 'Blog Comments | Alphawonders';
+        $filter = $this->request->getGet('filter') ?? 'all';
+
+        $builder = $this->db->table('posts_comments pc')
+            ->select('pc.*, b.blog_title, b.blog_url')
+            ->join('blog b', 'b.id = pc.post_id', 'left');
+
+        if ($filter === 'spam') {
+            $builder->where('pc.is_spam', true);
+        } elseif ($filter === 'replied') {
+            $builder->where('pc.admin_reply IS NOT NULL');
+        } elseif ($filter === 'unreplied') {
+            $builder->where('pc.admin_reply IS NULL');
+            $builder->where('pc.is_spam', false);
+        }
+
+        $data['comments'] = $builder->orderBy('pc.created_at', 'DESC')->get()->getResultArray();
+        $data['currentFilter'] = $filter;
+        $data['totalAll'] = $this->db->table('posts_comments')->countAllResults();
+        $data['totalSpam'] = $this->db->table('posts_comments')->where('is_spam', true)->countAllResults();
+        $data['totalReplied'] = $this->db->table('posts_comments')->where('admin_reply IS NOT NULL')->countAllResults();
+        $data['totalUnreplied'] = $this->db->table('posts_comments')->where('admin_reply IS NULL')->where('is_spam', false)->countAllResults();
+
+        return view('dashboard/inc/header', $data) .
+               view('dashboard/comments', $data) .
+               view('dashboard/inc/footer');
+    }
+
+    public function commentToggleSpam(int $id)
+    {
+        $comment = $this->db->table('posts_comments')->where('comment_id', $id)->get()->getRowArray();
+        if (!$comment) {
+            return redirect()->to(base_url('aw-cp/comments'))->with('error', 'Comment not found.');
+        }
+
+        $newStatus = !$comment['is_spam'];
+        $this->db->table('posts_comments')->where('comment_id', $id)->update(['is_spam' => $newStatus]);
+
+        $msg = $newStatus ? 'Comment marked as spam.' : 'Comment restored.';
+        return redirect()->to(base_url('aw-cp/comments'))->with('success', $msg);
+    }
+
+    public function commentDelete(int $id)
+    {
+        $this->db->table('posts_comments')->where('comment_id', $id)->delete();
+        return redirect()->to(base_url('aw-cp/comments'))->with('success', 'Comment deleted.');
+    }
+
+    public function commentReply(int $id)
+    {
+        $comment = $this->db->table('posts_comments')->where('comment_id', $id)->get()->getRowArray();
+        if (!$comment) {
+            return redirect()->to(base_url('aw-cp/comments'))->with('error', 'Comment not found.');
+        }
+
+        $reply = $this->request->getPost('admin_reply');
+        if (empty(trim($reply))) {
+            return redirect()->to(base_url('aw-cp/comments'))->with('error', 'Reply cannot be empty.');
+        }
+
+        $this->db->table('posts_comments')->where('comment_id', $id)->update([
+            'admin_reply' => HtmlSanitizer::sanitizePlainText($reply),
+            'replied_at'  => date('Y-m-d H:i:s'),
+        ]);
+
+        return redirect()->to(base_url('aw-cp/comments'))->with('success', 'Reply posted successfully.');
     }
 
     // Login Attempts Audit Log

@@ -16,7 +16,8 @@ class Auth extends BaseController
         if ($this->request->getMethod() === 'POST') {
             $username = $this->request->getPost('username');
             $password = $this->request->getPost('password');
-            $ip = $this->request->getIPAddress();
+            helper('geoip');
+            $ip = real_client_ip();
             $userAgent = $this->request->getUserAgent()->getAgentString();
 
             $db = \Config\Database::connect();
