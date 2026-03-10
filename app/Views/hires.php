@@ -209,17 +209,30 @@
 							</label>
 							<select name="work" id="work" class="form-select form-select-lg" required style="border-radius: 10px;">
 								<option value="">Select nature of work</option>
-								<option value="software-development">Software Development</option>
-								<option value="web-development">Web Development</option>
-								<option value="mobile-development">Mobile App Development</option>
-								<option value="system-administration">System Administration</option>
-								<option value="digital-marketing">Digital Marketing</option>
-								<option value="design">Design (Web/Graphic)</option>
-								<option value="it-consultancy">IT Consultancy</option>
-								<option value="it-support">IT Support</option>
-								<option value="data-science">Data Science / Analytics</option>
-								<option value="cyber-security">Cyber Security</option>
-								<option value="cloud-services">Cloud Services</option>
+								<optgroup label="Software & Development">
+									<option value="web-development">Web Development</option>
+									<option value="mobile-development">Mobile App Development</option>
+									<option value="software-development">Custom Software / APIs</option>
+									<option value="e-commerce">E-commerce Platform</option>
+								</optgroup>
+								<optgroup label="AI & Data">
+									<option value="ai-solutions">AI Solutions & Automation</option>
+									<option value="data-science">Data Science / Analytics</option>
+								</optgroup>
+								<optgroup label="Design">
+									<option value="web-design">Web Design</option>
+									<option value="graphic-design">Graphic Design / Branding</option>
+									<option value="ui-ux">UI/UX Design</option>
+								</optgroup>
+								<optgroup label="Infrastructure & Support">
+									<option value="system-administration">System Administration</option>
+									<option value="cloud-services">Cloud Services / DevOps</option>
+									<option value="it-support">IT Support & Maintenance</option>
+								</optgroup>
+								<optgroup label="Strategy & Growth">
+									<option value="seo">SEO & Google Ranking</option>
+									<option value="it-consultancy">IT Consultancy</option>
+								</optgroup>
 								<option value="other">Other</option>
 							</select>
 						</div>

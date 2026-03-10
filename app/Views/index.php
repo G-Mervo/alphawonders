@@ -64,22 +64,12 @@
 								<span style="color: #7ee787;">&#10004;</span> <span style="color: #e6edf3;">Software Development</span> <span style="color: #8b949e;">- Web, Mobile, APIs</span>
 							</div>
 							<div><span style="color: #7ee787;">&#10004;</span> <span style="color: #e6edf3;">System Administration</span> <span style="color: #8b949e;">- Linux, Cloud, DevOps</span></div>
-							<div><span style="color: #7ee787;">&#10004;</span> <span style="color: #e6edf3;">Cyber Security</span> <span style="color: #8b949e;">- Audits, Pen-testing</span></div>
-							<div><span style="color: #7ee787;">&#10004;</span> <span style="color: #e6edf3;">Digital Marketing</span> <span style="color: #8b949e;">- SEO, Social, PPC</span></div>
-							<div><span style="color: #7ee787;">&#10004;</span> <span style="color: #e6edf3;">AI &amp; Automation</span> <span style="color: #8b949e;">- ML, Chatbots, Data</span></div>
-							<div><span style="color: #7ee787;">&#10004;</span> <span style="color: #e6edf3;">Design</span> <span style="color: #8b949e;">- UI/UX, Branding</span></div>
+							<div><span style="color: #7ee787;">&#10004;</span> <span style="color: #e6edf3;">AI Solutions</span> <span style="color: #8b949e;">- ML, Automation, Data</span></div>
+							<div><span style="color: #7ee787;">&#10004;</span> <span style="color: #e6edf3;">Design</span> <span style="color: #8b949e;">- UI/UX, Web, Branding</span></div>
+							<div><span style="color: #7ee787;">&#10004;</span> <span style="color: #e6edf3;">SEO</span> <span style="color: #8b949e;">- Google ranking, Traffic</span></div>
+							<div><span style="color: #7ee787;">&#10004;</span> <span style="color: #e6edf3;">IT Consultancy</span> <span style="color: #8b949e;">- Strategy, Advisory</span></div>
 							<div><span style="color: #7ee787;">&#10004;</span> <span style="color: #e6edf3;">IT Support</span> <span style="color: #8b949e;">- Remote &amp; Onsite</span></div>
-							<div class="mt-2"><span style="color: #7ee787;">$</span> <span style="color: #e6edf3;">alphawonders</span> <span style="color: #79c0ff;">--status</span></div>
-							<div class="mt-1">
-								<span style="color: #ffa657;">Region:</span> <span style="color: #e6edf3;">Kenya &amp; East Africa</span>
-							</div>
-							<div>
-								<span style="color: #ffa657;">Uptime:</span> <span style="color: #7ee787;">99.9%</span> <span style="color: #8b949e;">| 24/7 support</span>
-							</div>
-							<div>
-								<span style="color: #ffa657;">Projects:</span> <span style="color: #e6edf3;">150+ delivered</span>
-							</div>
-							<div class="mt-2"><span style="color: #7ee787;">$</span> <span class="terminal-cursor" style="color: #e6edf3;">_</span></div>
+							<div class="mt-2"><span style="color: #7ee787;">$</span> <span id="termTyping" style="color: #e6edf3;"></span><span class="terminal-cursor">|</span></div>
 						</div>
 					</div>
 				</div>
@@ -99,10 +89,10 @@
 				<div class="text-muted small fw-semibold"><i class="fas fa-cloud text-primary me-2"></i>Cloud & DevOps</div>
 			</div>
 			<div class="col-6 col-md-3">
-				<div class="text-muted small fw-semibold"><i class="fas fa-shield-alt text-primary me-2"></i>Cyber Security</div>
+				<div class="text-muted small fw-semibold"><i class="fas fa-robot text-primary me-2"></i>AI Solutions</div>
 			</div>
 			<div class="col-6 col-md-3">
-				<div class="text-muted small fw-semibold"><i class="fas fa-chart-line text-primary me-2"></i>Digital Marketing</div>
+				<div class="text-muted small fw-semibold"><i class="fas fa-search text-primary me-2"></i>SEO</div>
 			</div>
 		</div>
 	</div>
@@ -126,8 +116,8 @@
 								<i class="fas fa-code fa-2x text-primary"></i>
 							</div>
 						</div>
-						<h5 class="card-title fw-bold mb-3">Software</h5>
-						<p class="card-text text-muted mb-3">Custom applications, E-commerce platforms, Enterprise systems tailored to your business needs.</p>
+						<h5 class="card-title fw-bold mb-3">Software Development</h5>
+						<p class="card-text text-muted mb-3">Web apps, mobile apps, APIs, e-commerce platforms, and custom systems tailored to your business.</p>
 						<a href="<?php echo base_url('/softwares'); ?>" class="btn btn-sm btn-outline-primary rounded-pill">
 							Learn More <i class="fas fa-arrow-right ms-1"></i>
 						</a>
@@ -157,12 +147,12 @@
 					<div class="card-body p-4">
 						<div class="service-icon mb-3">
 							<div class="icon-wrapper bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
-								<i class="fas fa-bullhorn fa-2x text-info"></i>
+								<i class="fas fa-search fa-2x text-info"></i>
 							</div>
 						</div>
-						<h5 class="card-title fw-bold mb-3">Marketing</h5>
-						<p class="card-text text-muted mb-3">SEO Optimization, Social media marketing, content marketing, Online Marketing strategies.</p>
-						<a href="<?php echo base_url('/digital-marketing'); ?>" class="btn btn-sm btn-outline-info rounded-pill">
+						<h5 class="card-title fw-bold mb-3">SEO</h5>
+						<p class="card-text text-muted mb-3">Search engine optimisation, Google ranking, keyword strategy, and organic traffic growth.</p>
+						<a href="<?php echo base_url('/seo'); ?>" class="btn btn-sm btn-outline-info rounded-pill">
 							Learn More <i class="fas fa-arrow-right ms-1"></i>
 						</a>
 					</div>
@@ -228,8 +218,8 @@
 								<i class="fas fa-robot fa-2x" style="color: #8a2be2;"></i>
 							</div>
 						</div>
-						<h5 class="card-title fw-bold mb-3">AI Services</h5>
-						<p class="card-text text-muted mb-3">AI integration, machine learning solutions, chatbots, automation, and intelligent systems to transform your business.</p>
+						<h5 class="card-title fw-bold mb-3">AI Solutions</h5>
+						<p class="card-text text-muted mb-3">AI integration, machine learning, chatbots, automation, and intelligent systems to streamline your business.</p>
 						<a href="<?php echo base_url('/ai-services'); ?>" class="btn btn-sm rounded-pill" style="border-color: #8a2be2; color: #8a2be2;">
 							Learn More <i class="fas fa-arrow-right ms-1"></i>
 						</a>
@@ -393,52 +383,40 @@
 		</div>
 		<div class="row g-3 justify-content-center">
 			<div class="col-6 col-md-4 col-lg-2">
-				<a href="<?php echo base_url('/softwares'); ?>" class="text-decoration-none">
-					<div class="border rounded-3 p-3 text-center hover-lift h-100">
-						<i class="fas fa-store text-primary mb-2"></i>
-						<div class="small fw-semibold text-dark">Retail & E-commerce</div>
-					</div>
-				</a>
+				<div class="border rounded-3 p-3 text-center h-100">
+					<i class="fas fa-briefcase text-primary mb-2"></i>
+					<div class="small fw-semibold text-dark">SMEs</div>
+				</div>
 			</div>
 			<div class="col-6 col-md-4 col-lg-2">
-				<a href="<?php echo base_url('/softwares'); ?>" class="text-decoration-none">
-					<div class="border rounded-3 p-3 text-center hover-lift h-100">
-						<i class="fas fa-university text-primary mb-2"></i>
-						<div class="small fw-semibold text-dark">Finance & Fintech</div>
-					</div>
-				</a>
+				<div class="border rounded-3 p-3 text-center h-100">
+					<i class="fas fa-store text-primary mb-2"></i>
+					<div class="small fw-semibold text-dark">Retail & E-commerce</div>
+				</div>
 			</div>
 			<div class="col-6 col-md-4 col-lg-2">
-				<a href="<?php echo base_url('/digital-marketing'); ?>" class="text-decoration-none">
-					<div class="border rounded-3 p-3 text-center hover-lift h-100">
-						<i class="fas fa-hand-holding-heart text-primary mb-2"></i>
-						<div class="small fw-semibold text-dark">NGOs & Non-profits</div>
-					</div>
-				</a>
+				<div class="border rounded-3 p-3 text-center h-100">
+					<i class="fas fa-university text-primary mb-2"></i>
+					<div class="small fw-semibold text-dark">Finance & Fintech</div>
+				</div>
 			</div>
 			<div class="col-6 col-md-4 col-lg-2">
-				<a href="<?php echo base_url('/softwares'); ?>" class="text-decoration-none">
-					<div class="border rounded-3 p-3 text-center hover-lift h-100">
-						<i class="fas fa-graduation-cap text-primary mb-2"></i>
-						<div class="small fw-semibold text-dark">Education</div>
-					</div>
-				</a>
+				<div class="border rounded-3 p-3 text-center h-100">
+					<i class="fas fa-hand-holding-heart text-primary mb-2"></i>
+					<div class="small fw-semibold text-dark">NGOs & Non-profits</div>
+				</div>
 			</div>
 			<div class="col-6 col-md-4 col-lg-2">
-				<a href="<?php echo base_url('/ai-services'); ?>" class="text-decoration-none">
-					<div class="border rounded-3 p-3 text-center hover-lift h-100">
-						<i class="fas fa-robot text-primary mb-2"></i>
-						<div class="small fw-semibold text-dark">Tech & Startups</div>
-					</div>
-				</a>
+				<div class="border rounded-3 p-3 text-center h-100">
+					<i class="fas fa-graduation-cap text-primary mb-2"></i>
+					<div class="small fw-semibold text-dark">Education</div>
+				</div>
 			</div>
 			<div class="col-6 col-md-4 col-lg-2">
-				<a href="<?php echo base_url('/ict-consultancy'); ?>" class="text-decoration-none">
-					<div class="border rounded-3 p-3 text-center hover-lift h-100">
-						<i class="fas fa-building text-primary mb-2"></i>
-						<div class="small fw-semibold text-dark">Enterprise</div>
-					</div>
-				</a>
+				<div class="border rounded-3 p-3 text-center h-100">
+					<i class="fas fa-rocket text-primary mb-2"></i>
+					<div class="small fw-semibold text-dark">Tech & Startups</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -722,3 +700,57 @@
 	}
 }
 </style>
+
+<script>
+(function() {
+	var el = document.getElementById('termTyping');
+	if (!el) return;
+	var lines = [
+		{ cmd: 'alphawonders --deploy webapp', out: '\u2713 Deployed to production \u2014 0 downtime' },
+		{ cmd: 'alphawonders --build mobile-app', out: '\u2713 iOS & Android builds ready' },
+		{ cmd: 'alphawonders --seo audit site.co.ke', out: '\u2713 Score: 94/100 \u2014 3 fixes suggested' },
+		{ cmd: 'alphawonders --ai train model', out: '\u2713 Model accuracy: 97.2% \u2014 deployed' },
+		{ cmd: 'alphawonders --server health', out: '\u2713 All systems operational \u2014 99.9% uptime' }
+	];
+	var cursor = el.nextElementSibling;
+	var lineIdx = 0;
+	var phase = 'cmd'; // cmd -> pause -> out -> wait -> erase
+	var charIdx = 0;
+	var currentText = '';
+
+	function tick() {
+		var line = lines[lineIdx];
+		if (phase === 'cmd') {
+			charIdx++;
+			currentText = line.cmd.substring(0, charIdx);
+			el.innerHTML = '<span style="color:#e6edf3">' + currentText + '</span>';
+			if (charIdx >= line.cmd.length) {
+				phase = 'pause';
+				setTimeout(tick, 400);
+				return;
+			}
+			setTimeout(tick, 45 + Math.random() * 35);
+		} else if (phase === 'pause') {
+			phase = 'out';
+			charIdx = 0;
+			setTimeout(tick, 100);
+		} else if (phase === 'out') {
+			el.innerHTML = '<span style="color:#e6edf3">' + line.cmd + '</span><br><span style="color:#7ee787">' + line.out + '</span>';
+			phase = 'wait';
+			setTimeout(tick, 2500);
+		} else if (phase === 'wait') {
+			phase = 'erase';
+			charIdx = line.cmd.length + line.out.length;
+			setTimeout(tick, 30);
+		} else if (phase === 'erase') {
+			el.textContent = '';
+			lineIdx = (lineIdx + 1) % lines.length;
+			phase = 'cmd';
+			charIdx = 0;
+			setTimeout(tick, 600);
+		}
+	}
+
+	setTimeout(tick, 1500);
+})();
+</script>
