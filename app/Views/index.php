@@ -11,20 +11,20 @@
 			<div class="col-lg-6 mb-5 mb-lg-0">
 				<div class="hero-content">
 					<span class="badge bg-warning text-dark px-3 py-2 mb-3 d-inline-block rounded-pill fw-bold" style="font-size: 0.85rem; letter-spacing: 0.5px;">
-						<i class="fas fa-star me-1"></i>Leading ICT Solutions Provider
+						<i class="fas fa-star me-1"></i>ICT Partner for Kenyan & East African Businesses
 					</span>
 					<h1 class="display-3 fw-bold mb-4 wow fadeInUp" style="color: #ffffff; text-shadow: 0 4px 6px rgba(0,0,0,0.3); line-height: 1.2; font-size: clamp(2rem, 5vw, 3.5rem);">
-						Transform Your Business with <span class="text-warning">Cutting-Edge</span> Technology
+						Build Secure, Modern Systems that Help Your Business Grow
 					</h1>
-					<p class="lead mb-4 wow fadeInUp" data-wow-delay="0.2s" style="color: #e0e0e0; font-size: 1.25rem; text-shadow: 0 2px 4px rgba(0,0,0,0.2); line-height: 1.6;">
-						We deliver innovative software solutions, system administration, digital marketing, and IT consultancy services that drive growth and efficiency.
+					<p class="lead mb-4 wow fadeInUp" data-wow-delay="0.2s" style="color: #e0e0e0; font-size: 1.1rem; text-shadow: 0 2px 4px rgba(0,0,0,0.2); line-height: 1.7;">
+						We design, build, and manage software, infrastructure, and digital campaigns for SMEs, startups, and organisations across Kenya and East Africa — so you can focus on running the business while the technology just works.
 					</p>
 					<div class="d-flex flex-column flex-sm-row gap-3 mb-4 wow fadeInUp" data-wow-delay="0.4s">
 						<a href="<?php echo base_url('/hire'); ?>" class="btn btn-warning btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg hover-lift" style="background: linear-gradient(135deg, #ffb000 0%, #ffc733 100%); border: none; transition: all 0.3s;">
-							<i class="fas fa-rocket me-2"></i>Get Started Today
+							<i class="fas fa-rocket me-2"></i>Book a Free Consultation
 						</a>
 						<a href="<?php echo base_url('/contact-us'); ?>" class="btn btn-outline-light btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg hover-lift" style="border: 2px solid rgba(255,255,255,0.8); transition: all 0.3s;">
-							<i class="fas fa-envelope me-2"></i>Contact Us
+							<i class="fas fa-envelope me-2"></i>Talk to Our Team
 						</a>
 					</div>
 					<div class="d-flex flex-wrap gap-4 mt-4 wow fadeInUp" data-wow-delay="0.6s">
@@ -44,26 +44,108 @@
 				</div>
 			</div>
 			<div class="col-lg-6 text-center">
-				<div class="hero-image-wrapper position-relative">
+				<div class="hero-visual position-relative">
+					<!-- Floating accent shapes -->
 					<div class="floating-shapes">
 						<div class="shape shape-1"></div>
 						<div class="shape shape-2"></div>
 						<div class="shape shape-3"></div>
 					</div>
-					<div class="code-window position-relative" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); border-radius: 15px; padding: 2rem; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
-						<div class="code-header mb-3 d-flex align-items-center gap-2">
-							<span class="dot" style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56; display: inline-block;"></span>
-							<span class="dot" style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e; display: inline-block;"></span>
-							<span class="dot" style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f; display: inline-block;"></span>
-							<span class="ms-3 text-white-50 small">code.php</span>
+					<!-- Dashboard preview card -->
+					<div class="dashboard-preview position-relative" style="background: rgba(255,255,255,0.07); backdrop-filter: blur(16px); border-radius: 20px; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 24px 64px rgba(0,0,0,0.35);">
+						<div class="d-flex justify-content-between align-items-center mb-3">
+							<span class="fw-bold text-white" style="font-size: 0.95rem;"><i class="fas fa-chart-line text-warning me-2"></i>Business Overview</span>
+							<span class="badge bg-success bg-opacity-25 text-success px-2 py-1" style="font-size: 0.7rem;"><i class="fas fa-circle me-1" style="font-size: 0.4rem; vertical-align: middle;"></i>Live</span>
 						</div>
-						<div class="code-content text-start" style="font-family: 'Courier New', monospace; font-size: 0.9rem; line-height: 1.8;">
-							<div class="text-success"><span class="text-warning">class</span> <span class="text-info">Solution</span> {</div>
-							<div class="ms-3 text-white"><span class="text-warning">public</span> <span class="text-warning">function</span> <span class="text-info">transform</span>() {</div>
-							<div class="ms-5 text-white-50">return <span class="text-success">'Success'</span>;</div>
-							<div class="ms-3 text-white">}</div>
-							<div class="text-success">}</div>
+						<!-- Metric cards row -->
+						<div class="row g-2 mb-3">
+							<div class="col-4">
+								<div class="text-center p-2 rounded-3" style="background: rgba(40,167,69,0.12);">
+									<div class="fw-bold text-success" style="font-size: 1.2rem;">+47%</div>
+									<div class="text-white-50" style="font-size: 0.65rem;">Web Traffic</div>
+								</div>
+							</div>
+							<div class="col-4">
+								<div class="text-center p-2 rounded-3" style="background: rgba(13,202,240,0.12);">
+									<div class="fw-bold text-info" style="font-size: 1.2rem;">99.9%</div>
+									<div class="text-white-50" style="font-size: 0.65rem;">Uptime</div>
+								</div>
+							</div>
+							<div class="col-4">
+								<div class="text-center p-2 rounded-3" style="background: rgba(255,176,0,0.12);">
+									<div class="fw-bold text-warning" style="font-size: 1.2rem;">3x</div>
+									<div class="text-white-50" style="font-size: 0.65rem;">ROI</div>
+								</div>
+							</div>
 						</div>
+						<!-- Mini service tiles -->
+						<div class="row g-2 mb-3">
+							<div class="col-6">
+								<div class="d-flex align-items-center gap-2 p-2 rounded-3" style="background: rgba(255,255,255,0.06);">
+									<div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 32px; height: 32px; background: rgba(13,110,253,0.15);">
+										<i class="fas fa-code text-primary" style="font-size: 0.7rem;"></i>
+									</div>
+									<div>
+										<div class="text-white fw-semibold" style="font-size: 0.75rem;">Software</div>
+										<div class="text-white-50" style="font-size: 0.6rem;">Custom apps & APIs</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="d-flex align-items-center gap-2 p-2 rounded-3" style="background: rgba(255,255,255,0.06);">
+									<div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 32px; height: 32px; background: rgba(40,167,69,0.15);">
+										<i class="fas fa-server text-success" style="font-size: 0.7rem;"></i>
+									</div>
+									<div>
+										<div class="text-white fw-semibold" style="font-size: 0.75rem;">Infrastructure</div>
+										<div class="text-white-50" style="font-size: 0.6rem;">Servers & cloud</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="d-flex align-items-center gap-2 p-2 rounded-3" style="background: rgba(255,255,255,0.06);">
+									<div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 32px; height: 32px; background: rgba(255,176,0,0.15);">
+										<i class="fas fa-bullhorn" style="font-size: 0.7rem; color: #ffb000;"></i>
+									</div>
+									<div>
+										<div class="text-white fw-semibold" style="font-size: 0.75rem;">Marketing</div>
+										<div class="text-white-50" style="font-size: 0.6rem;">SEO & growth</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="d-flex align-items-center gap-2 p-2 rounded-3" style="background: rgba(255,255,255,0.06);">
+									<div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 32px; height: 32px; background: rgba(138,43,226,0.15);">
+										<i class="fas fa-robot" style="font-size: 0.7rem; color: #8a2be2;"></i>
+									</div>
+									<div>
+										<div class="text-white fw-semibold" style="font-size: 0.75rem;">AI & Automation</div>
+										<div class="text-white-50" style="font-size: 0.6rem;">Smart systems</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- Mini chart bar -->
+						<div class="d-flex align-items-end gap-1 justify-content-center" style="height: 40px;">
+							<div class="hero-bar" style="width: 14%; height: 45%; background: rgba(255,176,0,0.4); border-radius: 3px 3px 0 0;"></div>
+							<div class="hero-bar" style="width: 14%; height: 60%; background: rgba(255,176,0,0.5); border-radius: 3px 3px 0 0;"></div>
+							<div class="hero-bar" style="width: 14%; height: 40%; background: rgba(255,176,0,0.4); border-radius: 3px 3px 0 0;"></div>
+							<div class="hero-bar" style="width: 14%; height: 75%; background: rgba(255,176,0,0.6); border-radius: 3px 3px 0 0;"></div>
+							<div class="hero-bar" style="width: 14%; height: 55%; background: rgba(255,176,0,0.5); border-radius: 3px 3px 0 0;"></div>
+							<div class="hero-bar" style="width: 14%; height: 90%; background: linear-gradient(to top, #ffb000, #ffc733); border-radius: 3px 3px 0 0;"></div>
+						</div>
+						<div class="text-center mt-1">
+							<span class="text-white-50" style="font-size: 0.6rem;">Growth over 6 months</span>
+						</div>
+					</div>
+					<!-- Floating notification cards -->
+					<div class="hero-float-card d-none d-lg-flex position-absolute align-items-center gap-2 px-3 py-2 rounded-pill shadow-lg" style="background: rgba(40,167,69,0.9); top: -10px; right: -20px; animation: floatCard 4s ease-in-out infinite;">
+						<i class="fas fa-check-circle text-white"></i>
+						<span class="text-white fw-semibold" style="font-size: 0.75rem;">Deploy successful</span>
+					</div>
+					<div class="hero-float-card d-none d-lg-flex position-absolute align-items-center gap-2 px-3 py-2 rounded-pill shadow-lg" style="background: rgba(13,110,253,0.9); bottom: 30px; left: -30px; animation: floatCard 5s ease-in-out infinite 1s;">
+						<i class="fas fa-shield-alt text-white"></i>
+						<span class="text-white fw-semibold" style="font-size: 0.75rem;">Systems secured</span>
 					</div>
 				</div>
 			</div>
@@ -77,7 +159,7 @@
 		<div class="row justify-content-center">
 			<div class="col-lg-10 text-center">
 				<p class="fs-4 text-muted mb-0" style="line-height: 1.8;">
-					Whether it's <strong>social media</strong>, <strong>e-commerce</strong>, <strong>websites</strong>, search engines like <a href="https://google.com" target="_blank" class="text-decoration-none fw-bold">Google</a>, <strong>games</strong>, <strong>payment gateways</strong>, or any other <strong>mobile application</strong> - software is at the heart of it all.
+					Whether it's <strong>social media</strong>, <strong>e-commerce</strong>, <strong>websites</strong>, search engines like <a href="https://google.com" target="_blank" class="text-decoration-none fw-bold">Google</a>, <strong>games</strong>, <strong>payment gateways</strong>, or any other <strong>mobile application</strong> &mdash; modern Kenyan and East African businesses run on software and reliable ICT systems.
 				</p>
 			</div>
 		</div>
@@ -296,13 +378,137 @@
 	</div>
 </section>
 
+<!-- How We Work Section -->
+<section class="py-5 bg-light" id="how-we-work">
+	<div class="container">
+		<div class="text-center mb-5">
+			<span class="badge bg-warning text-dark px-3 py-2 mb-3 d-inline-block rounded-pill fw-bold">Our Process</span>
+			<h2 class="display-5 fw-bold mb-3">How We Work</h2>
+			<p class="lead text-muted col-lg-8 mx-auto">A clear, transparent process from first conversation to delivery — so you always know what to expect.</p>
+		</div>
+		<div class="row g-4 justify-content-center">
+			<div class="col-lg-2 col-md-4 col-6 text-center">
+				<div class="bg-white rounded-4 p-4 shadow-sm h-100">
+					<div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+						<i class="fas fa-comments fa-2x text-primary"></i>
+					</div>
+					<div class="small fw-bold text-primary mb-1">1. Discovery</div>
+					<p class="small text-muted mb-0">We listen to your goals, challenges, and budget to understand what you need.</p>
+				</div>
+			</div>
+			<div class="col-lg-2 col-md-4 col-6 text-center">
+				<div class="bg-white rounded-4 p-4 shadow-sm h-100">
+					<div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+						<i class="fas fa-file-alt fa-2x text-success"></i>
+					</div>
+					<div class="small fw-bold text-success mb-1">2. Proposal</div>
+					<p class="small text-muted mb-0">We send a clear scope, timeline, and quote — no hidden costs.</p>
+				</div>
+			</div>
+			<div class="col-lg-2 col-md-4 col-6 text-center">
+				<div class="bg-white rounded-4 p-4 shadow-sm h-100">
+					<div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+						<i class="fas fa-cogs fa-2x text-warning"></i>
+					</div>
+					<div class="small fw-bold text-warning mb-1">3. Build</div>
+					<p class="small text-muted mb-0">We design and develop your solution with regular check-ins.</p>
+				</div>
+			</div>
+			<div class="col-lg-2 col-md-4 col-6 text-center">
+				<div class="bg-white rounded-4 p-4 shadow-sm h-100">
+					<div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+						<i class="fas fa-rocket fa-2x text-info"></i>
+					</div>
+					<div class="small fw-bold text-info mb-1">4. Launch</div>
+					<p class="small text-muted mb-0">We deploy, train your team, and hand over documentation.</p>
+				</div>
+			</div>
+			<div class="col-lg-2 col-md-4 col-6 text-center">
+				<div class="bg-white rounded-4 p-4 shadow-sm h-100">
+					<div class="bg-secondary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+						<i class="fas fa-headset fa-2x text-secondary"></i>
+					</div>
+					<div class="small fw-bold text-secondary mb-1">5. Support</div>
+					<p class="small text-muted mb-0">Ongoing support and maintenance so your system keeps running smoothly.</p>
+				</div>
+			</div>
+		</div>
+		<div class="text-center mt-4">
+			<a href="<?php echo base_url('/hire'); ?>" class="btn btn-warning rounded-pill px-4 py-2 fw-bold">
+				<i class="fas fa-calendar-check me-2"></i>Book a Free 30-Min Discovery Call
+			</a>
+		</div>
+	</div>
+</section>
+
+<!-- Industries We Serve -->
+<section class="py-5 bg-white">
+	<div class="container">
+		<div class="text-center mb-4">
+			<span class="badge bg-warning text-dark px-3 py-2 mb-3 d-inline-block rounded-pill fw-bold">Who We Serve</span>
+			<h2 class="display-6 fw-bold mb-3">Industries We Work With</h2>
+			<p class="text-muted col-lg-7 mx-auto">From SMEs and startups to NGOs and enterprises — we help businesses across Kenya and East Africa leverage technology.</p>
+		</div>
+		<div class="row g-3 justify-content-center">
+			<div class="col-6 col-md-4 col-lg-2">
+				<a href="<?php echo base_url('/softwares'); ?>" class="text-decoration-none">
+					<div class="border rounded-3 p-3 text-center hover-lift h-100">
+						<i class="fas fa-store text-primary mb-2"></i>
+						<div class="small fw-semibold text-dark">Retail & E-commerce</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-6 col-md-4 col-lg-2">
+				<a href="<?php echo base_url('/softwares'); ?>" class="text-decoration-none">
+					<div class="border rounded-3 p-3 text-center hover-lift h-100">
+						<i class="fas fa-university text-primary mb-2"></i>
+						<div class="small fw-semibold text-dark">Finance & Fintech</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-6 col-md-4 col-lg-2">
+				<a href="<?php echo base_url('/digital-marketing'); ?>" class="text-decoration-none">
+					<div class="border rounded-3 p-3 text-center hover-lift h-100">
+						<i class="fas fa-hand-holding-heart text-primary mb-2"></i>
+						<div class="small fw-semibold text-dark">NGOs & Non-profits</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-6 col-md-4 col-lg-2">
+				<a href="<?php echo base_url('/softwares'); ?>" class="text-decoration-none">
+					<div class="border rounded-3 p-3 text-center hover-lift h-100">
+						<i class="fas fa-graduation-cap text-primary mb-2"></i>
+						<div class="small fw-semibold text-dark">Education</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-6 col-md-4 col-lg-2">
+				<a href="<?php echo base_url('/ai-services'); ?>" class="text-decoration-none">
+					<div class="border rounded-3 p-3 text-center hover-lift h-100">
+						<i class="fas fa-robot text-primary mb-2"></i>
+						<div class="small fw-semibold text-dark">Tech & Startups</div>
+					</div>
+				</a>
+			</div>
+			<div class="col-6 col-md-4 col-lg-2">
+				<a href="<?php echo base_url('/ict-consultancy'); ?>" class="text-decoration-none">
+					<div class="border rounded-3 p-3 text-center hover-lift h-100">
+						<i class="fas fa-building text-primary mb-2"></i>
+						<div class="small fw-semibold text-dark">Enterprise</div>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+</section>
+
 <!-- Blog Section -->
 <section class="py-5 bg-light" id="blog">
 	<div class="container">
 		<div class="text-center mb-5">
 			<span class="badge bg-warning text-dark px-3 py-2 mb-3 d-inline-block rounded-pill fw-bold">Latest Insights</span>
 			<h2 class="display-5 fw-bold mb-3">Recent News and Events</h2>
-			<p class="lead text-muted col-lg-8 mx-auto">Stay updated with the latest insights from our blog</p>
+			<p class="lead text-muted col-lg-8 mx-auto">Stay updated with the latest insights on tech, digital transformation, and ICT for Kenyan businesses.</p>
 		</div>
 
 		<div class="row g-4">
@@ -385,8 +591,46 @@
 						</div>
 					<?php endif; ?>
 				</div>
+				<div class="mt-4 text-center">
+					<a href="<?php echo base_url('/blog'); ?>" class="btn btn-outline-primary rounded-pill px-4 py-2 fw-semibold">
+						<i class="fas fa-book-open me-2"></i>View All Blog Posts
+					</a>
+				</div>
+				<?php if (!empty($popularTags)): ?>
+				<div class="mt-4">
+					<h6 class="fw-bold mb-3">Popular Topics</h6>
+					<div class="d-flex flex-wrap gap-2">
+						<?php foreach (array_slice($popularTags, 0, 8) as $tag): ?>
+							<a href="<?php echo base_url('blog/tag/' . ($tag['slug'] ?? '')); ?>" class="badge bg-light text-dark text-decoration-none px-3 py-2"><?php echo esc($tag['name'] ?? ''); ?></a>
+						<?php endforeach; ?>
+					</div>
+				</div>
+				<?php elseif (!empty($categories)): ?>
+				<div class="mt-4">
+					<h6 class="fw-bold mb-3">Browse by Category</h6>
+					<div class="d-flex flex-wrap gap-2">
+						<?php foreach (array_slice($categories, 0, 8) as $cat): ?>
+							<a href="<?php echo base_url('blog/category/' . ($cat['slug'] ?? '')); ?>" class="badge bg-light text-dark text-decoration-none px-3 py-2"><?php echo esc($cat['name'] ?? ''); ?></a>
+						<?php endforeach; ?>
+					</div>
+				</div>
+				<?php endif; ?>
 			</div>
 			<div class="col-lg-3">
+				<div class="card border-0 shadow-sm sticky-top mb-3" style="top: 90px;">
+					<div class="card-body">
+						<h5 class="card-title mb-2 fw-bold">Get Free Tech Insights</h5>
+						<p class="small text-muted mb-3">Monthly tips on software, SEO, and digital growth for Kenyan businesses. No spam.</p>
+						<form method="post" action="<?php echo base_url('/subscribe'); ?>" id="homepageNewsletterForm">
+							<div class="input-group input-group-sm">
+								<input type="email" class="form-control" name="email_sub" placeholder="Your email" required>
+								<button type="submit" class="btn btn-warning">
+									<i class="fas fa-paper-plane"></i>
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
 				<div class="card border-0 shadow-sm sticky-top" style="top: 90px;">
 					<div class="card-body">
 						<h5 class="card-title mb-3 fw-bold">Follow Us</h5>
@@ -394,8 +638,8 @@
 							<a href="https://www.facebook.com/pg/alphawonders" target="_blank" class="btn btn-outline-primary btn-sm w-100 mb-2">
 								<i class="fab fa-facebook me-2"></i>Facebook
 							</a>
-							<a href="https://twitter.com/Alphawondersltd" target="_blank" class="btn btn-outline-info btn-sm w-100 mb-2">
-								<i class="fab fa-twitter me-2"></i>Twitter
+							<a href="https://x.com/Alphawondersltd" target="_blank" class="btn btn-outline-dark btn-sm w-100 mb-2">
+								<i class="fab fa-x-twitter me-2"></i>X
 							</a>
 							<a href="https://ke.linkedin.com/company/alphawonders" target="_blank" class="btn btn-outline-primary btn-sm w-100">
 								<i class="fab fa-linkedin me-2"></i>LinkedIn
@@ -419,11 +663,11 @@
 		<div class="row align-items-center">
 			<div class="col-lg-8 mb-4 mb-lg-0">
 				<h2 class="display-6 fw-bold mb-3">Ready to Transform Your Business?</h2>
-				<p class="lead mb-0">Let's discuss how we can help you achieve your goals with innovative technology solutions.</p>
+				<p class="lead mb-0">Book a free 30-minute discovery call. We respond within 24 hours — no spam, no obligation.</p>
 			</div>
 			<div class="col-lg-4 text-lg-end">
 				<a href="<?php echo base_url('/hire'); ?>" class="btn btn-warning btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg hover-lift">
-					<i class="fas fa-rocket me-2"></i>Get Started Now
+					<i class="fas fa-calendar-check me-2"></i>Book a Free 30-Min Call
 				</a>
 			</div>
 		</div>
@@ -497,6 +741,19 @@
 @keyframes float {
 	0%, 100% { transform: translateY(0) rotate(0deg); }
 	50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+@keyframes floatCard {
+	0%, 100% { transform: translateY(0); }
+	50% { transform: translateY(-8px); }
+}
+
+.hero-bar {
+	transition: height 1s ease;
+}
+
+.dashboard-preview {
+	animation: fadeInUp 0.8s ease forwards;
 }
 
 .min-vh-75 {
