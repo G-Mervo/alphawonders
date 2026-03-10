@@ -47,6 +47,11 @@ RUN mkdir -p /var/www/html/attachments \
     && chown -R www-data:www-data /var/www/html/attachments \
     && chmod -R 775 /var/www/html/attachments
 
+# Ensure blog image upload directory is writable
+RUN mkdir -p /var/www/html/public/assets/img/blog \
+    && chown -R www-data:www-data /var/www/html/public/assets/img/blog \
+    && chmod -R 775 /var/www/html/public/assets/img/blog
+
 # Copy Nginx configuration
 COPY docker/nginx.conf /etc/nginx/sites-available/default
 

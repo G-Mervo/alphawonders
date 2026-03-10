@@ -37,6 +37,7 @@ services:
       - email.SMTPCrypto=${SMTP_CRYPTO:-tls}
     volumes:
       - .:/var/www/html
+      - app-vendor:/var/www/html/vendor
       - app-writable:/var/www/html/writable
       - app-attachments:/var/www/html/attachments
       - ./docker/php.dev.ini:/usr/local/etc/php/conf.d/custom.ini
@@ -82,6 +83,7 @@ services:
       - postgres
 
 volumes:
+  app-vendor:
   app-writable:
   app-attachments:
   pgdata:
