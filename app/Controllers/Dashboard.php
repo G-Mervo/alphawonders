@@ -71,14 +71,22 @@ class Dashboard extends BaseController
     {
         $data['title'] = 'Services Management | Alphawonders';
         $data['services'] = [
-            ['name' => 'Software Development', 'icon' => 'fa-code', 'route' => 'softwares', 'color' => 'primary', 'desc' => 'Custom software solutions, enterprise apps, SaaS platforms'],
-            ['name' => 'Web Development', 'icon' => 'fa-globe', 'route' => 'softwares', 'color' => 'success', 'desc' => 'Responsive websites, web apps, e-commerce solutions'],
-            ['name' => 'System Administration', 'icon' => 'fa-server', 'route' => 'system-administration', 'color' => 'info', 'desc' => 'Server setup, cloud infrastructure, DevOps'],
-            ['name' => 'UI/UX Design', 'icon' => 'fa-palette', 'route' => 'design', 'color' => 'warning', 'desc' => 'User interfaces, branding, graphic design'],
-            ['name' => 'Digital Marketing', 'icon' => 'fa-bullhorn', 'route' => 'digital-marketing', 'color' => 'danger', 'desc' => 'SEO, social media, content marketing, PPC'],
-            ['name' => 'ICT Consultancy', 'icon' => 'fa-handshake', 'route' => 'ict-consultancy', 'color' => 'secondary', 'desc' => 'IT strategy, digital transformation, tech advisory'],
-            ['name' => 'IT Support', 'icon' => 'fa-headset', 'route' => 'it-support', 'color' => 'dark', 'desc' => 'Help desk, maintenance, troubleshooting'],
-            ['name' => 'AI Services', 'icon' => 'fa-robot', 'route' => 'ai-services', 'color' => 'primary', 'desc' => 'Machine learning, automation, data analytics'],
+            // Active services (have public routes)
+            ['name' => 'Software Development', 'icon' => 'fa-code', 'route' => 'softwares', 'color' => 'primary', 'desc' => 'Custom software solutions, enterprise apps, SaaS platforms', 'status' => 'active', 'view' => 'alphasoftwares'],
+            ['name' => 'System Administration', 'icon' => 'fa-server', 'route' => 'system-administration', 'color' => 'info', 'desc' => 'Server setup, cloud infrastructure, DevOps', 'status' => 'active', 'view' => 'alphasystems'],
+            ['name' => 'UI/UX Design', 'icon' => 'fa-palette', 'route' => 'design', 'color' => 'warning', 'desc' => 'User interfaces, branding, graphic design', 'status' => 'active', 'view' => 'alphadesigns'],
+            ['name' => 'Digital Marketing', 'icon' => 'fa-bullhorn', 'route' => 'digital-marketing', 'color' => 'danger', 'desc' => 'SEO, social media, content marketing, PPC', 'status' => 'active', 'view' => 'alphamarketing'],
+            ['name' => 'ICT Consultancy', 'icon' => 'fa-handshake', 'route' => 'ict-consultancy', 'color' => 'secondary', 'desc' => 'IT strategy, digital transformation, tech advisory', 'status' => 'active', 'view' => 'alphaconsultancy'],
+            ['name' => 'IT Support', 'icon' => 'fa-headset', 'route' => 'it-support', 'color' => 'dark', 'desc' => 'Help desk, maintenance, troubleshooting', 'status' => 'active', 'view' => 'alphasupport'],
+            ['name' => 'AI Services', 'icon' => 'fa-robot', 'route' => 'ai-services', 'color' => 'primary', 'desc' => 'Machine learning, automation, data analytics', 'status' => 'active', 'view' => 'alphaiservices'],
+
+            // Disabled services (view files exist but no public routes)
+            ['name' => 'E-commerce Integration', 'icon' => 'fa-cart-shopping', 'route' => '', 'color' => 'success', 'desc' => 'Magento, OpenCart, e-commerce platforms', 'status' => 'disabled', 'view' => 'alphacommerce'],
+            ['name' => 'Data Analytics', 'icon' => 'fa-chart-line', 'route' => '', 'color' => 'info', 'desc' => 'Data analysis, visualization, business intelligence', 'status' => 'disabled', 'view' => 'alphadata'],
+            ['name' => 'Application Development', 'icon' => 'fa-mobile-screen', 'route' => '', 'color' => 'primary', 'desc' => 'Web and mobile application development', 'status' => 'disabled', 'view' => 'alphapplications'],
+            ['name' => 'Prototyping', 'icon' => 'fa-pen-ruler', 'route' => '', 'color' => 'warning', 'desc' => 'Rapid prototyping, wireframing, MVP development', 'status' => 'disabled', 'view' => 'alphaprototyping'],
+            ['name' => 'Cyber Security', 'icon' => 'fa-shield-halved', 'route' => '', 'color' => 'danger', 'desc' => 'IT security, penetration testing, compliance', 'status' => 'disabled', 'view' => 'alphasecurity'],
+            ['name' => 'Web Development', 'icon' => 'fa-globe', 'route' => '', 'color' => 'success', 'desc' => 'WordPress, Joomla, CMS customization', 'status' => 'disabled', 'view' => 'alphaweb'],
         ];
 
         // Count hires per service
@@ -91,6 +99,27 @@ class Dashboard extends BaseController
         return view('dashboard/inc/header', $data) .
                view('dashboard/services', $data) .
                view('dashboard/inc/footer');
+    }
+
+    public function servicePreview(string $viewName)
+    {
+        // Whitelist allowed view names to prevent directory traversal
+        $allowedViews = [
+            'alphasoftwares', 'alphasystems', 'alphadesigns', 'alphamarketing',
+            'alphaconsultancy', 'alphasupport', 'alphaiservices',
+            'alphacommerce', 'alphadata', 'alphapplications',
+            'alphaprototyping', 'alphasecurity', 'alphaweb',
+        ];
+
+        if (!in_array($viewName, $allowedViews)) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Service not found.');
+        }
+
+        $data['title'] = 'Service Preview | Alphawonders';
+
+        return view('layout/header', $data) .
+               view('services/' . $viewName, $data) .
+               view('layout/footer');
     }
 
     public function messages()
@@ -1267,6 +1296,40 @@ class Dashboard extends BaseController
         $data['repoName'] = $repo;
         return view('dashboard/inc/header', $data) .
                view('dashboard/github/create_release', $data) .
+               view('dashboard/inc/footer');
+    }
+
+    public function microapps()
+    {
+        $data['title'] = 'Microapps | Alphawonders';
+        $data['microapps'] = [
+            [
+                'name'        => 'Chama Voting',
+                'slug'        => 'chama-voting',
+                'icon'        => 'fa-check-to-slot',
+                'color'       => 'primary',
+                'description' => 'A voting and progress tracking system for chamas (investment groups). Manage members, run voting sessions, and track contributions.',
+            ],
+        ];
+
+        return view('dashboard/inc/header', $data) .
+               view('dashboard/microapps', $data) .
+               view('dashboard/inc/footer');
+    }
+
+    public function microappPreview(string $name)
+    {
+        $allowed = ['chama-voting'];
+
+        if (!in_array($name, $allowed)) {
+            return redirect()->to(base_url('aw-cp/microapps'))->with('error', 'Microapp not found.');
+        }
+
+        $data['title'] = 'Chama Voting | Microapps';
+        $data['users'] = [];
+
+        return view('dashboard/inc/header', $data) .
+               view('microapps/chama-voting/index', $data) .
                view('dashboard/inc/footer');
     }
 }

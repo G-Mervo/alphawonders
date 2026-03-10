@@ -280,6 +280,14 @@
             </a>
         </li>
     </ul>
+    <div class="nav-section">Labs</div>
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link <?= str_starts_with($currentUri, 'aw-cp/microapps') ? 'active' : ''; ?>" href="<?= base_url('aw-cp/microapps'); ?>">
+                <i class="fa-solid fa-flask"></i> Microapps
+            </a>
+        </li>
+    </ul>
 </nav>
 
 <!-- Topbar -->

@@ -38,6 +38,7 @@ $routes->get('/aw-cp/logout', 'Auth::logout');
 // Admin/Dashboard routes - using ambiguous paths for security
 $routes->get('/aw-cp', 'Dashboard::admin');
 $routes->get('/aw-cp/services', 'Dashboard::services');
+$routes->get('/aw-cp/services/preview/(:segment)', 'Dashboard::servicePreview/$1');
 $routes->get('/aw-cp/messages', 'Dashboard::messages');
 $routes->get('/aw-cp/blog', 'Dashboard::blog');
 $routes->get('/aw-cp/blog/create', 'Dashboard::blogCreate');
@@ -123,6 +124,10 @@ $routes->get('/aw-cp/github/repo/(:segment)/(:segment)/issues/create', 'Dashboar
 $routes->post('/aw-cp/github/repo/(:segment)/(:segment)/issues/create', 'Dashboard::githubCreateIssue/$1/$2');
 $routes->get('/aw-cp/github/repo/(:segment)/(:segment)/releases/create', 'Dashboard::githubCreateRelease/$1/$2');
 $routes->post('/aw-cp/github/repo/(:segment)/(:segment)/releases/create', 'Dashboard::githubCreateRelease/$1/$2');
+
+// Microapps
+$routes->get('/aw-cp/microapps', 'Dashboard::microapps');
+$routes->get('/aw-cp/microapps/(:segment)', 'Dashboard::microappPreview/$1');
 
 // Legacy admin routes (redirect to new ambiguous routes for backward compatibility)
 $routes->get('/admin', function() {
