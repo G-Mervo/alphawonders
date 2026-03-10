@@ -1,71 +1,51 @@
-# Alphawonders Website - Modernized
+# Alphawonders Website
 
-## 🚀 Quick Start
+Company website for [Alphawonders Solutions](https://alphawonders.com) — a Nairobi-based ICT company serving SMEs, startups, and organisations across Kenya and East Africa.
 
-This website has been modernized with:
-- **Bootstrap 5.3.2** - Latest frontend framework
-- **Font Awesome 6.5.1** - Modern icons
-- **CodeIgniter 4** - Ready for migration (structure complete)
+## Stack
 
-## 📋 Current Status
+- **Backend**: CodeIgniter 4 (PHP 8.4), PostgreSQL
+- **Frontend**: Bootstrap 5.3, Font Awesome 6, jQuery
+- **Infrastructure**: Docker (PHP-FPM + nginx + Supervisor), AWS EC2 behind CloudFront
 
-✅ **Frontend:** Fully modernized and working  
-✅ **Backend:** CI4 structure ready, needs framework installation  
-✅ **Documentation:** Complete setup guides available
+## Services Offered
 
-## 🎯 To Complete CI4 Migration
+Software Development (web, mobile, APIs) | System Administration | AI Solutions | Design | SEO | IT Consultancy | IT Support
 
-### Step 1: Install CodeIgniter 4
+## Project Structure
+
+```
+app/
+├── Config/Routes.php           # Route definitions
+├── Controllers/                # Alphawonders (public), Dashboard (admin), Auth, SocialMedia
+├── Models/                     # AlphaWModel, AlphaBlogModel, BlogCategoryModel, BlogTagModel
+├── Views/
+│   ├── layout/                 # header.php, footer.php (global)
+│   ├── index.php               # Homepage
+│   ├── hires.php               # Hire form
+│   ├── services/               # 13 service views (7 active, 6 disabled)
+│   ├── dashboard/              # Admin panel
+│   ├── blog/                   # Blog views
+│   └── legal/                  # Privacy policy, terms
+├── Libraries/GroqService.php   # AI content generation
+└── Database/Migrations/        # Database migrations
+docker/                         # nginx, php-fpm, supervisor configs
+infra/                          # Production deployment configs
+docs/                           # Legacy migration docs
+```
+
+## Quick Start
+
+See [SETUP.md](SETUP.md) for full setup instructions.
+
 ```bash
-cd /var/www/alphawonders.com/html
-composer install
+# Development
+docker compose -f docker-compose.dev.yml up --build
+
+# Production
+docker compose up -d
 ```
 
-### Step 2: Set Permissions
-```bash
-chmod -R 775 writable/
-chown -R www-data:www-data writable/
-```
+## License
 
-### Step 3: Configure Environment
-```bash
-cp .env.example .env
-# Edit .env with your settings
-```
-
-### Step 4: Update Web Server
-Point DocumentRoot to `/var/www/alphawonders.com/html/public/`
-
-### Step 5: Test
-Visit your website and verify everything works!
-
-## 📚 Documentation
-
-- **SETUP_INSTRUCTIONS.md** - Detailed setup guide
-- **CI4_INSTALLATION.md** - CI4 installation details
-- **FINAL_SUMMARY.md** - Complete modernization summary
-- **MIGRATION_PLAN.md** - Migration overview
-
-## 🏗️ Structure
-
-```
-├── app/              # CI4 Application (ready)
-├── public/           # Public directory (CI4 bootstrap)
-├── writable/         # Logs, cache, sessions
-├── application/      # Original CI3 (preserved)
-└── assets/           # Frontend assets
-```
-
-## 🔄 Rollback
-
-Original CI3 code is preserved in `application/` directory.  
-To rollback, point web server back to root directory.
-
-## 📞 Need Help?
-
-See `SETUP_INSTRUCTIONS.md` for detailed troubleshooting.
-
----
-
-**Status:** Ready for CI4 Framework Installation  
-**Last Updated:** December 2024
+Proprietary. All rights reserved.

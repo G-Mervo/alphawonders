@@ -61,7 +61,7 @@ View files exist in `app/Views/services/` but have no public routes. Listed in d
 ## Conventions
 - Use `esc()` for output escaping in views (CI4 helper)
 - Use `base_url()` for all internal links
-- Admin routes use `/aw-cp/` prefix (obscured, not `/admin/`)
+- Admin routes use an obscured prefix (not `/admin/`) — do not expose the path in docs or READMEs
 - British English spelling in user-facing copy (optimisation, organisation, etc.)
 - Services that can't be delivered today should stay disabled, not be publicly offered
 
