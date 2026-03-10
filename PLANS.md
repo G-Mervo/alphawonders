@@ -68,7 +68,28 @@
 
 ---
 
-## Phase 3: Tech Events Scraper
+## Phase 3: Product Ideas
+
+### Chama Voting Platform
+A voting/progress tracking system for chamas (investment groups). Previously prototyped as "Valiants" — files removed but concept retained.
+- Member registration and login
+- Create and manage voting sessions
+- Track contributions and progress
+- Results dashboard with analytics
+- Could be offered as a standalone SaaS product
+
+### Disabled Service Pages
+The following service pages exist in views but are not currently routed. Can be re-enabled from admin when ready:
+- `services/alphacommerce.php` — E-commerce solutions
+- `services/alphadata.php` — Data analytics
+- `services/alphapplications.php` — Application development
+- `services/alphaprototyping.php` — Prototyping
+- `services/alphasecurity.php` — Cyber security
+- `services/alphaweb.php` — Web development
+
+---
+
+## Phase 4: Tech Events Scraper
 
 ### Concept
 Build a web scraper for tech events (conferences, meetups, hackathons) and display on alphawonders.com to drive organic traffic.
@@ -90,7 +111,7 @@ Build a web scraper for tech events (conferences, meetups, hackathons) and displ
 
 ---
 
-## Phase 4: Shop / Ecommerce (Future Revenue)
+## Phase 5: Shop / Ecommerce (Future Revenue)
 
 ### Concept
 Sell software products, code templates, and services through alphawonders.com.
@@ -152,7 +173,7 @@ Sell software products, code templates, and services through alphawonders.com.
 - [x] Nginx reverse proxy with SSL (CloudFront + ACM)
 - [x] PostgreSQL database
 - [x] SMTP email configuration
-- [ ] CI/CD pipeline (GitHub Actions for auto-deploy)
+- [x] CI/CD pipeline (GitHub Actions for auto-deploy)
 - [ ] Automated database backups (daily to S3)
 - [ ] Staging environment for testing
 - [ ] Log aggregation and monitoring (CloudWatch or similar)
