@@ -401,7 +401,7 @@ class Alphawonders extends BaseController
             'budget' => 'required|trim',
             'currency' => 'permit_empty|trim',
             'country' => 'required|trim',
-            'city' => 'permit_empty|trim',
+            'city' => 'required|trim',
             'sky' => 'permit_empty|trim',
             'client' => 'required|trim',
             'work' => 'required|trim',
@@ -410,6 +410,7 @@ class Alphawonders extends BaseController
             'proj_desc' => 'required|trim',
             'company_name' => 'permit_empty|trim',
             'industry' => 'permit_empty|trim',
+            'address' => 'permit_empty|trim',
             'project_type' => 'permit_empty|trim',
             'timeline' => 'permit_empty|trim'
         ]);
@@ -428,7 +429,7 @@ class Alphawonders extends BaseController
             'email' => $this->request->getPost('email'),
             'tel' => HtmlSanitizer::sanitizePlainText($this->request->getPost('tel_code') . ' ' . $this->request->getPost('telno')),
             'budget' => HtmlSanitizer::sanitizePlainText(($this->request->getPost('currency') ?: 'USD') . ' ' . $this->request->getPost('budget')),
-            'location' => HtmlSanitizer::sanitizePlainText(trim(($this->request->getPost('city') ?? '') . ', ' . $this->request->getPost('country'), ', ')),
+            'location' => HtmlSanitizer::sanitizePlainText(implode(', ', array_filter([$this->request->getPost('city'), $this->request->getPost('country'), $this->request->getPost('address')]))),
             'skype' => HtmlSanitizer::sanitizePlainText($this->request->getPost('sky') ?? ''),
             'client' => HtmlSanitizer::sanitizePlainText($this->request->getPost('client')),
             'work' => HtmlSanitizer::sanitizePlainText($this->request->getPost('work')),

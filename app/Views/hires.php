@@ -136,6 +136,13 @@
 							</select>
 						</div>
 
+						<div class="col-md-6" id="addressField" style="display: none;">
+							<label for="address" class="form-label fw-bold">
+								<i class="fas fa-map-marker-alt text-primary me-2"></i>Address
+							</label>
+							<input type="text" class="form-control form-control-lg" id="address" name="address" placeholder="Street address, building, floor" style="border-radius: 10px;">
+						</div>
+
 						<!-- Project Information -->
 						<div class="col-12 mt-3">
 							<h5 class="fw-bold text-primary mb-3">
@@ -518,21 +525,25 @@ function toggleCompanyFields() {
 	const clientType = document.getElementById('client').value;
 	const companyNameField = document.getElementById('companyNameField');
 	const industryField = document.getElementById('industryField');
+	const addressField = document.getElementById('addressField');
 	const companyNameInput = document.getElementById('company_name');
 	const industrySelect = document.getElementById('industry');
 
 	if (clientType === 'company') {
 		companyNameField.style.display = 'block';
 		industryField.style.display = 'block';
+		addressField.style.display = 'block';
 		companyNameInput.setAttribute('required', 'required');
 		industrySelect.setAttribute('required', 'required');
 	} else {
 		companyNameField.style.display = 'none';
 		industryField.style.display = 'none';
+		addressField.style.display = 'none';
 		companyNameInput.removeAttribute('required');
 		industrySelect.removeAttribute('required');
 		companyNameInput.value = '';
 		industrySelect.value = '';
+		document.getElementById('address').value = '';
 	}
 }
 
