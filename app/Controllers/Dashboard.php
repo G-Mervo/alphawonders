@@ -515,6 +515,55 @@ class Dashboard extends BaseController
                view('dashboard/inc/footer');
     }
 
+    // Login Attempts Audit Log
+    public function loginAttempts()
+    {
+        $data['title'] = 'Login Attempts | Alphawonders';
+
+        $perPage = 50;
+        $page = (int) ($this->request->getGet('page') ?? 1);
+        $filter = $this->request->getGet('filter') ?? 'all';
+        $offset = ($page - 1) * $perPage;
+
+        $builder = $this->db->table('login_attempts');
+
+        if ($filter === 'failed') {
+            $builder->where('success', false);
+        } elseif ($filter === 'success') {
+            $builder->where('success', true);
+        }
+
+        $data['totalAttempts'] = $builder->countAllResults(false);
+        $data['attempts'] = $builder->orderBy('attempted_at', 'DESC')
+            ->limit($perPage, $offset)
+            ->get()
+            ->getResultArray();
+
+        $data['currentPage'] = $page;
+        $data['totalPages'] = max(1, ceil($data['totalAttempts'] / $perPage));
+        $data['currentFilter'] = $filter;
+
+        // Summary stats
+        $data['totalAll'] = $this->db->table('login_attempts')->countAllResults();
+        $data['totalFailed'] = $this->db->table('login_attempts')->where('success', false)->countAllResults();
+        $data['totalSuccess'] = $this->db->table('login_attempts')->where('success', true)->countAllResults();
+
+        // Top offending IPs (last 30 days)
+        $data['topIPs'] = $this->db->table('login_attempts')
+            ->select('ip_address, COUNT(*) as attempts, SUM(CASE WHEN success = false THEN 1 ELSE 0 END) as failures')
+            ->where('attempted_at >=', date('Y-m-d H:i:s', strtotime('-30 days')))
+            ->where('success', false)
+            ->groupBy('ip_address')
+            ->orderBy('failures', 'DESC')
+            ->limit(10)
+            ->get()
+            ->getResultArray();
+
+        return view('dashboard/inc/header', $data) .
+               view('dashboard/login_attempts', $data) .
+               view('dashboard/inc/footer');
+    }
+
     // Analytics
     public function users_analytics()
     {

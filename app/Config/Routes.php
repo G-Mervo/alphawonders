@@ -54,6 +54,7 @@ $routes->get('/aw-cp/interactions_analytics', 'Dashboard::interactions_analytics
 $routes->get('/aw-cp/products', function() {
     return redirect()->to(base_url('aw-cp/github'));
 });
+$routes->get('/aw-cp/login-attempts', 'Dashboard::loginAttempts');
 $routes->get('/aw-cp/settings', 'Dashboard::settings');
 $routes->post('/aw-cp/settings', 'Dashboard::settings');
 $routes->post('/aw-cp/change-password', 'Dashboard::changePassword');

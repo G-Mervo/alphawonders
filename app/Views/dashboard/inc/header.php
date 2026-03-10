@@ -265,6 +265,11 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link <?= $currentUri === 'aw-cp/login-attempts' ? 'active' : ''; ?>" href="<?= base_url('aw-cp/login-attempts'); ?>">
+                <i class="fa-solid fa-shield-halved"></i> Login Audit
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link <?= $currentUri === 'aw-cp/settings' ? 'active' : ''; ?>" href="<?= base_url('aw-cp/settings'); ?>">
                 <i class="fa-solid fa-gear"></i> Settings
             </a>
