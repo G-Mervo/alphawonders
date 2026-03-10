@@ -78,6 +78,13 @@ A voting/progress tracking system for chamas (investment groups). Previously pro
 - Results dashboard with analytics
 - Could be offered as a standalone SaaS product
 
+### Careers Page
+A public-facing careers/jobs page for prospective team members.
+- Job listings with requirements and descriptions
+- Application form (name, email, CV upload, cover letter)
+- Admin view to manage applications (view, shortlist, reject)
+- Route: /careers or /join-us
+
 ### Disabled Service Pages
 The following service pages exist in views but are not currently routed. Can be re-enabled from admin when ready:
 - `services/alphacommerce.php` — E-commerce solutions
