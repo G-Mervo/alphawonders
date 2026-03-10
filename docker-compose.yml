@@ -35,7 +35,7 @@ services:
       - email.SMTPCrypto=${SMTP_CRYPTO}
     volumes:
       - app-writable:/var/www/html/writable
-      - app-attachments:/var/www/html/attachments
+      - app-uploads:/var/www/html/public/uploads
     networks:
       - shared-services
     healthcheck:
@@ -69,7 +69,7 @@ services:
 
 volumes:
   app-writable:
-  app-attachments:
+  app-uploads:
 
 networks:
   shared-services:

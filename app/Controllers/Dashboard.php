@@ -261,7 +261,7 @@ class Dashboard extends BaseController
 
         if ($imageFile && $imageFile->isValid() && !$imageFile->hasMoved()) {
             $newName = $slug . '-' . time() . '.' . $imageFile->getExtension();
-            $uploadPath = FCPATH . 'assets/img/blog';
+            $uploadPath = FCPATH . 'uploads/blog';
             if (!is_dir($uploadPath)) {
                 mkdir($uploadPath, 0775, true);
             }
@@ -269,7 +269,7 @@ class Dashboard extends BaseController
                 return redirect()->to(base_url('aw-cp/blog/create'))->withInput()->with('error', 'Upload directory is not writable. Please check server permissions.');
             }
             $imageFile->move($uploadPath, $newName);
-            $imagePath = 'assets/img/blog/' . $newName;
+            $imagePath = 'uploads/blog/' . $newName;
         }
 
         // Resolve category
@@ -404,7 +404,7 @@ class Dashboard extends BaseController
         $imageFile = $this->request->getFile('blog_image');
         if ($imageFile && $imageFile->isValid() && !$imageFile->hasMoved()) {
             $newName = $slug . '-' . time() . '.' . $imageFile->getExtension();
-            $uploadPath = FCPATH . 'assets/img/blog';
+            $uploadPath = FCPATH . 'uploads/blog';
             if (!is_dir($uploadPath)) {
                 mkdir($uploadPath, 0775, true);
             }
@@ -412,7 +412,7 @@ class Dashboard extends BaseController
                 return redirect()->to(base_url('aw-cp/blog/edit/' . $id))->withInput()->with('error', 'Upload directory is not writable. Please check server permissions.');
             }
             $imageFile->move($uploadPath, $newName);
-            $data['blog_image'] = 'assets/img/blog/' . $newName;
+            $data['blog_image'] = 'uploads/blog/' . $newName;
         }
 
         if ($this->alphaBlogModel->update($id, $data)) {

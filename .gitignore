@@ -16,6 +16,9 @@ composer.phar
 .env.*.local
 infra/.env
 
+# Claude Code
+.claude/
+
 # IDE and Editor files
 .idea/
 .vscode/
@@ -26,6 +29,8 @@ infra/.env
 Thumbs.db
 
 # User uploads and attachments
+/public/uploads/*
+!/public/uploads/.gitkeep
 /attachments/*
 !/attachments/index.html
 !/attachments/*.gitkeep

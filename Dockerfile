@@ -42,15 +42,10 @@ RUN composer dump-autoload --optimize --no-dev
 RUN chown -R www-data:www-data /var/www/html/writable \
     && chmod -R 775 /var/www/html/writable
 
-# Ensure attachments directory exists with correct permissions
-RUN mkdir -p /var/www/html/attachments \
-    && chown -R www-data:www-data /var/www/html/attachments \
-    && chmod -R 775 /var/www/html/attachments
-
-# Ensure blog image upload directory is writable
-RUN mkdir -p /var/www/html/public/assets/img/blog \
-    && chown -R www-data:www-data /var/www/html/public/assets/img/blog \
-    && chmod -R 775 /var/www/html/public/assets/img/blog
+# Ensure uploads directory exists with correct permissions (persisted via Docker volume)
+RUN mkdir -p /var/www/html/public/uploads/blog \
+    && chown -R www-data:www-data /var/www/html/public/uploads \
+    && chmod -R 775 /var/www/html/public/uploads
 
 # Copy Nginx configuration
 COPY docker/nginx.conf /etc/nginx/sites-available/default
