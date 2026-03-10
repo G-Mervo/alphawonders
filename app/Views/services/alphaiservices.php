@@ -6,8 +6,8 @@
 		<div class="row align-items-center">
 			<div class="col-lg-8">
 				<span class="badge bg-warning text-dark px-3 py-2 mb-3 d-inline-block rounded-pill fw-bold">Our Services</span>
-				<h1 class="display-4 fw-bold mb-3">AI Services</h1>
-				<p class="lead mb-0">Transform your business with cutting-edge AI integration, machine learning solutions, chatbots, automation, and intelligent systems.</p>
+				<h1 class="display-4 fw-bold mb-3">AI & Machine Learning Services in Kenya</h1>
+				<p class="lead mb-0">AI integration, chatbots, automation, and intelligent systems for Kenyan and East African businesses. We help you leverage artificial intelligence to streamline operations, gain insights, and serve customers better.</p>
 			</div>
 			<div class="col-lg-4 text-center">
 				<div class="service-icon-large">
@@ -26,7 +26,7 @@
 		<div class="row justify-content-center mb-5">
 			<div class="col-lg-10 text-center">
 				<h2 class="display-6 fw-bold mb-4">Intelligent Solutions for Modern Businesses</h2>
-				<p class="lead text-muted">Leverage the power of artificial intelligence to automate processes, gain insights, and enhance customer experiences.</p>
+				<p class="lead text-muted">Leverage the power of artificial intelligence to automate processes, gain insights, and enhance customer experiences &mdash; tailored for Kenyan and East African business needs.</p>
 			</div>
 		</div>
 
@@ -162,13 +162,15 @@
 	</div>
 </section>
 
+<?= view('services/_related_posts'); ?>
+
 <!-- CTA Section -->
 <section class="py-5 bg-primary text-white" style="background: linear-gradient(135deg, #041640 0%, #0a2a5a 100%);">
 	<div class="container">
 		<div class="row align-items-center">
 			<div class="col-lg-8 mb-4 mb-lg-0">
 				<h2 class="display-6 fw-bold mb-3">Ready to Embrace AI?</h2>
-				<p class="lead mb-0">Let's discuss how AI can revolutionize your business processes and drive innovation.</p>
+				<p class="lead mb-0">Book a free 30-minute discovery call. We'll explore how AI can transform your operations &mdash; no obligation, no pressure.</p>
 			</div>
 			<div class="col-lg-4 text-lg-end">
 				<a href="<?php echo base_url('/hire'); ?>" class="btn btn-warning btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg hover-lift">

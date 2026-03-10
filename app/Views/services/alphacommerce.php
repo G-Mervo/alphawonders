@@ -162,6 +162,8 @@
 	</div>
 </section>
 
+<?= view('services/_related_posts'); ?>
+
 <!-- CTA Section -->
 <section class="py-5 bg-primary text-white" style="background: linear-gradient(135deg, #1a5e2a 0%, #28a745 100%);">
 	<div class="container">

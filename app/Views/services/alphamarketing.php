@@ -6,8 +6,8 @@
 		<div class="row align-items-center">
 			<div class="col-lg-8">
 				<span class="badge bg-warning text-dark px-3 py-2 mb-3 d-inline-block rounded-pill fw-bold">Our Services</span>
-				<h1 class="display-4 fw-bold mb-3">Digital Marketing</h1>
-				<p class="lead mb-0">Comprehensive digital marketing strategies including SEO, social media, content marketing, and online advertising to grow your business.</p>
+				<h1 class="display-4 fw-bold mb-3">Digital Marketing Agency in Nairobi</h1>
+				<p class="lead mb-0">SEO, social media, content marketing, and online advertising tailored for Kenyan and East African businesses. We help you reach more customers, rank higher on Google, and grow your brand online.</p>
 			</div>
 			<div class="col-lg-4 text-center">
 				<div class="service-icon-large">
@@ -26,7 +26,7 @@
 		<div class="row justify-content-center mb-5">
 			<div class="col-lg-10 text-center">
 				<h2 class="display-6 fw-bold mb-4">Comprehensive Digital Marketing Solutions</h2>
-				<p class="lead text-muted">We help businesses increase their online presence, reach more customers, and drive growth through strategic digital marketing.</p>
+				<p class="lead text-muted">We help Kenyan and East African businesses increase their online presence, reach more customers, and drive growth through SEO, social media, content marketing, and paid advertising.</p>
 			</div>
 		</div>
 
@@ -50,7 +50,7 @@
 							<i class="fab fa-facebook fa-2x text-info"></i>
 						</div>
 						<h4 class="fw-bold mb-2">Social Media Marketing</h4>
-						<p class="text-muted mb-0">Strategic social media campaigns on Facebook, Twitter, LinkedIn, Instagram, and other platforms.</p>
+						<p class="text-muted mb-0">Strategic social media campaigns on Facebook, X, LinkedIn, Instagram, and other platforms.</p>
 					</div>
 				</div>
 			</div>
@@ -185,17 +185,19 @@
 	</div>
 </section>
 
+<?= view('services/_related_posts'); ?>
+
 <!-- CTA Section -->
 <section class="py-5 bg-primary text-white" style="background: linear-gradient(135deg, #041640 0%, #0a2a5a 100%);">
 	<div class="container">
 		<div class="row align-items-center">
 			<div class="col-lg-8 mb-4 mb-lg-0">
 				<h2 class="display-6 fw-bold mb-3">Ready to Grow Your Online Presence?</h2>
-				<p class="lead mb-0">Let's discuss how we can help you reach more customers and grow your business.</p>
+				<p class="lead mb-0">Book a free 30-minute discovery call. We'll discuss your goals, audience, and budget — no obligation, no pressure.</p>
 			</div>
 			<div class="col-lg-4 text-lg-end">
-				<a href="<?php echo base_url('/contact-us'); ?>" class="btn btn-warning btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg hover-lift">
-					<i class="fas fa-envelope me-2"></i>Contact Us
+				<a href="<?php echo base_url('/hire'); ?>" class="btn btn-warning btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg hover-lift">
+					<i class="fas fa-calendar-check me-2"></i>Book a Free 30-Min Call
 				</a>
 			</div>
 		</div>

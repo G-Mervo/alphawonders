@@ -6,8 +6,8 @@
 		<div class="row align-items-center">
 			<div class="col-lg-8">
 				<span class="badge bg-warning text-dark px-3 py-2 mb-3 d-inline-block rounded-pill fw-bold">Our Services</span>
-				<h1 class="display-4 fw-bold mb-3">IT Support</h1>
-				<p class="lead mb-0">Comprehensive IT support services including remote, onsite, technical, hardware, and software support for your business.</p>
+				<h1 class="display-4 fw-bold mb-3">IT Support Services in Kenya</h1>
+				<p class="lead mb-0">Reliable remote and onsite IT support for Kenyan and East African businesses. From hardware troubleshooting to software maintenance, we keep your operations running with minimal downtime.</p>
 			</div>
 			<div class="col-lg-4 text-center">
 				<div class="service-icon-large">
@@ -26,7 +26,7 @@
 		<div class="row justify-content-center mb-5">
 			<div class="col-lg-10 text-center">
 				<h2 class="display-6 fw-bold mb-4">Reliable IT Support Services</h2>
-				<p class="lead text-muted">We provide comprehensive IT support to keep your business running smoothly with minimal downtime and maximum productivity.</p>
+				<p class="lead text-muted">We provide comprehensive IT support for Kenyan and East African businesses &mdash; keeping your systems running smoothly with minimal downtime and maximum productivity.</p>
 			</div>
 		</div>
 
@@ -185,17 +185,19 @@
 	</div>
 </section>
 
+<?= view('services/_related_posts'); ?>
+
 <!-- CTA Section -->
 <section class="py-5 bg-primary text-white" style="background: linear-gradient(135deg, #041640 0%, #0a2a5a 100%);">
 	<div class="container">
 		<div class="row align-items-center">
 			<div class="col-lg-8 mb-4 mb-lg-0">
 				<h2 class="display-6 fw-bold mb-3">Need Reliable IT Support?</h2>
-				<p class="lead mb-0">Let's discuss how we can keep your IT infrastructure running smoothly and efficiently.</p>
+				<p class="lead mb-0">Book a free 30-minute discovery call. We'll discuss your support needs and find the right plan &mdash; no obligation, no pressure.</p>
 			</div>
 			<div class="col-lg-4 text-lg-end">
-				<a href="<?php echo base_url('/contact-us'); ?>" class="btn btn-warning btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg hover-lift">
-					<i class="fas fa-envelope me-2"></i>Contact Us
+				<a href="<?php echo base_url('/hire'); ?>" class="btn btn-warning btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg hover-lift">
+					<i class="fas fa-calendar-check me-2"></i>Book a Free 30-Min Call
 				</a>
 			</div>
 		</div>
