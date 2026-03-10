@@ -36,7 +36,7 @@ class Alphawonders extends BaseController
             ['loc' => '/softwares',             'changefreq' => 'monthly',  'priority' => '0.8'],
             ['loc' => '/system-administration', 'changefreq' => 'monthly',  'priority' => '0.8'],
             ['loc' => '/design',                'changefreq' => 'monthly',  'priority' => '0.8'],
-            ['loc' => '/digital-marketing',     'changefreq' => 'monthly',  'priority' => '0.8'],
+            ['loc' => '/seo',                    'changefreq' => 'monthly',  'priority' => '0.8'],
             ['loc' => '/ict-consultancy',       'changefreq' => 'monthly',  'priority' => '0.8'],
             ['loc' => '/it-support',            'changefreq' => 'monthly',  'priority' => '0.8'],
             ['loc' => '/ai-services',           'changefreq' => 'monthly',  'priority' => '0.8'],
@@ -115,7 +115,7 @@ class Alphawonders extends BaseController
         $data['title'] = 'ICT Solutions & Software Development in Nairobi, Kenya';
         $data['canonical'] = '/';
         $data['og_title'] = 'Alphawonders - ICT Solutions & Software Development in Nairobi, Kenya';
-        $data['description'] = 'Alphawonders is a Nairobi-based ICT company helping SMEs, startups, and organisations across Kenya and East Africa build secure software, manage infrastructure, and grow with digital marketing.';
+        $data['description'] = 'Alphawonders is a Nairobi-based ICT company helping SMEs, startups, and organisations across Kenya and East Africa build software, manage infrastructure, and grow online.';
 
         try {
             $data['blogs'] = $this->alphaBlogModel->retrieveBlog();
@@ -183,11 +183,11 @@ class Alphawonders extends BaseController
 
     public function alphamarketing()
     {
-        $data['title'] = 'SEO & Digital Marketing Agency in Nairobi';
-        $data['description'] = 'SEO, social media, content marketing, and paid advertising for Kenyan and East African businesses. Alphawonders helps you rank higher on Google, reach more customers, and grow your brand.';
-        $data['canonical'] = '/digital-marketing';
-        $data['relatedPosts'] = $this->getRelatedBlogPosts(['digital-marketing', 'seo', 'marketing', 'social-media']);
-        $data['relatedCategorySlug'] = 'digital-marketing';
+        $data['title'] = 'SEO Services in Nairobi, Kenya';
+        $data['description'] = 'SEO and search engine optimisation for Kenyan and East African businesses. Alphawonders helps you rank higher on Google, drive organic traffic, and grow your online presence.';
+        $data['canonical'] = '/seo';
+        $data['relatedPosts'] = $this->getRelatedBlogPosts(['seo', 'digital-marketing', 'marketing', 'search-engine-optimisation']);
+        $data['relatedCategorySlug'] = 'seo';
 
         return view('layout/header', $data) .
                view('services/alphamarketing', $data) .
@@ -562,7 +562,7 @@ class Alphawonders extends BaseController
     public function alphablog()
     {
         $data['title'] = 'Tech Blog - Insights for Kenyan Businesses';
-        $data['description'] = 'Latest insights on software development, digital marketing, AI, and ICT for Kenyan and East African businesses. Expert articles from Alphawonders Solutions.';
+        $data['description'] = 'Latest insights on software development, SEO, AI, and ICT for Kenyan and East African businesses. Expert articles from Alphawonders Solutions.';
         $data['canonical'] = '/blog';
 
         try {

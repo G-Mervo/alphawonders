@@ -6,8 +6,8 @@
 	<meta charset = "utf-8" >
 	<meta http-equiv = "X-UA-Compatible" content = "IE-Edge">
 	<title><?= $title ?> | Alphawonders</title>
-	<meta name="description" content="<?= isset($description) ? esc($description) : 'Alphawonders Solutions is a Nairobi-based ICT company providing software development, system administration, digital marketing, design, IT consultancy, IT support, and cyber security services to help businesses and organisations across Kenya and East Africa leverage technology.' ?>">
-	<meta name="keywords" content="<?= isset($keywords) ? esc($keywords) : 'software development kenya, system administration kenya, digital marketing agency nairobi, IT consultancy kenya, IT support kenya, alphawonders, technology company nairobi, web design kenya, website development nairobi, web applications, mobile applications, data analytics, cyber security kenya' ?>">
+	<meta name="description" content="<?= isset($description) ? esc($description) : 'Alphawonders Solutions is a Nairobi-based ICT company providing software development, system administration, SEO, design, AI solutions, IT consultancy, and IT support to help businesses and organisations across Kenya and East Africa leverage technology.' ?>">
+	<meta name="keywords" content="<?= isset($keywords) ? esc($keywords) : 'software development kenya, system administration kenya, SEO services nairobi, IT consultancy kenya, IT support kenya, alphawonders, technology company nairobi, web design kenya, website development nairobi, web applications, mobile applications, AI solutions kenya' ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="robots" content="Index, Follow">
 	<meta name="author" content="alphawonders">
@@ -36,14 +36,14 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://alphawonders.com<?= isset($canonical) ? esc($canonical) : '/' ?>">
     <meta property="og:title" content="<?= isset($og_title) ? esc($og_title) : esc($title) . ' | Alphawonders' ?>">
-    <meta property="og:description" content="<?= isset($description) ? esc($description) : 'Alphawonders Solutions is a Nairobi-based ICT company providing software development, system administration, digital marketing, design, IT consultancy, IT support, and cyber security for businesses across Kenya and East Africa.' ?>">
+    <meta property="og:description" content="<?= isset($description) ? esc($description) : 'Alphawonders Solutions is a Nairobi-based ICT company providing software development, system administration, SEO, design, AI solutions, IT consultancy, and IT support for businesses across Kenya and East Africa.' ?>">
     <meta property="og:image" content="https://alphawonders.com/assets/icons/logo.png">
 
     <!-- X (formerly Twitter) Cards -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://alphawonders.com<?= isset($canonical) ? esc($canonical) : '/' ?>">
     <meta property="twitter:title" content="<?= isset($og_title) ? esc($og_title) : esc($title) . ' | Alphawonders' ?>">
-    <meta property="twitter:description" content="<?= isset($description) ? esc($description) : 'Alphawonders Solutions is a Nairobi-based ICT company providing software development, system administration, digital marketing, design, IT consultancy, IT support, and cyber security for businesses across Kenya and East Africa.' ?>">
+    <meta property="twitter:description" content="<?= isset($description) ? esc($description) : 'Alphawonders Solutions is a Nairobi-based ICT company providing software development, system administration, SEO, design, AI solutions, IT consultancy, and IT support for businesses across Kenya and East Africa.' ?>">
     <meta property="twitter:image" content="https://alphawonders.com/assets/icons/logo.png">
 
 	<!-- Stylesheets -->
@@ -263,8 +263,8 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link px-2 px-lg-2 py-2 text-white text-nowrap" href="<?php echo base_url('/digital-marketing'); ?>" style="transition: all 0.3s; font-weight: 500; font-size: 0.95rem;">
-								<i class="fas fa-bullhorn d-lg-none me-2" aria-hidden="true"></i>Marketing
+							<a class="nav-link px-2 px-lg-2 py-2 text-white text-nowrap" href="<?php echo base_url('/seo'); ?>" style="transition: all 0.3s; font-weight: 500; font-size: 0.95rem;">
+								<i class="fas fa-search d-lg-none me-2" aria-hidden="true"></i>SEO
 							</a>
 						</li>
 						<li class="nav-item">

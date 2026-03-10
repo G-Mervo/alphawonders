@@ -20,7 +20,7 @@
 					<ul>
 						<li>Software development (web applications, mobile applications, custom software)</li>
 						<li>System administration and server management</li>
-						<li>Digital marketing and SEO services</li>
+						<li>SEO and search engine optimisation services</li>
 						<li>Web design and graphic design</li>
 						<li>IT consultancy and advisory services</li>
 						<li>IT support and maintenance</li>

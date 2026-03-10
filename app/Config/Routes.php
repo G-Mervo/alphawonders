@@ -11,7 +11,7 @@ $routes->get('/home', 'Alphawonders::home');
 $routes->get('/softwares', 'Alphawonders::alphasoftwares');
 $routes->get('/system-administration', 'Alphawonders::alphasystems');
 $routes->get('/design', 'Alphawonders::alphadesign');
-$routes->get('/digital-marketing', 'Alphawonders::alphamarketing');
+$routes->get('/seo', 'Alphawonders::alphamarketing');
 $routes->get('/ict-consultancy', 'Alphawonders::alphaconsultancy');
 $routes->get('/it-support', 'Alphawonders::alphasupport');
 $routes->get('/ai-services', 'Alphawonders::alphaiservices');

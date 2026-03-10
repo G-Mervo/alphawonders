@@ -56,7 +56,7 @@
 						<ul class="list-unstyled mb-0">
 							<li class="mb-2"><a href="<?php echo base_url('/softwares'); ?>" class="text-white-50 text-decoration-none small footer-link">Software Development</a></li>
 							<li class="mb-2"><a href="<?php echo base_url('/system-administration'); ?>" class="text-white-50 text-decoration-none small footer-link">System Administration</a></li>
-							<li class="mb-2"><a href="<?php echo base_url('/digital-marketing'); ?>" class="text-white-50 text-decoration-none small footer-link">Digital Marketing</a></li>
+							<li class="mb-2"><a href="<?php echo base_url('/seo'); ?>" class="text-white-50 text-decoration-none small footer-link">SEO</a></li>
 							<li class="mb-2"><a href="<?php echo base_url('/design'); ?>" class="text-white-50 text-decoration-none small footer-link">Design</a></li>
 							<li class="mb-2"><a href="<?php echo base_url('/ict-consultancy'); ?>" class="text-white-50 text-decoration-none small footer-link">IT Consultancy</a></li>
 							<li class="mb-2"><a href="<?php echo base_url('/it-support'); ?>" class="text-white-50 text-decoration-none small footer-link">IT Support</a></li>
@@ -231,7 +231,7 @@
 	  "telephone": "+254736099643",
 	  "email": "info@alphawonders.com",
 	  "url": "https://alphawonders.com",
-	  "description": "Nairobi-based ICT company providing software development, system administration, digital marketing, IT consultancy, AI services, and IT support for businesses across Kenya and East Africa.",
+	  "description": "Nairobi-based ICT company providing software development, system administration, SEO, design, AI solutions, IT consultancy, and IT support for businesses across Kenya and East Africa.",
 	  "address": {
 	    "@type": "PostalAddress",
 	    "addressLocality": "Nairobi",
@@ -279,7 +279,7 @@
 	    "itemListElement": [
 	      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Software Development", "url": "https://alphawonders.com/softwares"}},
 	      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "System Administration", "url": "https://alphawonders.com/system-administration"}},
-	      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Digital Marketing", "url": "https://alphawonders.com/digital-marketing"}},
+	      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "SEO", "url": "https://alphawonders.com/seo"}},
 	      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Web & Graphic Design", "url": "https://alphawonders.com/design"}},
 	      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "IT Consultancy", "url": "https://alphawonders.com/ict-consultancy"}},
 	      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "IT Support", "url": "https://alphawonders.com/it-support"}},

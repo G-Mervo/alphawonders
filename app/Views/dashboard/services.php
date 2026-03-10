@@ -19,10 +19,10 @@
             <p class="mb-1 small">Each service page automatically displays up to <strong>6 related blog posts</strong> as cards (with image, title, excerpt) based on blog categories. A "View All" link directs visitors to the full category archive. To control which posts appear:</p>
             <ol class="small mb-0">
                 <li>Go to <strong>Blog &rarr; Create/Edit Post</strong></li>
-                <li>Assign the post to a relevant category (e.g. "Software Development", "Digital Marketing", "AI")</li>
+                <li>Assign the post to a relevant category (e.g. "Software Development", "SEO", "AI")</li>
                 <li>The post will automatically appear in the "Related Reading" section of the matching service page</li>
             </ol>
-            <p class="mb-0 small text-muted mt-1"><em>Category slug mapping: software/web-development &rarr; Software page, digital-marketing/seo &rarr; Marketing page, ai/machine-learning &rarr; AI page, etc. Use the Preview button to verify.</em></p>
+            <p class="mb-0 small text-muted mt-1"><em>Category slug mapping: software/web-development &rarr; Software page, seo/digital-marketing &rarr; SEO page, ai/machine-learning &rarr; AI page, etc. Use the Preview button to verify.</em></p>
         </div>
     </div>
 </div>
