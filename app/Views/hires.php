@@ -6,8 +6,8 @@
 		<div class="row justify-content-center text-center">
 			<div class="col-lg-8">
 				<span class="badge bg-warning text-dark px-3 py-2 mb-3 d-inline-block rounded-pill fw-bold">Hire Us</span>
-				<h1 class="display-4 fw-bold mb-3">Hire Skilled Professionals</h1>
-				<p class="lead mb-0">Do you have a job, a vacant post, or require a contractor in your company? Hire us today and get access to skilled and qualified professionals & technicians.</p>
+				<h1 class="display-4 fw-bold mb-3">Hire Skilled ICT Professionals</h1>
+				<p class="lead mb-0">Need developers, system administrators, designers, or marketing experts for your project? Tell us what you need and we'll respond within 24 hours.</p>
 			</div>
 		</div>
 	</div>
@@ -21,7 +21,8 @@
 				<div class="card border-0 shadow-lg rounded-4 p-4 p-md-5">
 					<div class="text-center mb-4">
 						<h2 class="fw-bold mb-2">Project Request Form</h2>
-						<p class="text-muted">Fill out the form below and we'll get back to you as soon as possible</p>
+						<p class="text-muted mb-1">Fill out the form below and we'll get back to you as soon as possible.</p>
+						<p class="small text-success fw-semibold mb-0"><i class="fas fa-clock me-1"></i>We respond within 24 hours. No spam, no obligation.</p>
 					</div>
 
 					<form action="<?php echo base_url('hire-submit'); ?>" method="POST" class="row g-4" id="hireForm">
@@ -50,21 +51,61 @@
 							<label for="telno" class="form-label fw-bold">
 								<i class="fas fa-phone text-primary me-2"></i>Telephone No. <span class="text-danger">*</span>
 							</label>
-							<input type="tel" class="form-control form-control-lg" id="telno" name="telno" placeholder="+254 700 000 000" required style="border-radius: 10px;">
+							<div class="input-group input-group-lg">
+								<select class="form-select" id="tel_code" name="tel_code" style="border-radius: 10px 0 0 10px; max-width: 140px;">
+									<option value="+254" selected>+254 KE</option>
+									<option value="+256">+256 UG</option>
+									<option value="+255">+255 TZ</option>
+									<option value="+234">+234 NG</option>
+									<option value="+27">+27 ZA</option>
+									<option value="+233">+233 GH</option>
+									<option value="+251">+251 ET</option>
+									<option value="+250">+250 RW</option>
+									<option value="+243">+243 CD</option>
+									<option value="+44">+44 UK</option>
+									<option value="+1">+1 US</option>
+									<option value="+971">+971 AE</option>
+									<option value="+966">+966 SA</option>
+									<option value="+91">+91 IN</option>
+									<option value="+86">+86 CN</option>
+									<option value="+49">+49 DE</option>
+									<option value="+33">+33 FR</option>
+									<option value="+61">+61 AU</option>
+									<option value="+81">+81 JP</option>
+								</select>
+								<input type="tel" class="form-control" id="telno" name="telno" placeholder="700 000 000" required style="border-radius: 0 10px 10px 0;">
+							</div>
 						</div>
 
 						<div class="col-md-4">
 							<label for="whts" class="form-label fw-bold">
 								<i class="fab fa-whatsapp text-success me-2"></i>WhatsApp No.
 							</label>
-							<input type="text" class="form-control form-control-lg" id="whts" name="whts" placeholder="+254 700 000 000" style="border-radius: 10px;">
-						</div>
-
-						<div class="col-md-4">
-							<label for="sky" class="form-label fw-bold">
-								<i class="fab fa-skype text-primary me-2"></i>Skype ID
-							</label>
-							<input type="text" class="form-control form-control-lg" id="sky" name="sky" placeholder="your.skype.id" style="border-radius: 10px;">
+							<div class="input-group input-group-lg">
+								<select class="form-select" id="whts_code" name="whts_code" style="border-radius: 10px 0 0 10px; max-width: 140px;">
+									<option value="+254" selected>+254 KE</option>
+									<option value="+256">+256 UG</option>
+									<option value="+255">+255 TZ</option>
+									<option value="+234">+234 NG</option>
+									<option value="+27">+27 ZA</option>
+									<option value="+233">+233 GH</option>
+									<option value="+251">+251 ET</option>
+									<option value="+250">+250 RW</option>
+									<option value="+243">+243 CD</option>
+									<option value="+44">+44 UK</option>
+									<option value="+1">+1 US</option>
+									<option value="+971">+971 AE</option>
+									<option value="+966">+966 SA</option>
+									<option value="+91">+91 IN</option>
+									<option value="+86">+86 CN</option>
+									<option value="+49">+49 DE</option>
+									<option value="+33">+33 FR</option>
+									<option value="+61">+61 AU</option>
+									<option value="+81">+81 JP</option>
+								</select>
+								<input type="tel" class="form-control" id="whts" name="whts" placeholder="700 000 000" style="border-radius: 0 10px 10px 0;">
+							</div>
+							<input type="hidden" name="sky" value="">
 						</div>
 
 						<!-- Company Information -->
@@ -113,11 +154,78 @@
 							</select>
 						</div>
 
-						<div class="col-md-6">
-							<label for="loc" class="form-label fw-bold">
-								<i class="fas fa-map-marker-alt text-primary me-2"></i>Location <span class="text-danger">*</span>
+						<div class="col-md-3">
+							<label for="country" class="form-label fw-bold">
+								<i class="fas fa-globe-africa text-primary me-2"></i>Country <span class="text-danger">*</span>
 							</label>
-							<input type="text" class="form-control form-control-lg" id="loc" name="loc" placeholder="City, Country" required style="border-radius: 10px;">
+							<select class="form-select form-select-lg" id="country" name="country" required style="border-radius: 10px;">
+								<option value="">Select country</option>
+								<optgroup label="East Africa">
+									<option value="KE">Kenya</option>
+									<option value="UG">Uganda</option>
+									<option value="TZ">Tanzania</option>
+									<option value="RW">Rwanda</option>
+									<option value="ET">Ethiopia</option>
+									<option value="SS">South Sudan</option>
+									<option value="SO">Somalia</option>
+									<option value="BI">Burundi</option>
+								</optgroup>
+								<optgroup label="Africa">
+									<option value="NG">Nigeria</option>
+									<option value="ZA">South Africa</option>
+									<option value="GH">Ghana</option>
+									<option value="EG">Egypt</option>
+									<option value="CD">DR Congo</option>
+									<option value="SN">Senegal</option>
+									<option value="CM">Cameroon</option>
+									<option value="CI">Cote d'Ivoire</option>
+									<option value="MZ">Mozambique</option>
+									<option value="ZW">Zimbabwe</option>
+									<option value="ZM">Zambia</option>
+									<option value="MW">Malawi</option>
+								</optgroup>
+								<optgroup label="Middle East">
+									<option value="AE">United Arab Emirates</option>
+									<option value="SA">Saudi Arabia</option>
+									<option value="QA">Qatar</option>
+									<option value="OM">Oman</option>
+									<option value="BH">Bahrain</option>
+									<option value="KW">Kuwait</option>
+								</optgroup>
+								<optgroup label="Europe">
+									<option value="GB">United Kingdom</option>
+									<option value="DE">Germany</option>
+									<option value="FR">France</option>
+									<option value="NL">Netherlands</option>
+									<option value="SE">Sweden</option>
+									<option value="NO">Norway</option>
+									<option value="CH">Switzerland</option>
+									<option value="IT">Italy</option>
+									<option value="ES">Spain</option>
+								</optgroup>
+								<optgroup label="Americas">
+									<option value="US">United States</option>
+									<option value="CA">Canada</option>
+									<option value="BR">Brazil</option>
+									<option value="MX">Mexico</option>
+								</optgroup>
+								<optgroup label="Asia & Pacific">
+									<option value="IN">India</option>
+									<option value="CN">China</option>
+									<option value="JP">Japan</option>
+									<option value="AU">Australia</option>
+									<option value="SG">Singapore</option>
+									<option value="MY">Malaysia</option>
+									<option value="PH">Philippines</option>
+								</optgroup>
+							</select>
+						</div>
+
+						<div class="col-md-3">
+							<label for="city" class="form-label fw-bold">
+								<i class="fas fa-map-marker-alt text-primary me-2"></i>City
+							</label>
+							<input type="text" class="form-control form-control-lg" id="city" name="city" placeholder="e.g. Nairobi" style="border-radius: 10px;">
 						</div>
 
 						<!-- Project Information -->

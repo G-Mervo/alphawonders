@@ -103,23 +103,65 @@ class Dashboard extends BaseController
 
     public function servicePreview(string $viewName)
     {
-        // Whitelist allowed view names to prevent directory traversal
-        $allowedViews = [
-            'alphasoftwares', 'alphasystems', 'alphadesigns', 'alphamarketing',
-            'alphaconsultancy', 'alphasupport', 'alphaiservices',
-            'alphacommerce', 'alphadata', 'alphapplications',
-            'alphaprototyping', 'alphasecurity', 'alphaweb',
+        // View → category slug mapping for related posts
+        $serviceCategoryMap = [
+            'alphasoftwares'   => ['slugs' => ['software', 'software-development', 'web-development', 'technology'], 'primary' => 'software-development'],
+            'alphasystems'     => ['slugs' => ['system-administration', 'linux', 'devops', 'infrastructure'], 'primary' => 'system-administration'],
+            'alphadesigns'     => ['slugs' => ['design', 'web-design', 'ui-ux', 'branding'], 'primary' => 'design'],
+            'alphamarketing'   => ['slugs' => ['digital-marketing', 'seo', 'marketing', 'social-media'], 'primary' => 'digital-marketing'],
+            'alphaconsultancy' => ['slugs' => ['it-consultancy', 'consulting', 'digital-transformation', 'technology'], 'primary' => 'it-consultancy'],
+            'alphasupport'     => ['slugs' => ['it-support', 'technical-support', 'infrastructure'], 'primary' => 'it-support'],
+            'alphaiservices'   => ['slugs' => ['ai', 'artificial-intelligence', 'machine-learning', 'data-science'], 'primary' => 'ai'],
+            'alphacommerce'    => ['slugs' => ['e-commerce', 'ecommerce', 'online-store'], 'primary' => 'e-commerce'],
+            'alphadata'        => ['slugs' => ['data-analytics', 'data-science', 'business-intelligence'], 'primary' => 'data-analytics'],
+            'alphapplications' => ['slugs' => ['software', 'web-development', 'mobile-development'], 'primary' => 'software'],
+            'alphaprototyping' => ['slugs' => ['design', 'prototyping', 'ui-ux'], 'primary' => 'design'],
+            'alphasecurity'    => ['slugs' => ['cyber-security', 'security', 'penetration-testing'], 'primary' => 'cyber-security'],
+            'alphaweb'         => ['slugs' => ['web-development', 'wordpress', 'cms'], 'primary' => 'web-development'],
         ];
 
-        if (!in_array($viewName, $allowedViews)) {
+        if (!array_key_exists($viewName, $serviceCategoryMap)) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Service not found.');
         }
 
         $data['title'] = 'Service Preview | Alphawonders';
+        $mapping = $serviceCategoryMap[$viewName];
+        $data['relatedPosts'] = $this->getRelatedBlogPosts($mapping['slugs']);
+        $data['relatedCategorySlug'] = $mapping['primary'];
 
         return view('layout/header', $data) .
                view('services/' . $viewName, $data) .
                view('layout/footer');
+    }
+
+    private function getRelatedBlogPosts(array $categorySlugs, int $limit = 6): array
+    {
+        try {
+            $categories = $this->blogCategoryModel->whereIn('slug', $categorySlugs)->findAll();
+            if (empty($categories)) {
+                $builder = $this->alphaBlogModel->where('status', 'published');
+                $builder->groupStart();
+                foreach ($categorySlugs as $i => $slug) {
+                    $keyword = str_replace('-', ' ', $slug);
+                    if ($i === 0) {
+                        $builder->like('blog_category', $keyword, 'both', null, true);
+                    } else {
+                        $builder->orLike('blog_category', $keyword, 'both', null, true);
+                    }
+                }
+                $builder->groupEnd();
+                return $builder->orderBy('published_at', 'DESC')->limit($limit)->findAll();
+            }
+
+            $categoryIds = array_column($categories, 'id');
+            return $this->alphaBlogModel->where('status', 'published')
+                ->whereIn('category_id', $categoryIds)
+                ->orderBy('published_at', 'DESC')
+                ->limit($limit)
+                ->findAll();
+        } catch (\Exception $e) {
+            return [];
+        }
     }
 
     public function messages()

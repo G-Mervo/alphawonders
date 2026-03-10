@@ -148,6 +148,7 @@ class Alphawonders extends BaseController
         $data['description'] = 'Custom software solutions, M-Pesa integration, and enterprise systems for Kenyan and East African businesses. Alphawonders builds secure, scalable applications for SMEs and enterprises.';
         $data['canonical'] = '/softwares';
         $data['relatedPosts'] = $this->getRelatedBlogPosts(['software', 'software-development', 'web-development', 'technology']);
+        $data['relatedCategorySlug'] = 'software-development';
 
         return view('layout/header', $data) .
                view('services/alphasoftwares', $data) .
@@ -160,6 +161,7 @@ class Alphawonders extends BaseController
         $data['description'] = 'Expert Linux, Unix, and Windows server administration, monitoring, and security for businesses in Kenya and East Africa. Reliable infrastructure management by Alphawonders.';
         $data['canonical'] = '/system-administration';
         $data['relatedPosts'] = $this->getRelatedBlogPosts(['system-administration', 'linux', 'devops', 'infrastructure']);
+        $data['relatedCategorySlug'] = 'system-administration';
 
         return view('layout/header', $data) .
                view('services/alphasystems', $data) .
@@ -172,6 +174,7 @@ class Alphawonders extends BaseController
         $data['description'] = 'Professional web design, graphic design, UI/UX, and prototyping services for Kenyan businesses. Alphawonders creates stunning visual experiences that convert visitors into customers.';
         $data['canonical'] = '/design';
         $data['relatedPosts'] = $this->getRelatedBlogPosts(['design', 'web-design', 'ui-ux', 'branding']);
+        $data['relatedCategorySlug'] = 'design';
 
         return view('layout/header', $data) .
                view('services/alphadesigns', $data) .
@@ -184,6 +187,7 @@ class Alphawonders extends BaseController
         $data['description'] = 'SEO, social media, content marketing, and paid advertising for Kenyan and East African businesses. Alphawonders helps you rank higher on Google, reach more customers, and grow your brand.';
         $data['canonical'] = '/digital-marketing';
         $data['relatedPosts'] = $this->getRelatedBlogPosts(['digital-marketing', 'seo', 'marketing', 'social-media']);
+        $data['relatedCategorySlug'] = 'digital-marketing';
 
         return view('layout/header', $data) .
                view('services/alphamarketing', $data) .
@@ -196,6 +200,7 @@ class Alphawonders extends BaseController
         $data['description'] = 'Expert IT consulting to guide your digital transformation. Alphawonders helps Kenyan businesses make informed technology decisions, plan infrastructure, and adopt modern systems.';
         $data['canonical'] = '/ict-consultancy';
         $data['relatedPosts'] = $this->getRelatedBlogPosts(['it-consultancy', 'consulting', 'digital-transformation', 'technology']);
+        $data['relatedCategorySlug'] = 'it-consultancy';
 
         return view('layout/header', $data) .
                view('services/alphaconsultancy', $data) .
@@ -208,6 +213,7 @@ class Alphawonders extends BaseController
         $data['description'] = 'Reliable remote and onsite IT support for businesses in Kenya and East Africa. Alphawonders provides technical support, hardware troubleshooting, and software maintenance.';
         $data['canonical'] = '/it-support';
         $data['relatedPosts'] = $this->getRelatedBlogPosts(['it-support', 'technical-support', 'infrastructure']);
+        $data['relatedCategorySlug'] = 'it-support';
 
         return view('layout/header', $data) .
                view('services/alphasupport', $data) .
@@ -220,6 +226,7 @@ class Alphawonders extends BaseController
         $data['description'] = 'AI integration, machine learning, chatbots, and intelligent automation for Kenyan businesses. Alphawonders helps you leverage artificial intelligence to streamline operations and gain insights.';
         $data['canonical'] = '/ai-services';
         $data['relatedPosts'] = $this->getRelatedBlogPosts(['ai', 'artificial-intelligence', 'machine-learning', 'data-science']);
+        $data['relatedCategorySlug'] = 'ai';
 
         return view('layout/header', $data) .
                view('services/alphaiservices', $data) .
@@ -273,7 +280,7 @@ class Alphawonders extends BaseController
      * This is CMS-managed: admin assigns categories to blog posts via the dashboard,
      * and posts automatically appear on the relevant service page.
      */
-    private function getRelatedBlogPosts(array $categorySlugs, int $limit = 3): array
+    private function getRelatedBlogPosts(array $categorySlugs, int $limit = 6): array
     {
         try {
             $categories = $this->blogCategoryModel->whereIn('slug', $categorySlugs)->findAll();
@@ -390,12 +397,15 @@ class Alphawonders extends BaseController
             'name' => 'required|trim',
             'email' => 'required|valid_email|trim',
             'telno' => 'required|trim',
+            'tel_code' => 'required|trim',
             'budget' => 'required|trim',
-            'loc' => 'required|trim',
+            'country' => 'required|trim',
+            'city' => 'permit_empty|trim',
             'sky' => 'permit_empty|trim',
             'client' => 'required|trim',
             'work' => 'required|trim',
             'whts' => 'permit_empty|trim',
+            'whts_code' => 'permit_empty|trim',
             'proj_desc' => 'required|trim',
             'company_name' => 'permit_empty|trim',
             'industry' => 'permit_empty|trim',
@@ -415,14 +425,14 @@ class Alphawonders extends BaseController
         $data = [
             'name' => HtmlSanitizer::sanitizePlainText($this->request->getPost('name')),
             'email' => $this->request->getPost('email'),
-            'tel' => HtmlSanitizer::sanitizePlainText($this->request->getPost('telno')),
+            'tel' => HtmlSanitizer::sanitizePlainText($this->request->getPost('tel_code') . ' ' . $this->request->getPost('telno')),
             'budget' => HtmlSanitizer::sanitizePlainText($this->request->getPost('budget')),
-            'location' => HtmlSanitizer::sanitizePlainText($this->request->getPost('loc')),
+            'location' => HtmlSanitizer::sanitizePlainText(trim(($this->request->getPost('city') ?? '') . ', ' . $this->request->getPost('country'), ', ')),
             'skype' => HtmlSanitizer::sanitizePlainText($this->request->getPost('sky') ?? ''),
             'client' => HtmlSanitizer::sanitizePlainText($this->request->getPost('client')),
             'work' => HtmlSanitizer::sanitizePlainText($this->request->getPost('work')),
             'nature' => HtmlSanitizer::sanitizePlainText($this->request->getPost('project_type') ?: 'contract'),
-            'whatsapp' => HtmlSanitizer::sanitizePlainText($this->request->getPost('whts') ?? ''),
+            'whatsapp' => $this->request->getPost('whts') ? HtmlSanitizer::sanitizePlainText($this->request->getPost('whts_code') . ' ' . $this->request->getPost('whts')) : '',
             'description' => HtmlSanitizer::sanitizePlainText($this->request->getPost('proj_desc')),
             'company_name' => HtmlSanitizer::sanitizePlainText($this->request->getPost('company_name') ?? ''),
             'industry' => HtmlSanitizer::sanitizePlainText($this->request->getPost('industry') ?? ''),

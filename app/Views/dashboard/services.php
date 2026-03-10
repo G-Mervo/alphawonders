@@ -16,13 +16,13 @@
         <i class="fa-solid fa-lightbulb text-info me-3 mt-1"></i>
         <div>
             <strong>How "Related Reading" works on service pages</strong>
-            <p class="mb-1 small">Each service page automatically displays related blog posts based on blog categories. To control which posts appear on a service page:</p>
+            <p class="mb-1 small">Each service page automatically displays up to <strong>6 related blog posts</strong> as cards (with image, title, excerpt) based on blog categories. A "View All" link directs visitors to the full category archive. To control which posts appear:</p>
             <ol class="small mb-0">
                 <li>Go to <strong>Blog &rarr; Create/Edit Post</strong></li>
                 <li>Assign the post to a relevant category (e.g. "Software Development", "Digital Marketing", "AI")</li>
                 <li>The post will automatically appear in the "Related Reading" section of the matching service page</li>
             </ol>
-            <p class="mb-0 small text-muted mt-1"><em>Category slug mapping: software/web-development &rarr; Software page, digital-marketing/seo &rarr; Marketing page, ai/machine-learning &rarr; AI page, etc.</em></p>
+            <p class="mb-0 small text-muted mt-1"><em>Category slug mapping: software/web-development &rarr; Software page, digital-marketing/seo &rarr; Marketing page, ai/machine-learning &rarr; AI page, etc. Use the Preview button to verify.</em></p>
         </div>
     </div>
 </div>
