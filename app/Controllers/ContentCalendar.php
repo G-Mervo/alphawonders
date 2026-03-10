@@ -21,18 +21,23 @@ class ContentCalendar extends BaseController
 
     public function index()
     {
-        $data['title'] = 'Content Calendar | Alphawonders';
-        $year = (int) ($this->request->getGet('year') ?? date('Y'));
-        $month = (int) ($this->request->getGet('month') ?? date('m'));
+        try {
+            $data['title'] = 'Content Calendar | Alphawonders';
+            $year = (int) ($this->request->getGet('year') ?? date('Y'));
+            $month = (int) ($this->request->getGet('month') ?? date('m'));
 
-        $data['year'] = $year;
-        $data['month'] = $month;
-        $data['events'] = $this->getAggregatedEvents($year, $month);
-        $data['upcoming'] = $this->calendarModel->getUpcoming(10);
+            $data['year'] = $year;
+            $data['month'] = $month;
+            $data['events'] = $this->getAggregatedEvents($year, $month);
+            $data['upcoming'] = $this->calendarModel->getUpcoming(10);
 
-        return view('dashboard/inc/header', $data) .
-               view('dashboard/calendar', $data) .
-               view('dashboard/inc/footer');
+            return view('dashboard/inc/header', $data) .
+                   view('dashboard/calendar', $data) .
+                   view('dashboard/inc/footer');
+        } catch (\Throwable $e) {
+            log_message('error', 'Calendar page failed: ' . $e->getMessage());
+            return redirect()->to(base_url('aw-cp'))->with('error', 'Content Calendar encountered an error: ' . $e->getMessage());
+        }
     }
 
     public function getEvents()

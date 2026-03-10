@@ -117,9 +117,12 @@
                                 <td class="small"><?= esc($hire['timeline'] ?? '-'); ?></td>
                                 <td><span class="badge bg-<?= $statusColors[$s] ?? 'secondary'; ?> <?= $s === 'pending' ? 'text-dark' : ''; ?>"><?= ucfirst($s); ?></span></td>
                                 <td class="small text-muted"><?= date('M d, Y', strtotime($hire['date_created'])); ?></td>
-                                <td>
-                                    <a href="<?= base_url('aw-cp/hires/view/' . $hire['id']); ?>" class="btn btn-sm btn-outline-primary">
+                                <td class="text-nowrap">
+                                    <a href="<?= base_url('aw-cp/hires/view/' . $hire['id']); ?>" class="btn btn-sm btn-outline-primary" title="View">
                                         <i class="fa-solid fa-eye"></i>
+                                    </a>
+                                    <a href="<?= base_url('aw-cp/hires/spam/' . $hire['id']); ?>" class="btn btn-sm btn-outline-<?= !empty($hire['is_spam']) ? 'success' : 'warning'; ?>" title="<?= !empty($hire['is_spam']) ? 'Unmark Spam' : 'Mark Spam'; ?>">
+                                        <i class="fa-solid fa-<?= !empty($hire['is_spam']) ? 'check' : 'ban'; ?>"></i>
                                     </a>
                                 </td>
                             </tr>

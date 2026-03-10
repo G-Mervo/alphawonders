@@ -126,23 +126,22 @@ class Dashboard extends BaseController
         $status = $this->request->getGet('status');
         $query = $this->db->table('hires')->orderBy('date_created', 'DESC');
         if ($status === 'spam') {
-            $query->where('is_spam', true);
+            $query->where('is_spam IS TRUE');
         } elseif ($status && in_array($status, ['pending', 'ongoing', 'completed', 'cancelled'])) {
-            $query->where('status', $status)->where('is_spam !=', true);
+            $query->where('status', $status)->where('is_spam IS NOT TRUE');
         } else {
-            // "All" hides spam by default
-            $query->where('is_spam !=', true);
+            $query->where('is_spam IS NOT TRUE');
         }
         $data['hires'] = $query->get()->getResultArray();
         $data['currentStatus'] = $status ?: 'all';
 
-        // Counts (exclude spam from normal counts)
-        $data['allCount'] = $this->db->table('hires')->where('is_spam !=', true)->countAllResults();
-        $data['pendingCount'] = $this->db->table('hires')->where('status', 'pending')->where('is_spam !=', true)->countAllResults();
-        $data['ongoingCount'] = $this->db->table('hires')->where('status', 'ongoing')->where('is_spam !=', true)->countAllResults();
-        $data['completedCount'] = $this->db->table('hires')->where('status', 'completed')->where('is_spam !=', true)->countAllResults();
-        $data['cancelledCount'] = $this->db->table('hires')->where('status', 'cancelled')->where('is_spam !=', true)->countAllResults();
-        $data['spamCount'] = $this->db->table('hires')->where('is_spam', true)->countAllResults();
+        // Counts — use PostgreSQL IS TRUE / IS NOT TRUE for reliable boolean comparison
+        $data['allCount'] = $this->db->table('hires')->where('is_spam IS NOT TRUE')->countAllResults();
+        $data['pendingCount'] = $this->db->table('hires')->where('status', 'pending')->where('is_spam IS NOT TRUE')->countAllResults();
+        $data['ongoingCount'] = $this->db->table('hires')->where('status', 'ongoing')->where('is_spam IS NOT TRUE')->countAllResults();
+        $data['completedCount'] = $this->db->table('hires')->where('status', 'completed')->where('is_spam IS NOT TRUE')->countAllResults();
+        $data['cancelledCount'] = $this->db->table('hires')->where('status', 'cancelled')->where('is_spam IS NOT TRUE')->countAllResults();
+        $data['spamCount'] = $this->db->table('hires')->where('is_spam IS TRUE')->countAllResults();
 
         return view('dashboard/inc/header', $data) .
                view('dashboard/hires', $data) .
@@ -826,6 +825,45 @@ class Dashboard extends BaseController
         return view('dashboard/inc/header', $data) .
                view('dashboard/settings', $data) .
                view('dashboard/inc/footer');
+    }
+
+    public function settingsSaveField()
+    {
+        $key = $this->request->getPost('key');
+        $value = $this->request->getPost('value') ?? '';
+
+        $allowedKeys = [
+            'google_analytics_id', 'google_search_console_meta',
+            'site_name', 'site_description', 'contact_email',
+            'social_facebook', 'social_twitter', 'social_linkedin',
+            'social_instagram', 'social_tiktok',
+            'groq_api_key', 'groq_model', 'github_pat',
+        ];
+
+        if (!$key || !in_array($key, $allowedKeys)) {
+            return $this->response->setJSON(['success' => false, 'error' => 'Invalid setting key.']);
+        }
+
+        try {
+            $exists = $this->db->table('settings')->where('setting_key', $key)->countAllResults();
+            if ($exists) {
+                $this->db->table('settings')->where('setting_key', $key)->update([
+                    'setting_value' => $value,
+                    'updated_at'    => date('Y-m-d H:i:s'),
+                ]);
+            } else {
+                $this->db->table('settings')->insert([
+                    'setting_key'   => $key,
+                    'setting_value' => $value,
+                    'updated_at'    => date('Y-m-d H:i:s'),
+                ]);
+            }
+
+            return $this->response->setJSON(['success' => true]);
+        } catch (\Throwable $e) {
+            log_message('error', 'Settings save failed: ' . $e->getMessage());
+            return $this->response->setJSON(['success' => false, 'error' => 'Failed to save setting.']);
+        }
     }
 
     public function categoryStore()

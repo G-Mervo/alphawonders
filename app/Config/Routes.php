@@ -57,6 +57,7 @@ $routes->get('/aw-cp/products', function() {
 $routes->get('/aw-cp/login-attempts', 'Dashboard::loginAttempts');
 $routes->get('/aw-cp/settings', 'Dashboard::settings');
 $routes->post('/aw-cp/settings', 'Dashboard::settings');
+$routes->post('/aw-cp/settings/save-field', 'Dashboard::settingsSaveField');
 $routes->post('/aw-cp/change-password', 'Dashboard::changePassword');
 
 // Social Media Hub
