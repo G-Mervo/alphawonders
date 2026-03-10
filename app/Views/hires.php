@@ -57,10 +57,11 @@
 
 						<div class="col-md-4">
 							<label for="city" class="form-label fw-bold">
-								<i class="fas fa-map-marker-alt text-primary me-2"></i>City
+								<i class="fas fa-map-marker-alt text-primary me-2"></i>City / Nearest Town <span class="text-danger">*</span>
 							</label>
-							<input type="text" class="form-control form-control-lg" id="city" name="city" list="cityList" placeholder="e.g. Nairobi" autocomplete="off" style="border-radius: 10px;">
+							<input type="text" class="form-control form-control-lg" id="city" name="city" list="cityList" placeholder="e.g. Nairobi" required autocomplete="off" style="border-radius: 10px;">
 							<datalist id="cityList"></datalist>
+							<small class="text-muted">Select from suggestions or type your own</small>
 						</div>
 
 						<div class="col-md-4">
