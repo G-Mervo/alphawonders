@@ -22,6 +22,11 @@ mkdir -p /var/www/html/public/uploads/blog
 chown -R www-data:www-data /var/www/html/public/uploads 2>/dev/null || true
 chmod -R 775 /var/www/html/public/uploads 2>/dev/null || true
 
+# Clear CI4 file locator cache so new migrations are discovered
+echo "Clearing CI4 caches..."
+rm -f /var/www/html/writable/cache/FileLocatorCache 2>/dev/null || true
+rm -f /var/www/html/writable/cache/FactoriesCache_config 2>/dev/null || true
+
 # Run database migrations (idempotent — safe on every boot)
 echo "Running database migrations..."
 echo "── Migration files in image ──"
