@@ -58,6 +58,16 @@ View files exist in `app/Views/services/` but have no public routes. Listed in d
 - **Country search**: Custom autocomplete (text input + filtered dropdown), not a native `<select>`. 188 countries grouped by region.
 - **Nature of Work**: Grouped `<optgroup>` categories. "Other" shows a required text input.
 
+## Migrations
+- **Use CI4 forge** — `$this->forge->addColumn()` / `$this->forge->dropColumn()`. No raw SQL, no `fieldExists()` guards. Follow the pattern in existing migrations (e.g. 000018, 000024).
+- Keep it simple: define columns in an array, call `addColumn` once. The forge handles the SQL.
+- For booleans on PostgreSQL: `'type' => 'BOOLEAN', 'default' => false`
+- Use `'after'` to position columns logically
+- The entrypoint runs `php spark migrate --all` on every container boot
+- Test locally with `docker compose -f docker-compose.dev.yml` before pushing
+- Use `php spark migrate:status` to verify migrations applied
+- CI/CD: push to master → GitHub Actions builds image → pushes to GHCR → deploys to EC2 → container starts → entrypoint runs migrations
+
 ## Conventions
 - Use `esc()` for output escaping in views (CI4 helper)
 - Use `base_url()` for all internal links
