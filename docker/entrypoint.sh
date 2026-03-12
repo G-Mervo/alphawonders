@@ -24,6 +24,11 @@ chmod -R 775 /var/www/html/public/uploads 2>/dev/null || true
 
 # Run database migrations (idempotent — safe on every boot)
 echo "Running database migrations..."
+echo "── Migration files in image ──"
+ls -1 /var/www/html/app/Database/Migrations/ 2>/dev/null || echo "WARNING: Migrations directory not found!"
+echo "── Running migrate --all ──"
 cd /var/www/html && php spark migrate --all 2>&1 || echo "Warning: migration failed (DB may not be ready yet)"
+echo "── Migration status ──"
+cd /var/www/html && php spark migrate:status 2>&1 || echo "Warning: migrate:status failed"
 
 exec "$@"
