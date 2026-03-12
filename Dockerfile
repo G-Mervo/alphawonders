@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     nginx \
     supervisor \
+    curl \
     && docker-php-ext-install \
         pdo_pgsql \
         pgsql \
@@ -62,9 +63,6 @@ COPY docker/php.ini /usr/local/etc/php/conf.d/custom.ini
 # Copy and set entrypoint script
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
-
-# Install curl for healthcheck
-RUN apt-get update && apt-get install -y curl && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 8080
 
