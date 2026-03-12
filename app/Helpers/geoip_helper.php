@@ -36,6 +36,18 @@ function real_client_ip(): string
  */
 function geoip_country(string $ip): ?string
 {
+    $geo = geoip_lookup($ip);
+    return $geo['country'] ?? null;
+}
+
+/**
+ * Look up country and city from IP address using ip-api.com.
+ * Returns ['country' => string|null, 'city' => string|null].
+ */
+function geoip_lookup(string $ip): array
+{
+    $result = ['country' => null, 'city' => null];
+
     // Skip private/local/Docker IPs
     if (
         in_array($ip, ['127.0.0.1', '::1', '0.0.0.0'])
@@ -49,23 +61,24 @@ function geoip_country(string $ip): ?string
         || str_starts_with($ip, '172.3')
         || !filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)
     ) {
-        return null;
+        return $result;
     }
 
     try {
         $client = \Config\Services::curlrequest();
-        $response = $client->request('GET', 'http://ip-api.com/json/' . urlencode($ip) . '?fields=status,country', [
+        $response = $client->request('GET', 'http://ip-api.com/json/' . urlencode($ip) . '?fields=status,country,city', [
             'timeout' => 3,
         ]);
 
         $data = json_decode($response->getBody(), true);
 
-        if (isset($data['status']) && $data['status'] === 'success' && !empty($data['country'])) {
-            return $data['country'];
+        if (isset($data['status']) && $data['status'] === 'success') {
+            $result['country'] = $data['country'] ?? null;
+            $result['city'] = $data['city'] ?? null;
         }
     } catch (\Exception $e) {
         log_message('debug', 'GeoIP lookup failed for ' . $ip . ': ' . $e->getMessage());
     }
 
-    return null;
+    return $result;
 }

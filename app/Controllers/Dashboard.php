@@ -32,7 +32,7 @@ class Dashboard extends BaseController
     {
         $data['title'] = 'Dashboard | Alphawonders';
         $data['blogCount'] = $this->db->table('blog')->countAllResults();
-        $data['messagesCount'] = $this->db->table('messages')->countAllResults();
+        $data['messagesCount'] = $this->db->table('messages')->where('is_spam IS NOT TRUE')->countAllResults();
         $data['commentsCount'] = $this->db->table('posts_comments')->countAllResults();
         $data['subscribersCount'] = $this->db->table('subscriptions')->countAllResults();
         $data['hiresCount'] = $this->db->table('hires')->countAllResults();
@@ -47,7 +47,7 @@ class Dashboard extends BaseController
         $data['recentHires'] = $this->db->table('hires')->orderBy('date_created', 'DESC')->limit(5)->get()->getResultArray();
 
         // Unread messages
-        $data['unreadMessages'] = $this->db->table('messages')->where('is_read', false)->countAllResults();
+        $data['unreadMessages'] = $this->db->table('messages')->where('is_read', false)->where('is_spam IS NOT TRUE')->countAllResults();
 
         // Content stats
         $data['draftCount'] = $this->db->table('blog')->where('status', 'draft')->countAllResults();
@@ -167,7 +167,28 @@ class Dashboard extends BaseController
     public function messages()
     {
         $data['title'] = 'Messages | Alphawonders';
-        $data['messages'] = $this->db->table('messages')->orderBy('id', 'DESC')->get()->getResultArray();
+
+        $filter = $this->request->getGet('filter');
+        $query = $this->db->table('messages')->orderBy('id', 'DESC');
+
+        if ($filter === 'spam') {
+            $query->where('is_spam IS TRUE');
+        } elseif ($filter === 'priority') {
+            $query->where('is_priority IS TRUE')->where('is_spam IS NOT TRUE');
+        } elseif ($filter === 'unread') {
+            $query->where('is_read IS NOT TRUE')->where('is_spam IS NOT TRUE');
+        } else {
+            $query->where('is_spam IS NOT TRUE');
+        }
+
+        $data['messages'] = $query->get()->getResultArray();
+        $data['currentFilter'] = $filter ?: 'all';
+
+        // Counts for filter tabs
+        $data['allCount'] = $this->db->table('messages')->where('is_spam IS NOT TRUE')->countAllResults();
+        $data['unreadCount'] = $this->db->table('messages')->where('is_read IS NOT TRUE')->where('is_spam IS NOT TRUE')->countAllResults();
+        $data['priorityCount'] = $this->db->table('messages')->where('is_priority IS TRUE')->where('is_spam IS NOT TRUE')->countAllResults();
+        $data['spamCount'] = $this->db->table('messages')->where('is_spam IS TRUE')->countAllResults();
 
         return view('dashboard/inc/header', $data) .
                view('dashboard/messages', $data) .
@@ -179,6 +200,30 @@ class Dashboard extends BaseController
         $msg = $this->db->table('messages')->where('id', $id)->get()->getRowArray();
         if ($msg) {
             $this->db->table('messages')->where('id', $id)->update(['is_read' => !$msg['is_read']]);
+        }
+        return redirect()->to(base_url('aw-cp/messages'));
+    }
+
+    public function messageToggleSpam(int $id)
+    {
+        $msg = $this->db->table('messages')->where('id', $id)->get()->getRowArray();
+        if ($msg) {
+            $newVal = !($msg['is_spam'] ?? false);
+            $this->db->table('messages')->where('id', $id)->update(['is_spam' => $newVal]);
+            $label = $newVal ? 'Marked as spam.' : 'Unmarked as spam.';
+            return redirect()->to(base_url('aw-cp/messages'))->with('success', $label);
+        }
+        return redirect()->to(base_url('aw-cp/messages'));
+    }
+
+    public function messageTogglePriority(int $id)
+    {
+        $msg = $this->db->table('messages')->where('id', $id)->get()->getRowArray();
+        if ($msg) {
+            $newVal = !($msg['is_priority'] ?? false);
+            $this->db->table('messages')->where('id', $id)->update(['is_priority' => $newVal]);
+            $label = $newVal ? 'Marked as priority.' : 'Unmarked as priority.';
+            return redirect()->to(base_url('aw-cp/messages'))->with('success', $label);
         }
         return redirect()->to(base_url('aw-cp/messages'));
     }

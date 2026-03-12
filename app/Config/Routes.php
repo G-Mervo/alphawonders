@@ -87,6 +87,8 @@ $routes->get('/aw-cp/hires/spam/(:num)', 'Dashboard::hireToggleSpam/$1');
 
 // Messages management
 $routes->get('/aw-cp/messages/toggle/(:num)', 'Dashboard::messageToggleRead/$1');
+$routes->get('/aw-cp/messages/spam/(:num)', 'Dashboard::messageToggleSpam/$1');
+$routes->get('/aw-cp/messages/priority/(:num)', 'Dashboard::messageTogglePriority/$1');
 $routes->get('/aw-cp/messages/delete/(:num)', 'Dashboard::messageDelete/$1');
 
 // Subscribers

@@ -330,6 +330,7 @@ class Alphawonders extends BaseController
         $device = $userAgent->isMobile() ? 'Mobile' : 'Desktop';
 
         $ip = real_client_ip();
+        $geo = geoip_lookup($ip);
 
         $data = [
             'full_name' => HtmlSanitizer::sanitizePlainText($this->request->getPost('fullname')),
@@ -339,7 +340,8 @@ class Alphawonders extends BaseController
             'activity_name' => 'Contact us',
             'browser_name' => $userAgent->getBrowser() . ' ' . $userAgent->getVersion(),
             'ip_address' => $ip,
-            'country' => geoip_country($ip),
+            'country' => $geo['country'],
+            'city' => $geo['city'],
             'platform' => $userAgent->getPlatform(),
             'referral' => $this->request->getServer('HTTP_REFERER'),
             'device' => $device,
