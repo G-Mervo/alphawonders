@@ -32,7 +32,7 @@ class Dashboard extends BaseController
     {
         $data['title'] = 'Dashboard | Alphawonders';
         $data['blogCount'] = $this->db->table('blog')->countAllResults();
-        $data['messagesCount'] = $this->db->table('messages')->where('is_spam IS NOT TRUE')->countAllResults();
+        $data['messagesCount'] = $this->db->table('messages')->where('is_spam', false)->countAllResults();
         $data['commentsCount'] = $this->db->table('posts_comments')->countAllResults();
         $data['subscribersCount'] = $this->db->table('subscriptions')->countAllResults();
         $data['hiresCount'] = $this->db->table('hires')->countAllResults();
@@ -47,7 +47,7 @@ class Dashboard extends BaseController
         $data['recentHires'] = $this->db->table('hires')->orderBy('date_created', 'DESC')->limit(5)->get()->getResultArray();
 
         // Unread messages
-        $data['unreadMessages'] = $this->db->table('messages')->where('is_read', false)->where('is_spam IS NOT TRUE')->countAllResults();
+        $data['unreadMessages'] = $this->db->table('messages')->where('is_read', false)->where('is_spam', false)->countAllResults();
 
         // Content stats
         $data['draftCount'] = $this->db->table('blog')->where('status', 'draft')->countAllResults();
@@ -172,23 +172,23 @@ class Dashboard extends BaseController
         $query = $this->db->table('messages')->orderBy('id', 'DESC');
 
         if ($filter === 'spam') {
-            $query->where('is_spam IS TRUE');
+            $query->where('is_spam', true);
         } elseif ($filter === 'priority') {
-            $query->where('is_priority IS TRUE')->where('is_spam IS NOT TRUE');
+            $query->where('is_priority', true)->where('is_spam', false);
         } elseif ($filter === 'unread') {
-            $query->where('is_read IS NOT TRUE')->where('is_spam IS NOT TRUE');
+            $query->where('is_read', false)->where('is_spam', false);
         } else {
-            $query->where('is_spam IS NOT TRUE');
+            $query->where('is_spam', false);
         }
 
         $data['messages'] = $query->get()->getResultArray();
         $data['currentFilter'] = $filter ?: 'all';
 
         // Counts for filter tabs
-        $data['allCount'] = $this->db->table('messages')->where('is_spam IS NOT TRUE')->countAllResults();
-        $data['unreadCount'] = $this->db->table('messages')->where('is_read IS NOT TRUE')->where('is_spam IS NOT TRUE')->countAllResults();
-        $data['priorityCount'] = $this->db->table('messages')->where('is_priority IS TRUE')->where('is_spam IS NOT TRUE')->countAllResults();
-        $data['spamCount'] = $this->db->table('messages')->where('is_spam IS TRUE')->countAllResults();
+        $data['allCount'] = $this->db->table('messages')->where('is_spam', false)->countAllResults();
+        $data['unreadCount'] = $this->db->table('messages')->where('is_read', false)->where('is_spam', false)->countAllResults();
+        $data['priorityCount'] = $this->db->table('messages')->where('is_priority', true)->where('is_spam', false)->countAllResults();
+        $data['spamCount'] = $this->db->table('messages')->where('is_spam', true)->countAllResults();
 
         return view('dashboard/inc/header', $data) .
                view('dashboard/messages', $data) .
