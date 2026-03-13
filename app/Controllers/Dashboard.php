@@ -181,7 +181,12 @@ class Dashboard extends BaseController
             $query->where('is_spam', false);
         }
 
-        $data['messages'] = $query->get()->getResultArray();
+        $data['messages'] = array_map(function ($msg) {
+            $msg['is_spam']     = filter_var($msg['is_spam'] ?? false, FILTER_VALIDATE_BOOLEAN);
+            $msg['is_priority'] = filter_var($msg['is_priority'] ?? false, FILTER_VALIDATE_BOOLEAN);
+            $msg['is_read']     = filter_var($msg['is_read'] ?? false, FILTER_VALIDATE_BOOLEAN);
+            return $msg;
+        }, $query->get()->getResultArray());
         $data['currentFilter'] = $filter ?: 'all';
 
         // Counts for filter tabs
@@ -208,7 +213,7 @@ class Dashboard extends BaseController
     {
         $msg = $this->db->table('messages')->where('id', $id)->get()->getRowArray();
         if ($msg) {
-            $newVal = !($msg['is_spam'] ?? false);
+            $newVal = !filter_var($msg['is_spam'] ?? false, FILTER_VALIDATE_BOOLEAN);
             $this->db->table('messages')->where('id', $id)->update(['is_spam' => $newVal]);
             $label = $newVal ? 'Marked as spam.' : 'Unmarked as spam.';
             return redirect()->to(base_url('aw-cp/messages'))->with('success', $label);
@@ -220,7 +225,7 @@ class Dashboard extends BaseController
     {
         $msg = $this->db->table('messages')->where('id', $id)->get()->getRowArray();
         if ($msg) {
-            $newVal = !($msg['is_priority'] ?? false);
+            $newVal = !filter_var($msg['is_priority'] ?? false, FILTER_VALIDATE_BOOLEAN);
             $this->db->table('messages')->where('id', $id)->update(['is_priority' => $newVal]);
             $label = $newVal ? 'Marked as priority.' : 'Unmarked as priority.';
             return redirect()->to(base_url('aw-cp/messages'))->with('success', $label);
@@ -248,7 +253,10 @@ class Dashboard extends BaseController
         } else {
             $query->where('is_spam IS NOT TRUE');
         }
-        $data['hires'] = $query->get()->getResultArray();
+        $data['hires'] = array_map(function ($hire) {
+            $hire['is_spam'] = filter_var($hire['is_spam'] ?? false, FILTER_VALIDATE_BOOLEAN);
+            return $hire;
+        }, $query->get()->getResultArray());
         $data['currentStatus'] = $status ?: 'all';
 
         // Counts — use PostgreSQL IS TRUE / IS NOT TRUE for reliable boolean comparison
@@ -272,6 +280,8 @@ class Dashboard extends BaseController
         if (!$data['hire']) {
             return redirect()->to(base_url('aw-cp/hires'))->with('error', 'Project not found.');
         }
+
+        $data['hire']['is_spam'] = filter_var($data['hire']['is_spam'] ?? false, FILTER_VALIDATE_BOOLEAN);
 
         return view('dashboard/inc/header', $data) .
                view('dashboard/hire_detail', $data) .
@@ -303,7 +313,7 @@ class Dashboard extends BaseController
             return redirect()->to(base_url('aw-cp/hires'))->with('error', 'Project not found.');
         }
 
-        $newVal = !($hire['is_spam'] ?? false);
+        $newVal = !filter_var($hire['is_spam'] ?? false, FILTER_VALIDATE_BOOLEAN);
         $this->db->table('hires')->where('id', $id)->update([
             'is_spam'       => $newVal,
             'date_modified' => date('Y-m-d H:i:s'),
@@ -623,7 +633,10 @@ class Dashboard extends BaseController
             $builder->where('is_spam', false);
         }
 
-        $data['subscribers'] = $builder->orderBy('id', 'DESC')->get()->getResultArray();
+        $data['subscribers'] = array_map(function ($sub) {
+            $sub['is_spam'] = filter_var($sub['is_spam'] ?? false, FILTER_VALIDATE_BOOLEAN);
+            return $sub;
+        }, $builder->orderBy('id', 'DESC')->get()->getResultArray());
         $data['currentFilter'] = $filter;
         $data['totalAll'] = $this->db->table('subscriptions')->countAllResults();
         $data['totalActive'] = $this->db->table('subscriptions')->where('is_spam', false)->countAllResults();
@@ -643,6 +656,8 @@ class Dashboard extends BaseController
             return redirect()->to(base_url('aw-cp/subscribers'))->with('error', 'Subscriber not found.');
         }
 
+        $data['subscriber']['is_spam'] = filter_var($data['subscriber']['is_spam'] ?? false, FILTER_VALIDATE_BOOLEAN);
+
         return view('dashboard/inc/header', $data) .
                view('dashboard/subscriber_detail', $data) .
                view('dashboard/inc/footer');
@@ -655,7 +670,7 @@ class Dashboard extends BaseController
             return redirect()->to(base_url('aw-cp/subscribers'))->with('error', 'Subscriber not found.');
         }
 
-        $newStatus = !$sub['is_spam'];
+        $newStatus = !filter_var($sub['is_spam'] ?? false, FILTER_VALIDATE_BOOLEAN);
         $this->db->table('subscriptions')->where('id', $id)->update(['is_spam' => $newStatus]);
 
         $msg = $newStatus ? 'Subscriber marked as spam.' : 'Subscriber removed from spam.';
@@ -687,7 +702,10 @@ class Dashboard extends BaseController
             $builder->where('pc.is_spam', false);
         }
 
-        $data['comments'] = $builder->orderBy('pc.created_at', 'DESC')->get()->getResultArray();
+        $data['comments'] = array_map(function ($comment) {
+            $comment['is_spam'] = filter_var($comment['is_spam'] ?? false, FILTER_VALIDATE_BOOLEAN);
+            return $comment;
+        }, $builder->orderBy('pc.created_at', 'DESC')->get()->getResultArray());
         $data['currentFilter'] = $filter;
         $data['totalAll'] = $this->db->table('posts_comments')->countAllResults();
         $data['totalSpam'] = $this->db->table('posts_comments')->where('is_spam', true)->countAllResults();
@@ -706,7 +724,7 @@ class Dashboard extends BaseController
             return redirect()->to(base_url('aw-cp/comments'))->with('error', 'Comment not found.');
         }
 
-        $newStatus = !$comment['is_spam'];
+        $newStatus = !filter_var($comment['is_spam'] ?? false, FILTER_VALIDATE_BOOLEAN);
         $this->db->table('posts_comments')->where('comment_id', $id)->update(['is_spam' => $newStatus]);
 
         $msg = $newStatus ? 'Comment marked as spam.' : 'Comment restored.';

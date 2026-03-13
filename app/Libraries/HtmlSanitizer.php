@@ -104,7 +104,7 @@ class HtmlSanitizer
      */
     public static function sanitizePlainText(string $text): string
     {
-        return htmlspecialchars(strip_tags($text), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        return strip_tags($text);
     }
 
     /**
